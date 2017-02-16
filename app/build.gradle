@@ -7,8 +7,8 @@ android {
         applicationId "rocks.ecox.dailyprogrammerchallenges"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        versionCode 0
+        versionName "0.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -16,6 +16,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    // To avoid duplicate file exception for APK META-INF/LICENSE
+    packagingOptions {
+        pickFirst  'META-INF/license.txt'
+        exclude 'META-INF/LICENSE'
     }
 }
 
@@ -27,4 +33,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:design:25.1.1'
     testCompile 'junit:junit:4.12'
+    compile 'net.dean.jraw:JRAW:0.9.0'
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
 }

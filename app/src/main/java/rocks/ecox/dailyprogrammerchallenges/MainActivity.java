@@ -1,23 +1,31 @@
 package rocks.ecox.dailyprogrammerchallenges;
 
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
+
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import rocks.ecox.dailyprogrammerchallenges.api.RedditApi;
+import rocks.ecox.dailyprogrammerchallenges.models.Challenge;
+import rocks.ecox.dailyprogrammerchallenges.models.Child;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,6 +68,53 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+            }
+        });
+
+        // Reddit API stuff
+        String API = "https://www.reddit.com/";
+        String subreddit = "videos";
+        RestAdapter restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
+        final RedditApi challenge = restAdapter.create(RedditApi.class);
+
+        challenge.getFeed(subreddit, new Callback<Challenge>() {
+            @Override
+            public void success(Challenge challenge, Response response) {
+                for (Child c : challenge.getData().getChildren()) {
+                    // Move this to the challenge constructor
+                    try {
+                        challenge.setTitle(Html.fromHtml(c.getData().getTitle()).toString());
+                        challenge.setUrl(c.getData().getUrl());
+                        challenge.setThumbnailUrl(c.getData().getMedia().getOembed().getThumbnailUrl());
+                        challenge.setSubreddit(c.getData().getSubreddit());
+                        challenge.setUps(c.getData().getUps());
+                        challenge.setProvider(c.getData().getMedia().getOembed().getProviderName());
+                        challenge.setOver18(c.getData().getOver18());
+                        Log.d("DEBUG", " DATA - Provider: " + challenge.getProvider());
+                    } catch (NullPointerException e) {
+                        Log.e("ERROR setting data", e.toString() + " Source title --> " + challenge.getTitle());
+                    }
+                }
+
+                // Set the data to the views here
+                try {
+                    if (challenge.getProvider().equals("YouTube")) {
+                        Log.d("DEBUG", " DATA - Title: " + challenge.getTitle());
+//                    title.setText(video.getTitle());
+//                    sub.setText("/r/" + video.getSubreddit());
+//                    ups.setText("" + NumberFormat.getNumberInstance(Locale.getDefault()).format(video.getUps()));
+                    } else {
+//                    title.setText("No videos :(");
+                        Log.d("ERROR", "No videos :(");
+                    }
+                } catch (NullPointerException e) {
+                    Log.e("ERROR settting UI", e.toString());
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("ERROR", error.getMessage());
             }
         });
 
