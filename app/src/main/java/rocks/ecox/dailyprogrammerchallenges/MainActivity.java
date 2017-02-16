@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Reddit API stuff
         String API = "https://www.reddit.com/";
-        String subreddit = "videos";
+        String subreddit = "dailyprogrammer";
         RestAdapter restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
         final RedditApi challenge = restAdapter.create(RedditApi.class);
 
@@ -81,34 +81,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void success(Challenge challenge, Response response) {
                 for (Child c : challenge.getData().getChildren()) {
-                    // Move this to the challenge constructor
+                    // TODO: Move this to the Challenge constructor
                     try {
-                        challenge.setTitle(Html.fromHtml(c.getData().getTitle()).toString());
-                        challenge.setUrl(c.getData().getUrl());
-                        challenge.setThumbnailUrl(c.getData().getMedia().getOembed().getThumbnailUrl());
-                        challenge.setSubreddit(c.getData().getSubreddit());
-                        challenge.setUps(c.getData().getUps());
-                        challenge.setProvider(c.getData().getMedia().getOembed().getProviderName());
-                        challenge.setOver18(c.getData().getOver18());
-                        Log.d("DEBUG", " DATA - Provider: " + challenge.getProvider());
+                        challenge.setPostId(c.getData().getPostId());
+                        challenge.setPostTitle(Html.fromHtml(c.getData().getPostTitle()).toString());
+                        challenge.setPostDescription(Html.fromHtml(c.getData().getPostDescription()).toString());
+                        challenge.setPostAuthor(c.getData().getPostAuthor());
+                        challenge.setPostUrl(c.getData().getPostUrl());
+                        challenge.setPostUps(c.getData().getUps());
+                        challenge.setPostUtc(c.getData().getPostUtc());
+                        challenge.setNumberOfComments(c.getData().getNumberOfComments());
+
+                        Log.d("DEBUG", "Post id: " + challenge.getPostId());
                     } catch (NullPointerException e) {
-                        Log.e("ERROR setting data", e.toString() + " Source title --> " + challenge.getTitle());
+                        Log.e("ERROR setting data", e.toString() + " Source id --> " + challenge.getPostId());
                     }
                 }
 
-                // Set the data to the views here
+                // TODO: Set the data to the views here
                 try {
-                    if (challenge.getProvider().equals("YouTube")) {
-                        Log.d("DEBUG", " DATA - Title: " + challenge.getTitle());
-//                    title.setText(video.getTitle());
-//                    sub.setText("/r/" + video.getSubreddit());
-//                    ups.setText("" + NumberFormat.getNumberInstance(Locale.getDefault()).format(video.getUps()));
-                    } else {
-//                    title.setText("No videos :(");
-                        Log.d("ERROR", "No videos :(");
-                    }
+                    Log.d("DEBUG", "Title: " + challenge.getPostTitle());
+//                    title.setText(challenge.getTitle());
+//                    sub.setText("/r/" + challenge.getSubreddit());
+//                    ups.setText("" + NumberFormat.getNumberInstance(Locale.getDefault()).format(challenge.getUps()));
                 } catch (NullPointerException e) {
-                    Log.e("ERROR settting UI", e.toString());
+                    Log.e("ERROR setting UI", e.toString() + " id: " + challenge.getPostId());
                 }
             }
 

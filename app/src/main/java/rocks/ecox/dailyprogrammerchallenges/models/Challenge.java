@@ -10,83 +10,91 @@ public class Challenge {
 
     @SerializedName("data")
     @Expose
+
     private Data data;
+    private String postId;
+    private String postTitle;
+    private String postDescription;
+    private String postAuthor;
+    private String postUrl;
+    private Integer postUps;
+    private Integer postUtc;
+    private Integer numberOfComments;
 
-    private String subreddit;
-    private Media media;
-    private Boolean over18;
-    private String url;
-    private String title;
-    private Integer ups;
-    private String thumbnailUrl;
-    private String provider = "None";
-
-    public String getProvider() {
-        return provider;
+    public void setData(Data data) {
+        this.data = data;
     }
 
-    public void setProvider(String provider) {
-        this.provider = provider;
+    public String getPostId() {
+        return postId;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public void setPostId(String postId) {
+        this.postId = postId;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public String getPostTitle() {
+        return postTitle;
     }
 
-    public String getSubreddit() {
-        return subreddit;
+    public void setPostTitle(String postTitle) {
+        this.postTitle = postTitle;
     }
 
-    public void setSubreddit(String subreddit) {
-        this.subreddit = subreddit;
+    public String getPostDescription() {
+        return postDescription;
     }
 
-    public Media getMedia() {
-        return media;
+    public void setPostDescription(String postDescription) {
+        this.postDescription = postDescription;
     }
 
-    public void setMedia(Media media) {
-        this.media = media;
+    public String getPostAuthor() {
+        return postAuthor;
     }
 
-    public Boolean getOver18() {
-        return over18;
+    public void setPostAuthor(String postAuthor) {
+        this.postAuthor = postAuthor;
     }
 
-    public void setOver18(Boolean over18) {
-        this.over18 = over18;
+    public String getPostUrl() {
+        return postUrl;
     }
 
-    public String getUrl() {
-        return url;
+    public void setPostUrl(String postUrl) {
+        this.postUrl = postUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public Integer getPostUps() {
+        return postUps;
     }
 
-    public String getTitle() {
-        return title;
+    public void setPostUps(Integer postUps) {
+        this.postUps = postUps;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public Integer getPostUtc() {
+        return this.postUtc;
     }
 
-    public Integer getUps() {
-        return ups;
+    public void setPostUtc(Integer postUtc) {
+        this.postUtc = postUtc;
     }
 
-    public void setUps(Integer ups) {
-        this.ups = ups;
+    public Integer getNumberOfComments() {
+        return numberOfComments;
+    }
+
+    public void setNumberOfComments(Integer numberOfComments) {
+        this.numberOfComments = numberOfComments;
     }
 
     public String getKind() {
         return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     public Data getData() {

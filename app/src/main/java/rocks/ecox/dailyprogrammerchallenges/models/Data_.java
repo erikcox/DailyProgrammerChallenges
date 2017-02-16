@@ -4,54 +4,67 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Data_ {
-    @SerializedName("domain")
+    @SerializedName("id")
     @Expose
-    private String domain;
-    @SerializedName("subreddit")
-    @Expose
-    private String subreddit;
-    @SerializedName("media")
-    @Expose
-    private Media media;
-    @SerializedName("over_18")
-    @Expose
-    private Boolean over18;
-    @SerializedName("url")
-    @Expose
-    private String url;
+    private String postId;
+
     @SerializedName("title")
     @Expose
-    private String title;
+    private String postTitle;
+
+    @SerializedName("selftext")
+    @Expose
+    private String postDescription;
+
+    @SerializedName("author")
+    @Expose
+    private String postAuthor;
+
+    @SerializedName("url")
+    @Expose
+    private String postUrl;
+
     @SerializedName("ups")
     @Expose
     private Integer ups;
 
-    public String getDomain() {
-        return domain;
+    @SerializedName("created")
+    @Expose
+    private Integer postUtc;
+
+    @SerializedName("num_coments")
+    @Expose
+    private Integer numberOfComments;
+
+    public String getPostId() {
+        return postId;
     }
 
-    public String getSubreddit() {
-        return subreddit;
+    public String getPostTitle() {
+        return postTitle;
     }
 
-    public Media getMedia() {
-        return media;
+    public String getPostDescription() {
+        return postDescription;
     }
 
-    public Boolean getOver18() {
-        return over18;
+    public String getPostAuthor() {
+        return postAuthor;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public String getTitle() {
-        return title;
+    public String getPostUrl() {
+        return postUrl;
     }
 
     public Integer getUps() {
         return ups;
     }
 
+    public Integer getPostUtc() {
+        return postUtc;
+    }
+
+    public Integer getNumberOfComments() {
+        return numberOfComments;
+    }
 }
