@@ -1,6 +1,6 @@
 # *Daily Programmer Challenges*
 
-**Daily Programmer Challenges** is an Android app that allows to browse the /r/dailyprogrammer subreddit.
+**Daily Programmer Challenges** is an Android app that allows to browse the [/r/dailyprogrammer](https://www.reddit.com/r/dailyprogrammer) subreddit.
 
 ## User Stories
 
