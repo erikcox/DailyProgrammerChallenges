@@ -66,6 +66,16 @@ public class MainActivity extends AppCompatActivity {
         // Get data from reddit and create Challenge objects
         UpdateChallenges.update();
 
+        // TODO: Bind the data to the view components here
+//        try {
+//            Log.d("DEBUG", "Title: " + challenge.getCleanedPostTitle());
+//                    title.setText(challenge.getTitle());
+//                    sub.setText("/r/" + challenge.getSubreddit());
+//                    ups.setText("" + NumberFormat.getNumberInstance(Locale.getDefault()).format(challenge.getUps()));
+//        } catch (NullPointerException e) {
+//            Log.e("ERROR setting UI", e.toString() + " id: " + challenge.getPostId());
+//        }
+
     }
 
     @Override
