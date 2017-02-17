@@ -1,9 +1,9 @@
 package rocks.ecox.dailyprogrammerchallenges.utility;
 
-import android.util.Log;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import timber.log.Timber;
 
 public class DataParsing {
 
@@ -17,12 +17,12 @@ public class DataParsing {
             try {
                 challengeNumber = Integer.parseInt(cnm.group().substring(1));
             } catch (NumberFormatException e) {
-                Log.e("ERROR", e + " " + cnm.group().substring(1));
+                Timber.e("%s threw the exception: %s", cnm.group().substring(1), e);
             }
 
-            Log.d("REGEX", "Challenge Number: " + challengeNumber);
+            Timber.d("Cleaned challenge number: %s", challengeNumber);
         } else {
-            Log.w("WARNING", "Couldn't find challenge number! " + title);
+            Timber.w("Couldn't find challenge number in: %s.", title);
         }
         return challengeNumber;
     }
@@ -38,10 +38,10 @@ public class DataParsing {
         } else if (lowerTitle.contains("hard")) {
             challengeDifficulty = "Hard";
         } else {
-            Log.d("REGEX", "Difficulty: " + "No difficulty" + " " + lowerTitle);
+            Timber.w("Can't find a difficulty in: %s", lowerTitle);
         }
 
-        Log.d("REGEX", "Difficulty: " + challengeDifficulty);
+        Timber.d("Difficulty: %s", challengeDifficulty);
 
         return challengeDifficulty;
     }
@@ -54,9 +54,9 @@ public class DataParsing {
 
         if (tm.find()) {
             cleanPostTitle = tm.group().substring(1);
-            Log.d("REGEX", "Cleaned Title: " + cleanPostTitle);
+            Timber.d("Cleaned Title: %s", cleanPostTitle);
         } else {
-            Log.w("WARNING", "Couldn't clean post title! " + title);
+            Timber.w("Couldn't clean post title: %s", title);
         }
 
         return cleanPostTitle;

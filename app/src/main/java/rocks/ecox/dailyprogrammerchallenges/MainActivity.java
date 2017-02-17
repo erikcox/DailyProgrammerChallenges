@@ -57,12 +57,12 @@ public class MainActivity extends AppCompatActivity {
 
         // TODO: Bind the data to the view components here
 //        try {
-//            Log.d("DEBUG", "Title: " + challenge.getCleanedPostTitle());
+//            Timber.d("Title: %s", challenge.getCleanedPostTitle());
 //                    title.setText(challenge.getTitle());
 //                    sub.setText("/r/" + challenge.getSubreddit());
 //                    ups.setText("" + NumberFormat.getNumberInstance(Locale.getDefault()).format(challenge.getUps()));
 //        } catch (NullPointerException e) {
-//            Log.e("ERROR setting UI", e.toString() + " id: " + challenge.getPostId());
+//            Timber.e("ERROR setting UI on id: %s ", challenge.getPostId(), e.toString());
 //        }
 
     }

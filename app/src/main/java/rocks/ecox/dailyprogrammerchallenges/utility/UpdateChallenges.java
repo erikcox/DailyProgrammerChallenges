@@ -1,7 +1,6 @@
 package rocks.ecox.dailyprogrammerchallenges.utility;
 
 import android.text.Html;
-import android.util.Log;
 
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -10,6 +9,7 @@ import retrofit.client.Response;
 import rocks.ecox.dailyprogrammerchallenges.api.RedditApi;
 import rocks.ecox.dailyprogrammerchallenges.models.Challenge;
 import rocks.ecox.dailyprogrammerchallenges.models.Child;
+import timber.log.Timber;
 
 import static android.R.attr.id;
 
@@ -29,7 +29,6 @@ public class UpdateChallenges {
                 for (Child c : challenge.getData().getChildren()) {
                     try {
                         // Set challenge attributes
-                        // TODO: remove redundant gets, use variables (e.g. getTitle)
                         challenge.setPostId(c.getData().getPostId());
                         challenge.setPostTitle(Html.fromHtml(c.getData().getPostTitle()).toString());
                         challenge.setPostDescription(Html.fromHtml(c.getData().getPostDescription()).toString());
@@ -56,9 +55,9 @@ public class UpdateChallenges {
 
                         // Set cleanedPostTitle field
                         challenge.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
-                        Log.d("DEBUG", "Done processing post id: " + id);
+                        Timber.d("Done processing post id: %s", id);
                     } catch (NullPointerException e) {
-                        Log.e("ERROR setting data", e.toString() + " Source id --> " + id);
+                        Timber.e("ERROR setting data to id %s. Exception: %s", id, e.toString());
                     }
                 }
 
@@ -66,7 +65,7 @@ public class UpdateChallenges {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("ERROR", error.getMessage());
+                Timber.d("Retrofit error: %s", error.getMessage());
             }
         });
     }
