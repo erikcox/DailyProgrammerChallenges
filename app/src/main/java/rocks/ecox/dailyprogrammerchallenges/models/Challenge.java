@@ -14,12 +14,40 @@ public class Challenge {
     private Data data;
     private String postId;
     private String postTitle;
+
+    public String getCleanedPostTitle() {
+        return cleanedPostTitle;
+    }
+
+    public void setCleanedPostTitle(String cleanedPostTitle) {
+        this.cleanedPostTitle = cleanedPostTitle;
+    }
+
+    private String cleanedPostTitle;
     private String postDescription;
     private String postAuthor;
     private String postUrl;
-    private Integer postUps;
-    private Integer postUtc;
-    private Integer numberOfComments;
+    private Integer postUps = 0;
+    private Integer postUtc = 0;
+    private Integer numberOfComments = 0;
+    private Integer challengeNumber = 0;
+    private String challengeDifficulty = "Not a valid challenge";
+
+    public Integer getChallengeNumber() {
+        return challengeNumber;
+    }
+
+    public void setChallengeNumber(Integer challengeNumber) {
+        this.challengeNumber = challengeNumber;
+    }
+
+    public String getChallengeDifficulty() {
+        return challengeDifficulty;
+    }
+
+    public void setChallengeDifficulty(String challengeDifficulty) {
+        this.challengeDifficulty = challengeDifficulty;
+    }
 
     public void setData(Data data) {
         this.data = data;

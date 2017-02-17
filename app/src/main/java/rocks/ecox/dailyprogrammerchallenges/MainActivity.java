@@ -10,8 +10,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,13 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import retrofit.Callback;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import rocks.ecox.dailyprogrammerchallenges.api.RedditApi;
-import rocks.ecox.dailyprogrammerchallenges.models.Challenge;
-import rocks.ecox.dailyprogrammerchallenges.models.Child;
+import rocks.ecox.dailyprogrammerchallenges.utility.UpdateChallenges;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,52 +63,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Reddit API stuff
-        String API = "https://www.reddit.com/";
-        String subreddit = "dailyprogrammer";
-        RestAdapter restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
-        final RedditApi challenge = restAdapter.create(RedditApi.class);
-
-        challenge.getFeed(subreddit, new Callback<Challenge>() {
-            @Override
-            public void success(Challenge challenge, Response response) {
-                for (Child c : challenge.getData().getChildren()) {
-                    // TODO: Move this to the Challenge constructor
-                    try {
-                        challenge.setPostId(c.getData().getPostId());
-                        challenge.setPostTitle(Html.fromHtml(c.getData().getPostTitle()).toString());
-                        challenge.setPostDescription(Html.fromHtml(c.getData().getPostDescription()).toString());
-                        challenge.setPostAuthor(c.getData().getPostAuthor());
-                        challenge.setPostUrl(c.getData().getPostUrl());
-                        challenge.setPostUps(c.getData().getUps());
-                        challenge.setPostUtc(c.getData().getPostUtc());
-                        challenge.setNumberOfComments(c.getData().getNumberOfComments());
-
-                        Log.d("DEBUG", "Post id: " + challenge.getPostId());
-                    } catch (NullPointerException e) {
-                        Log.e("ERROR setting data", e.toString() + " Source id --> " + challenge.getPostId());
-                    }
-                }
-
-                // TODO: Set the data to the views here
-                try {
-                    Log.d("DEBUG", "Title: " + challenge.getPostTitle());
-//                    title.setText(challenge.getTitle());
-//                    sub.setText("/r/" + challenge.getSubreddit());
-//                    ups.setText("" + NumberFormat.getNumberInstance(Locale.getDefault()).format(challenge.getUps()));
-                } catch (NullPointerException e) {
-                    Log.e("ERROR setting UI", e.toString() + " id: " + challenge.getPostId());
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d("ERROR", error.getMessage());
-            }
-        });
+        // Get data from reddit and create Challenge objects
+        UpdateChallenges.update();
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
