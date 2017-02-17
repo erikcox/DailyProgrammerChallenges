@@ -29,6 +29,17 @@ Here's a walkthrough of implemented user stories:
 * 
 * 
 
+## Mockups
+!['All challenges'](01_All_Challenges.png)
+!['Navigation drawer'](02_Navigation_Drawer.png)
+!['Sort options'](03_Sort_Options.png)
+!['Share'](04_Share.png)
+!['Detail problem'](05_Detail_Problem.png)
+!['Detail solution'](06_Detail_Solution.png)
+!['Saved'](07_Saved.png)
+!['Completed'](08_Completed.png)
+!['About'](09_About.png)
+
 ## License
 
     Copyright [2017] [Erik Cox]
