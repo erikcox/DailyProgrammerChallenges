@@ -39,6 +39,7 @@ chrom
 !['Saved'](07_Saved.png)
 !['Completed'](08_Completed.png)
 !['About'](09_About.png)
+!['Widget'](10_Widget.png)
 
 ## License
 
