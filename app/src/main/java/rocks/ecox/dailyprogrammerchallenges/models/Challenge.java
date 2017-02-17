@@ -23,6 +23,7 @@ public class Challenge {
     private String challengeDifficulty;
     private Integer postUps;
     private Integer numberOfComments;
+    private boolean showPost = true;
 
     public String getKind() {
         return kind;
@@ -128,4 +129,11 @@ public class Challenge {
         this.numberOfComments = numberOfComments;
     }
 
+    public boolean isShowPost() {
+        return showPost;
+    }
+
+    public void setShowPost(boolean showPost) {
+        this.showPost = showPost;
+    }
 }
