@@ -2,6 +2,9 @@ package rocks.ecox.dailyprogrammerchallenges;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
 import rocks.ecox.dailyprogrammerchallenges.utility.ReleaseTree;
 import timber.log.Timber;
 
@@ -24,8 +27,8 @@ public class DPCApplication extends Application {
         } else {
             // Release mode
             Timber.plant(new ReleaseTree());
-            // TODO: add Crashlytics
-            // Crashlytics.start();  // Initialize crash reporting for release build
+            // Initialize crash reporting for release build
+            Fabric.with(this, new Crashlytics());
         }
     }
 }

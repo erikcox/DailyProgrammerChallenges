@@ -2,6 +2,8 @@ package rocks.ecox.dailyprogrammerchallenges.utility;
 
 import android.util.Log;
 
+import com.crashlytics.android.Crashlytics;
+
 import timber.log.Timber;
 
 public class ReleaseTree extends Timber.Tree {
@@ -24,8 +26,7 @@ public class ReleaseTree extends Timber.Tree {
 
             // Report caught exceptions to Crashlytics
             if (priority == Log.ERROR && t != null) {
-                // TODO: add Crashlytics
-                // Crashlytics.log(e);
+                Crashlytics.log(message);
             }
 
             // Message is short enough, does not need to be broken into chunks
