@@ -1,5 +1,7 @@
 package rocks.ecox.dailyprogrammerchallenges.utility;
 
+import com.crashlytics.android.Crashlytics;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,6 +19,7 @@ public class DataParsing {
             try {
                 challengeNumber = Integer.parseInt(cnm.group().substring(1));
             } catch (NumberFormatException e) {
+                Crashlytics.logException(e);
                 Timber.e("%s threw the exception: %s", cnm.group().substring(1), e);
             }
 

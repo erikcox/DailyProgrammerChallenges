@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 //                    sub.setText("/r/" + challenge.getSubreddit());
 //                    ups.setText("" + NumberFormat.getNumberInstance(Locale.getDefault()).format(challenge.getUps()));
 //        } catch (NullPointerException e) {
+//            Crashlytics.logException(e);
 //            Timber.e("ERROR setting UI on id: %s ", challenge.getPostId(), e.toString());
 //        }
 

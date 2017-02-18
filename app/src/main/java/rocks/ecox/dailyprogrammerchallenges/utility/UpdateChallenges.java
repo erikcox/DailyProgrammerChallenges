@@ -2,6 +2,8 @@ package rocks.ecox.dailyprogrammerchallenges.utility;
 
 import android.text.Html;
 
+import com.crashlytics.android.Crashlytics;
+
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -57,6 +59,7 @@ public class UpdateChallenges {
                         challenge.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
                         Timber.d("Done processing post id: %s", id);
                     } catch (NullPointerException e) {
+                        Crashlytics.logException(e);
                         Timber.e("ERROR setting data to id %s. Exception: %s", id, e.toString());
                     }
                 }
