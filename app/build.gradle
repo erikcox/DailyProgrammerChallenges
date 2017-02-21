@@ -49,6 +49,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support:design:25.1.1'
     testCompile 'junit:junit:4.12'
+
     compile 'net.dean.jraw:JRAW:0.9.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.jakewharton.timber:timber:4.5.1'
@@ -56,4 +57,6 @@ dependencies {
         transitive = true;
     }
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    compile 'com.facebook.stetho:stetho:1.4.2'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
 }

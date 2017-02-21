@@ -3,7 +3,9 @@ package rocks.ecox.dailyprogrammerchallenges.utility;
 import android.text.Html;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
 
+import okhttp3.OkHttpClient;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -21,6 +23,10 @@ public class UpdateChallenges {
         // Reddit API stuff
         String API = "https://www.reddit.com/";
         String subreddit = "dailyprogrammer";
+        new OkHttpClient.Builder()
+                .addNetworkInterceptor(new StethoInterceptor())
+                .build();
+
         RestAdapter restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
         final RedditApi redditData = restAdapter.create(RedditApi.class);
 

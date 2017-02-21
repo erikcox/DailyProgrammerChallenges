@@ -1,6 +1,7 @@
 package rocks.ecox.dailyprogrammerchallenges;
 
 import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.Stetho;
 
 import io.fabric.sdk.android.Fabric;
 import rocks.ecox.dailyprogrammerchallenges.utility.ReleaseTree;
@@ -11,6 +12,7 @@ public class DPCApplication extends com.activeandroid.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Stetho.initializeWithDefaults(this);
 
         // Set up Timber for logging
         if (BuildConfig.DEBUG) {
