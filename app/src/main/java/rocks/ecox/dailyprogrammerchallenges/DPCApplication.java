@@ -1,14 +1,12 @@
 package rocks.ecox.dailyprogrammerchallenges;
 
-import android.app.Application;
-
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
 import rocks.ecox.dailyprogrammerchallenges.utility.ReleaseTree;
 import timber.log.Timber;
 
-public class DPCApplication extends Application {
+public class DPCApplication extends com.activeandroid.app.Application {
 
     @Override
     public void onCreate() {

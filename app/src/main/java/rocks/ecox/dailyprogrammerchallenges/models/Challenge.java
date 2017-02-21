@@ -1,9 +1,13 @@
 package rocks.ecox.dailyprogrammerchallenges.models;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Challenge {
+@Table(name = "Challenges")
+public class Challenge extends Model {
     @SerializedName("kind")
     @Expose
     private String kind;
@@ -12,18 +16,61 @@ public class Challenge {
     @Expose
     private Data data;
 
+    @Column(name = "post_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private String postId;
+
+    @Column(name = "title")
     private String postTitle;
+
+    @Column(name = "clean_title")
     private String cleanedPostTitle;
+
+    @Column(name = "description")
     private String postDescription;
+
+    @Column(name = "author")
     private String postAuthor;
+
+    @Column(name = "timestamp")
     private Integer postUtc;
+
+    @Column(name = "url")
     private String postUrl;
+
+    @Column(name = "challenge_number")
     private Integer challengeNumber;
+
+    @Column(name = "difficulty")
     private String challengeDifficulty;
+
+    @Column(name = "ups")
     private Integer postUps;
+
+    @Column(name = "num_comments")
     private Integer numberOfComments;
-    private boolean showPost = true;
+
+    @Column(name = "show_challenge")
+    private boolean showChallenge = true;
+
+    public Challenge() {
+        super();
+    }
+
+    public Challenge(String postId, String postTitle, String cleanedPostTitle, String postDescription, String postAuthor, int postUtc, String postUrl, int challengeNumber, String challengeDifficulty, int postUps, int numberOfComments, boolean showChallenge) {
+        super();
+        this.postId = postId;
+        this.postTitle = postTitle;
+        this.cleanedPostTitle = cleanedPostTitle;
+        this.postDescription = postDescription;
+        this.postAuthor = postAuthor;
+        this.postUtc = postUtc;
+        this.postUrl = postUrl;
+        this.challengeNumber = challengeNumber;
+        this.challengeDifficulty = challengeDifficulty;
+        this.postUps = postUps;
+        this.numberOfComments = numberOfComments;
+        this.showChallenge = showChallenge;
+    }
 
     public String getKind() {
         return kind;
@@ -129,11 +176,11 @@ public class Challenge {
         this.numberOfComments = numberOfComments;
     }
 
-    public boolean isShowPost() {
-        return showPost;
+    public boolean isShowChallenge() {
+        return showChallenge;
     }
 
-    public void setShowPost(boolean showPost) {
-        this.showPost = showPost;
+    public void setShowChallenge(boolean showChallenge) {
+        this.showChallenge = showChallenge;
     }
 }

@@ -50,9 +50,9 @@ public class UpdateChallenges {
                         challenge.setChallengeDifficulty(DataParsing.getChallengeDifficulty(title));
 
                         if (challenge.getChallengeDifficulty().equals("Not a valid challenge")) {
-                            challenge.setShowPost(false);
+                            challenge.setShowChallenge(false);
                         } else {
-                            challenge.setShowPost(true);
+                            challenge.setShowChallenge(true);
                         }
 
                         // Set cleanedPostTitle field
