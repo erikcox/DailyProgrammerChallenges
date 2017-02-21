@@ -24,6 +24,12 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="7c511b3104a936eb6afa8378b0f5025a67aafd34" />
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="RestClient.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
     </application>
 
 </manifest>

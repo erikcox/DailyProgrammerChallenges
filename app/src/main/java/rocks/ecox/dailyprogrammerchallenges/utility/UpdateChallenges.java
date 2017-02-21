@@ -22,10 +22,10 @@ public class UpdateChallenges {
         String API = "https://www.reddit.com/";
         String subreddit = "dailyprogrammer";
         RestAdapter restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
-        final RedditApi challenge = restAdapter.create(RedditApi.class);
+        final RedditApi redditData = restAdapter.create(RedditApi.class);
 
         // Get json data
-        challenge.getFeed(subreddit, new Callback<Challenge>() {
+        redditData.getFeed(subreddit, new Callback<Challenge>() {
             @Override
             public void success(Challenge challenge, Response response) {
                 for (Child c : challenge.getData().getChildren()) {
@@ -57,6 +57,7 @@ public class UpdateChallenges {
 
                         // Set cleanedPostTitle field
                         challenge.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
+                        challenge.save();
                         Timber.d("Done processing post id: %s", id);
                     } catch (NullPointerException e) {
                         Crashlytics.logException(e);
