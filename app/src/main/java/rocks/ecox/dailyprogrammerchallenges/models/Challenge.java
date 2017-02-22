@@ -16,7 +16,7 @@ public class Challenge extends Model {
     @Expose
     private Data data;
 
-    @Column(name = "post_id", unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    @Column(name = "post_id")
     private String postId;
 
     @Column(name = "title")
