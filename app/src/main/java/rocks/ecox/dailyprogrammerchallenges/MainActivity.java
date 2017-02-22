@@ -66,6 +66,15 @@ public class MainActivity extends AppCompatActivity {
 //            Timber.e("ERROR setting UI on id: %s ", challenge.getPostId(), e.toString());
 //        }
 
+        // Populate RecyclerView with CursorAdapter
+//        SimpleCursorAdapter challengeAdapter = new SimpleCursorAdapter(getParent(),
+//                android.R.layout.simple_list_item_1, null,
+//                new String[] { "body" },
+//                new int[] { android.R.id.text1 },
+//                0);
+//        myRecyclerView.setAdapter(challengeAdapter);
+
+
     }
 
     @Override
