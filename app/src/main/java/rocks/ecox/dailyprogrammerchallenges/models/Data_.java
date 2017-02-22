@@ -32,7 +32,7 @@ public class Data_ {
     @Expose
     private Integer postUtc;
 
-    @SerializedName("num_coments")
+    @SerializedName("num_comments")
     @Expose
     private Integer numberOfComments;
 

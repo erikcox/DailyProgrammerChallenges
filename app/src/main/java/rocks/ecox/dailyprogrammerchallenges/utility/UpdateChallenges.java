@@ -37,33 +37,35 @@ public class UpdateChallenges {
                 for (Child c : challenge.getData().getChildren()) {
                     try {
                         // Set challenge attributes
-                        challenge.setPostId(c.getData().getPostId());
-                        challenge.setPostTitle(Html.fromHtml(c.getData().getPostTitle()).toString());
-                        challenge.setPostDescription(Html.fromHtml(c.getData().getPostDescription()).toString());
-                        challenge.setPostAuthor(c.getData().getPostAuthor());
-                        challenge.setPostUrl(c.getData().getPostUrl());
-                        challenge.setPostUps(c.getData().getUps());
-                        challenge.setPostUtc(c.getData().getPostUtc());
-                        challenge.setNumberOfComments(c.getData().getNumberOfComments());
+                        Challenge ch = new Challenge();
 
-                        String title = challenge.getPostTitle();
-                        String id = challenge.getPostId();
+                        ch.setPostId(c.getData().getPostId());
+                        ch.setPostTitle(Html.fromHtml(c.getData().getPostTitle()).toString());
+                        ch.setPostDescription(Html.fromHtml(c.getData().getPostDescription()).toString());
+                        ch.setPostAuthor(c.getData().getPostAuthor());
+                        ch.setPostUrl(c.getData().getPostUrl());
+                        ch.setPostUps(c.getData().getUps());
+                        ch.setPostUtc(c.getData().getPostUtc());
+                        ch.setNumberOfComments(c.getData().getNumberOfComments());
+
+                        String title = ch.getPostTitle();
+                        String id = ch.getPostId();
 
                         // Set challenge number from title field
-                        challenge.setChallengeNumber(DataParsing.getChallengeNumber(title));
+                        ch.setChallengeNumber(DataParsing.getChallengeNumber(title));
 
                         // Set difficulty from title field
-                        challenge.setChallengeDifficulty(DataParsing.getChallengeDifficulty(title));
+                        ch.setChallengeDifficulty(DataParsing.getChallengeDifficulty(title));
 
-                        if (challenge.getChallengeDifficulty().equals("Not a valid challenge")) {
-                            challenge.setShowChallenge(false);
+                        if (ch.getChallengeDifficulty().equals("Not a valid challenge")) {
+                            ch.setShowChallenge(false);
                         } else {
-                            challenge.setShowChallenge(true);
+                            ch.setShowChallenge(true);
                         }
 
                         // Set cleanedPostTitle field
-                        challenge.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
-                        challenge.save();
+                        ch.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
+                        ch.save();
                         Timber.d("Done processing post id: %s", id);
                     } catch (NullPointerException e) {
                         Crashlytics.logException(e);
