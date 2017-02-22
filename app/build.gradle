@@ -23,8 +23,8 @@ android {
         applicationId "rocks.ecox.dailyprogrammerchallenges"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode 0
-        versionName "0.1"
+        versionCode getVersionCode()
+        versionName getVersionName()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
