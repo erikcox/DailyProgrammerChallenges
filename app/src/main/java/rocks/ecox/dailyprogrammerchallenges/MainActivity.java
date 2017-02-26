@@ -31,7 +31,6 @@ public class MainActivity extends AppCompatActivity implements
     // Constant for referring to a unique loader
     private static final int CHALLENGE_LOADER_ID = 0;
 
-
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -47,9 +46,7 @@ public class MainActivity extends AppCompatActivity implements
      */
     private ViewPager mViewPager;
 
-    // Member variables for the adapter and RecyclerView
-    private CustomCursorAdapter mAdapter;
-    RecyclerView mRecyclerView;
+    static CustomCursorAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,17 +65,7 @@ public class MainActivity extends AppCompatActivity implements
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-        // Set the RecyclerView to its corresponding view
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewChallenges);
-
-        // Set the layout for the RecyclerView to be a linear layout, which measures and
-        // positions items within a RecyclerView into a linear list
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Initialize the adapter and attach it to the RecyclerView
-        mAdapter = new CustomCursorAdapter(this);
-        mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new CustomCursorAdapter(getApplicationContext());
 
         // Get data from reddit and create Challenge objects
         UpdateChallenges.update();
@@ -101,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements
 //                new int[] { android.R.id.text1 },
 //                0);
 //        myRecyclerView.setAdapter(challengeAdapter);
-
 
     }
 
@@ -207,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements
         mAdapter.swapCursor(data);
     }
 
-
     /**
      * Called when a previously created loader is being reset, and thus
      * making its data unavailable.
@@ -229,6 +214,8 @@ public class MainActivity extends AppCompatActivity implements
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        protected RecyclerView mRecyclerView;
+//        protected LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
 
         public PlaceholderFragment() {
         }
@@ -249,6 +236,13 @@ public class MainActivity extends AppCompatActivity implements
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+//            mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewChallenges);
+            mRecyclerView.setLayoutManager(
+                    new LinearLayoutManager(getActivity()));
+            mRecyclerView.setAdapter(mAdapter);
+
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;

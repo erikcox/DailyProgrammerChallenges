@@ -2,8 +2,6 @@ package rocks.ecox.dailyprogrammerchallenges;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.graphics.drawable.GradientDrawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,16 +16,9 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     private Cursor mCursor;
     private Context mContext;
 
-
-    /**
-     * Constructor for the CustomCursorAdapter that initializes the Context.
-     *
-     * @param mContext the current Context
-     */
     public CustomCursorAdapter(Context mContext) {
         this.mContext = mContext;
     }
-
 
     /**
      * Called when ViewHolders are created to fill a RecyclerView.
@@ -70,41 +61,7 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         holder.itemView.setTag(id);
         holder.challengeDescriptionView.setText(description);
 
-        // Programmatically set the text and color for the priority TextView
-        String priorityString = "" + priority; // converts int to String
-        holder.priorityView.setText(priorityString);
-
-        GradientDrawable priorityCircle = (GradientDrawable) holder.priorityView.getBackground();
-        // Get the appropriate background color based on the priority
-        int priorityColor = getDifficultyColor(priority);
-        priorityCircle.setColor(priorityColor);
-
     }
-
-
-    /*
-    Helper method for selecting the correct priority circle color.
-    P1 = red, P2 = orange, P3 = yellow
-    */
-    private int getDifficultyColor(int priority) {
-        int priorityColor = 0;
-
-        switch (priority) {
-            case 1:
-                priorityColor = ContextCompat.getColor(mContext, R.color.Hard);
-                break;
-            case 2:
-                priorityColor = ContextCompat.getColor(mContext, R.color.Intermediate);
-                break;
-            case 3:
-                priorityColor = ContextCompat.getColor(mContext, R.color.Easy);
-                break;
-            default:
-                break;
-        }
-        return priorityColor;
-    }
-
 
     /**
      * Returns the number of items to display.
