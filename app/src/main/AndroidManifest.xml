@@ -22,9 +22,9 @@
             </intent-filter>
         </activity>
         <provider
-            android:authorities="rocks.ecox"
-            android:exported="false"
-            android:name="com.activeandroid.content.ContentProvider" />
+            android:name="rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContentProvider"
+            android:authorities="rocks.ecox.dailyprogrammerchallenges"
+            android:exported="false"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="7c511b3104a936eb6afa8378b0f5025a67aafd34" />
