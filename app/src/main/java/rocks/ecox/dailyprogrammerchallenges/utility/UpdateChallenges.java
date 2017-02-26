@@ -2,8 +2,11 @@ package rocks.ecox.dailyprogrammerchallenges.utility;
 
 import android.text.Html;
 
+import com.activeandroid.util.SQLiteUtils;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+
+import java.util.List;
 
 import okhttp3.OkHttpClient;
 import retrofit.Callback;
@@ -36,37 +39,47 @@ public class UpdateChallenges {
             public void success(Challenge challenge, Response response) {
                 for (Child c : challenge.getData().getChildren()) {
                     try {
-                        // Set challenge attributes
-                        Challenge ch = new Challenge();
+                        // Check if challenge already exists in DB
+                        List<Challenge> duplicateChallanges =
+                                SQLiteUtils.rawQuery(Challenge.class,
+                                        "SELECT * FROM Challenges WHERE post_id = ?",
+                                        new String[] {c.getData().getPostId() });
 
-                        ch.setPostId(c.getData().getPostId());
-                        ch.setPostTitle(Html.fromHtml(c.getData().getPostTitle()).toString());
-                        ch.setPostDescription(Html.fromHtml(c.getData().getPostDescription()).toString());
-                        ch.setPostAuthor(c.getData().getPostAuthor());
-                        ch.setPostUrl(c.getData().getPostUrl());
-                        ch.setPostUps(c.getData().getUps());
-                        ch.setPostUtc(c.getData().getPostUtc());
-                        ch.setNumberOfComments(c.getData().getNumberOfComments());
+                        if (duplicateChallanges.size() == 0) {
+                            // Set challenge attributes
+                            Challenge ch = new Challenge();
 
-                        String title = ch.getPostTitle();
-                        String id = ch.getPostId();
+                            ch.setPostId(c.getData().getPostId());
+                            ch.setPostTitle(Html.fromHtml(c.getData().getPostTitle()).toString());
+                            ch.setPostDescription(Html.fromHtml(c.getData().getPostDescription()).toString());
+                            ch.setPostAuthor(c.getData().getPostAuthor());
+                            ch.setPostUrl(c.getData().getPostUrl());
+                            ch.setPostUps(c.getData().getUps());
+                            ch.setPostUtc(c.getData().getPostUtc());
+                            ch.setNumberOfComments(c.getData().getNumberOfComments());
 
-                        // Set challenge number from title field
-                        ch.setChallengeNumber(DataParsing.getChallengeNumber(title));
+                            String title = ch.getPostTitle();
+                            String id = ch.getPostId();
 
-                        // Set difficulty from title field
-                        ch.setChallengeDifficulty(DataParsing.getChallengeDifficulty(title));
+                            // Set challenge number from title field
+                            ch.setChallengeNumber(DataParsing.getChallengeNumber(title));
 
-                        if (ch.getChallengeDifficulty().equals("Not a valid challenge")) {
-                            ch.setShowChallenge(false);
+                            // Set difficulty from title field
+                            ch.setChallengeDifficulty(DataParsing.getChallengeDifficulty(title));
+
+                            if (ch.getChallengeDifficulty().equals("Not a valid challenge")) {
+                                ch.setShowChallenge(false);
+                            } else {
+                                ch.setShowChallenge(true);
+                            }
+
+                            // Set cleanedPostTitle field
+                            ch.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
+                            ch.save();
+                            Timber.d("Done processing post id: %s", id);
                         } else {
-                            ch.setShowChallenge(true);
+                            Timber.d("Number of matching post id's for %s: %s", c.getData().getPostId(), duplicateChallanges.size());
                         }
-
-                        // Set cleanedPostTitle field
-                        ch.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
-                        ch.save();
-                        Timber.d("Done processing post id: %s", id);
                     } catch (NullPointerException e) {
                         Crashlytics.logException(e);
                         Timber.e("ERROR setting data to id %s. Exception: %s", id, e.toString());
