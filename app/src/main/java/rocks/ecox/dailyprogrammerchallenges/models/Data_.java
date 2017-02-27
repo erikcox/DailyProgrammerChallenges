@@ -16,6 +16,10 @@ public class Data_ {
     @Expose
     private String postDescription;
 
+    @SerializedName("selftext_html")
+    @Expose
+    private String postDescriptionHtml;
+
     @SerializedName("author")
     @Expose
     private String postAuthor;
@@ -32,7 +36,7 @@ public class Data_ {
     @Expose
     private Integer postUtc;
 
-    @SerializedName("num_coments")
+    @SerializedName("num_comments")
     @Expose
     private Integer numberOfComments;
 
@@ -46,6 +50,10 @@ public class Data_ {
 
     public String getPostDescription() {
         return postDescription;
+    }
+
+    public String getPostDescriptionHtml() {
+        return postDescriptionHtml;
     }
 
     public String getPostAuthor() {

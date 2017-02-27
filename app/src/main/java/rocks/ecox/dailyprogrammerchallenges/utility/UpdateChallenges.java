@@ -1,8 +1,16 @@
 package rocks.ecox.dailyprogrammerchallenges.utility;
 
+import android.os.Build;
 import android.text.Html;
-import android.util.Log;
 
+import com.activeandroid.util.SQLiteUtils;
+import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+
+import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
+import okhttp3.OkHttpClient;
 import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
@@ -10,8 +18,7 @@ import retrofit.client.Response;
 import rocks.ecox.dailyprogrammerchallenges.api.RedditApi;
 import rocks.ecox.dailyprogrammerchallenges.models.Challenge;
 import rocks.ecox.dailyprogrammerchallenges.models.Child;
-
-import static android.R.attr.id;
+import timber.log.Timber;
 
 public class UpdateChallenges {
 
@@ -19,46 +26,72 @@ public class UpdateChallenges {
         // Reddit API stuff
         String API = "https://www.reddit.com/";
         String subreddit = "dailyprogrammer";
+        new OkHttpClient.Builder()
+                .addNetworkInterceptor(new StethoInterceptor())
+                .build();
+
         RestAdapter restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
-        final RedditApi challenge = restAdapter.create(RedditApi.class);
+        final RedditApi redditData = restAdapter.create(RedditApi.class);
 
         // Get json data
-        challenge.getFeed(subreddit, new Callback<Challenge>() {
+        redditData.getFeed(subreddit, new Callback<Challenge>() {
             @Override
             public void success(Challenge challenge, Response response) {
                 for (Child c : challenge.getData().getChildren()) {
                     try {
-                        // Set challenge attributes
-                        // TODO: remove redundant gets, use variables (e.g. getTitle)
-                        challenge.setPostId(c.getData().getPostId());
-                        challenge.setPostTitle(Html.fromHtml(c.getData().getPostTitle()).toString());
-                        challenge.setPostDescription(Html.fromHtml(c.getData().getPostDescription()).toString());
-                        challenge.setPostAuthor(c.getData().getPostAuthor());
-                        challenge.setPostUrl(c.getData().getPostUrl());
-                        challenge.setPostUps(c.getData().getUps());
-                        challenge.setPostUtc(c.getData().getPostUtc());
-                        challenge.setNumberOfComments(c.getData().getNumberOfComments());
+                        // Check if challenge already exists in DB
+                        List<Challenge> duplicateChallanges =
+                                SQLiteUtils.rawQuery(Challenge.class,
+                                        "SELECT * FROM Challenges WHERE post_id = ?",
+                                        new String[] {c.getData().getPostId() });
 
-                        String title = challenge.getPostTitle();
-                        String id = challenge.getPostId();
+                        if (duplicateChallanges.size() == 0) {
+                            // Set challenge attributes
+                            Challenge ch = new Challenge();
 
-                        // Set challenge number from title field
-                        challenge.setChallengeNumber(DataParsing.getChallengeNumber(title));
+                            ch.setPostId(c.getData().getPostId());
+                            ch.setPostTitle(c.getData().getPostTitle());
+                            ch.setPostDescription(c.getData().getPostDescription());
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                ch.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml(), Html.FROM_HTML_MODE_COMPACT).toString());
+                            } else {
+                                ch.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml()).toString());
+                            }
+                            ch.setPostAuthor(c.getData().getPostAuthor());
+                            ch.setPostUrl(c.getData().getPostUrl());
+                            ch.setPostUps(c.getData().getUps());
+                            ch.setPostUtc(c.getData().getPostUtc());
+                            ch.setNumberOfComments(c.getData().getNumberOfComments());
 
-                        // Set difficulty from title field
-                        challenge.setChallengeDifficulty(DataParsing.getChallengeDifficulty(title));
+                            String title = ch.getPostTitle();
+                            String id = ch.getPostId();
 
-                        if (challenge.getChallengeDifficulty().equals("Not a valid challenge")) {
-                            challenge.setShowPost(false);
+                            // Set challenge number from title field
+                            ch.setChallengeNumber(DataParsing.getChallengeNumber(title));
+
+                            // Set difficulty from title field
+                            ch.setChallengeDifficulty(DataParsing.getChallengeDifficulty(title));
+
+                            // Set cleanedPostTitle field
+                            ch.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
+
+                            if (ch.getChallengeDifficulty().equals("Not a valid challenge")) {
+                                ch.setShowChallenge(false);
+                            } else {
+                                ch.setShowChallenge(true);
+                            }
+
+                            ch.save();
+                            Timber.d("Done processing post id: %s", id);
                         } else {
-                            challenge.setShowPost(true);
+                            Timber.d("Number of matching post id's for %s: %s", c.getData().getPostId(), duplicateChallanges.size());
                         }
-
-                        // Set cleanedPostTitle field
-                        challenge.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
-                        Log.d("DEBUG", "Done processing post id: " + id);
                     } catch (NullPointerException e) {
-                        Log.e("ERROR setting data", e.toString() + " Source id --> " + id);
+                        // Check if Crashlytics is running before logging exception
+                        if (Fabric.isInitialized()) {
+                            Crashlytics.logException(e);
+                        }
+                            e.printStackTrace();
                     }
                 }
 
@@ -66,7 +99,7 @@ public class UpdateChallenges {
 
             @Override
             public void failure(RetrofitError error) {
-                Log.d("ERROR", error.getMessage());
+                Timber.d("Retrofit error: %s", error.getMessage());
             }
         });
     }

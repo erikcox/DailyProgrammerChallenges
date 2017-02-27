@@ -1,0 +1,34 @@
+package rocks.ecox.dailyprogrammerchallenges;
+
+import com.crashlytics.android.Crashlytics;
+import com.facebook.stetho.Stetho;
+
+import io.fabric.sdk.android.Fabric;
+import rocks.ecox.dailyprogrammerchallenges.utility.ReleaseTree;
+import timber.log.Timber;
+
+public class DPCApplication extends com.activeandroid.app.Application {
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Stetho.initializeWithDefaults(this);
+
+        // Set up Timber for logging
+        if (BuildConfig.DEBUG) {
+            // Debug mode
+            Timber.plant(new Timber.DebugTree() {
+                // Add the line number to the tag
+                @Override
+                protected String createStackElementTag(StackTraceElement element) {
+                    return super.createStackElementTag(element) + ":" + element.getLineNumber();
+                }
+             });
+        } else {
+            // Release mode
+            Timber.plant(new ReleaseTree());
+            // Initialize crash reporting for release build
+            Fabric.with(this, new Crashlytics());
+        }
+    }
+}
