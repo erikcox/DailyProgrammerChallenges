@@ -56,9 +56,6 @@ freeline.py
 freeline/
 freeline_project_description.json
 
-<<<<<<< HEAD
 # Crashlytics
-=======
 # Fabric / Crashlytics
->>>>>>> dev
 fabric.properties
