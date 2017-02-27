@@ -1,9 +1,9 @@
 package rocks.ecox.dailyprogrammerchallenges.utility;
 
+import android.os.Build;
 import android.text.Html;
 
 import com.activeandroid.util.SQLiteUtils;
-import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.util.List;
@@ -51,7 +51,11 @@ public class UpdateChallenges {
 
                             ch.setPostId(c.getData().getPostId());
                             ch.setPostTitle(Html.fromHtml(c.getData().getPostTitle()).toString());
-                            ch.setPostDescription(Html.fromHtml(c.getData().getPostDescription()).toString());
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                ch.setPostDescription(Html.fromHtml(c.getData().getPostDescription(), Html.FROM_HTML_MODE_COMPACT).toString());
+                            } else {
+                                ch.setPostDescription(Html.fromHtml(c.getData().getPostDescription()).toString());
+                            }
                             ch.setPostAuthor(c.getData().getPostAuthor());
                             ch.setPostUrl(c.getData().getPostUrl());
                             ch.setPostUps(c.getData().getUps());
@@ -81,7 +85,8 @@ public class UpdateChallenges {
                             Timber.d("Number of matching post id's for %s: %s", c.getData().getPostId(), duplicateChallanges.size());
                         }
                     } catch (NullPointerException e) {
-                        Crashlytics.logException(e);
+                        // Need to initialize Crashlytics first
+//                        Crashlytics.logException(e);
                         Timber.e("ERROR setting data to id %s. Exception: %s", id, e.toString());
                     }
                 }
