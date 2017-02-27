@@ -12,7 +12,7 @@ public class Data_ {
     @Expose
     private String postTitle;
 
-    @SerializedName("selftext")
+    @SerializedName("selftext_html")
     @Expose
     private String postDescription;
 
