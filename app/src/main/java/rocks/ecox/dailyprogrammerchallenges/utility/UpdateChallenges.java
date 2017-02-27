@@ -72,6 +72,9 @@ public class UpdateChallenges {
                             // Set difficulty from title field
                             ch.setChallengeDifficulty(DataParsing.getChallengeDifficulty(title));
 
+                            // Set difficulty number flag for sorting
+                            ch.setChallengeDifficultyNumber(DataParsing.getChallengeDifficultyNumber(ch.getChallengeDifficulty()));
+
                             // Set cleanedPostTitle field
                             ch.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
 

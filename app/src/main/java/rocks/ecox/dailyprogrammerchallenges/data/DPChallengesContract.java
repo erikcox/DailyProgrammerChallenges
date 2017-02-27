@@ -24,6 +24,7 @@ public class DPChallengesContract {
         // "_ID" column in addition to the ones below
         public static final String COLUMN_POST_ID = "post_id";
         public static final String COLUMN_DIFFICULTY = "difficulty";
+        public static final String COLUMN_DIFFICULTY_NUM = "difficulty_num";
         public static final String COLUMN_CHALLENGE_NUM = "challenge_number";
         public static final String COLUMN_TITLE = "clean_title";
         public static final String COLUMN_DESCRIPTION = "description";

@@ -49,6 +49,24 @@ public class DataParsing {
         return challengeDifficulty;
     }
 
+    static int getChallengeDifficultyNumber(String difficulty) {
+        int difficultyNumber = 0;
+
+        if (difficulty.contains("Easy")) {
+            difficultyNumber = 1;
+        } else if (difficulty.contains("Intermediate")) {
+            difficultyNumber = 2;
+        } else if (difficulty.contains("Hard")) {
+            difficultyNumber = 3;
+        } else {
+            Timber.w("Can't find a difficulty number for: %s", difficulty);
+        }
+
+        Timber.d("Difficulty number for %s is: %s", difficulty, difficultyNumber);
+
+        return difficultyNumber;
+    }
+
     static String getCleanPostTitle(String title) {
         String cleanPostTitle = "";
         final String titlePattern = "([^\\]]+)$";

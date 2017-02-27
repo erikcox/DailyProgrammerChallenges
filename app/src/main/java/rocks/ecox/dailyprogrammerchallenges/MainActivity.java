@@ -144,9 +144,9 @@ public class MainActivity extends AppCompatActivity implements
                 try {
                     return getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
                             null,
+                            "show_challenge = 1",
                             null,
-                            null,
-                            DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY);
+                            DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " DESC");
 
                 } catch (Exception e) {
                     Timber.e("Failed to asynchronously load data.");

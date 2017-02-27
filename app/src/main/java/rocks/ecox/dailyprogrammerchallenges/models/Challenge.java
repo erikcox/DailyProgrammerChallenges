@@ -48,6 +48,9 @@ public class Challenge extends Model {
     @Column(name = "difficulty")
     private String challengeDifficulty;
 
+    @Column(name = "difficulty_num")
+    private int challengeDifficultyNumber;
+
     @Column(name = "ups")
     private Integer postUps;
 
@@ -61,7 +64,7 @@ public class Challenge extends Model {
         super();
     }
 
-    public Challenge(String postId, String postTitle, String cleanedPostTitle, String postDescription, String postDescriptionHtml, String postAuthor, int postUtc, String postUrl, int challengeNumber, String challengeDifficulty, int postUps, int numberOfComments, boolean showChallenge) {
+    public Challenge(String postId, String postTitle, String cleanedPostTitle, String postDescription, String postDescriptionHtml, String postAuthor, int postUtc, String postUrl, int challengeNumber, String challengeDifficulty, int challengeDifficultyNumber, int postUps, int numberOfComments, boolean showChallenge) {
         super();
         this.postId = postId;
         this.postTitle = postTitle;
@@ -73,6 +76,7 @@ public class Challenge extends Model {
         this.postUrl = postUrl;
         this.challengeNumber = challengeNumber;
         this.challengeDifficulty = challengeDifficulty;
+        this.challengeDifficultyNumber = challengeDifficultyNumber;
         this.postUps = postUps;
         this.numberOfComments = numberOfComments;
         this.showChallenge = showChallenge;
@@ -172,6 +176,14 @@ public class Challenge extends Model {
 
     public void setChallengeDifficulty(String challengeDifficulty) {
         this.challengeDifficulty = challengeDifficulty;
+    }
+
+    public int getChallengeDifficultyNumber() {
+        return challengeDifficultyNumber;
+    }
+
+    public void setChallengeDifficultyNumber(int challengeDifficultyNumber) {
+        this.challengeDifficultyNumber = challengeDifficultyNumber;
     }
 
     public Integer getPostUps() {
