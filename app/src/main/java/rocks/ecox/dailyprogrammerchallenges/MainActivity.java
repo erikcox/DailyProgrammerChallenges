@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -69,24 +70,7 @@ public class MainActivity extends AppCompatActivity implements
         // Get data from reddit and create Challenge objects
         UpdateChallenges.update();
 
-        // TODO: Bind the data to the view components here
-//        try {
-//            Timber.d("Title: %s", challenge.getCleanedPostTitle());
-//                    title.setText(challenge.getTitle());
-//                    sub.setText("/r/" + challenge.getSubreddit());
-//                    ups.setText("" + NumberFormat.getNumberInstance(Locale.getDefault()).format(challenge.getUps()));
-//        } catch (NullPointerException e) {
-//            Crashlytics.logException(e);
-//            Timber.e("ERROR setting UI on id: %s ", challenge.getPostId(), e.toString());
-//        }
-
-        // Populate RecyclerView with CursorAdapter
-//        SimpleCursorAdapter challengeAdapter = new SimpleCursorAdapter(getParent(),
-//                android.R.layout.simple_list_item_1, null,
-//                new String[] { "body" },
-//                new int[] { android.R.id.text1 },
-//                0);
-//        myRecyclerView.setAdapter(challengeAdapter);
+        getSupportLoaderManager().initLoader(CHALLENGE_LOADER_ID, null, this);
 
     }
 
@@ -165,7 +149,7 @@ public class MainActivity extends AppCompatActivity implements
                             DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY);
 
                 } catch (Exception e) {
-                    Timber.d("Failed to asynchronously load data.");
+                    Timber.e("Failed to asynchronously load data.");
                     e.printStackTrace();
                     return null;
                 }
@@ -214,7 +198,6 @@ public class MainActivity extends AppCompatActivity implements
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
         protected RecyclerView mRecyclerView;
-//        protected LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
 
         public PlaceholderFragment() {
         }
@@ -236,7 +219,6 @@ public class MainActivity extends AppCompatActivity implements
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-//            mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewChallenges);
             mRecyclerView.setLayoutManager(
                     new LinearLayoutManager(getActivity()));
@@ -250,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
+    public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);

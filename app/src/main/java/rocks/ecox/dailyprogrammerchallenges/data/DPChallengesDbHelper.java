@@ -34,6 +34,7 @@ public class DPChallengesDbHelper extends SQLiteOpenHelper {
                 ChallengeEntry.COLUMN_CHALLENGE_NUM + " INTEGER, " +
                 ChallengeEntry.COLUMN_TITLE + " TEXT, " +
                 ChallengeEntry.COLUMN_DESCRIPTION + " TEXT, " +
+                ChallengeEntry.COLUMN_DESCRIPTION_HTML + " TEXT, " +
                 ChallengeEntry.COLUMN_AUTHOR + " TEXT, " +
                 ChallengeEntry.COLUMN_COMMENTS_NUM + " INTEGER, " +
                 ChallengeEntry.COLUMN_UPVOTES_NUM + " INTEGER, " +

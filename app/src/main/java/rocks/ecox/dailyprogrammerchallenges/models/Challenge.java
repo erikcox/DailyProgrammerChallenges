@@ -30,6 +30,9 @@ public class Challenge extends Model {
     @Column(name = "description")
     private String postDescription;
 
+    @Column(name = "description_html")
+    private String postDescriptionHtml;
+
     @Column(name = "author")
     private String postAuthor;
 
@@ -58,12 +61,13 @@ public class Challenge extends Model {
         super();
     }
 
-    public Challenge(String postId, String postTitle, String cleanedPostTitle, String postDescription, String postAuthor, int postUtc, String postUrl, int challengeNumber, String challengeDifficulty, int postUps, int numberOfComments, boolean showChallenge) {
+    public Challenge(String postId, String postTitle, String cleanedPostTitle, String postDescription, String postDescriptionHtml, String postAuthor, int postUtc, String postUrl, int challengeNumber, String challengeDifficulty, int postUps, int numberOfComments, boolean showChallenge) {
         super();
         this.postId = postId;
         this.postTitle = postTitle;
         this.cleanedPostTitle = cleanedPostTitle;
         this.postDescription = postDescription;
+        this.postDescriptionHtml = postDescriptionHtml;
         this.postAuthor = postAuthor;
         this.postUtc = postUtc;
         this.postUrl = postUrl;
@@ -120,6 +124,14 @@ public class Challenge extends Model {
 
     public void setPostDescription(String postDescription) {
         this.postDescription = postDescription;
+    }
+
+    public String getPostDescriptionHtml() {
+        return postDescriptionHtml;
+    }
+
+    public void setPostDescriptionHtml(String postDescriptionHtml) {
+        this.postDescriptionHtml = postDescriptionHtml;
     }
 
     public String getPostAuthor() {

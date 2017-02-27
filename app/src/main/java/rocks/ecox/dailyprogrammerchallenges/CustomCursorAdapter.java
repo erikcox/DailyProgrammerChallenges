@@ -2,7 +2,10 @@ package rocks.ecox.dailyprogrammerchallenges;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,21 +48,34 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     @Override
     public void onBindViewHolder(ChallengeViewHolder holder, int position) {
 
-        // Indices for the _id, description, and priority columns
+        // Indices for the card view columns
         int idIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry._ID);
-        int descriptionIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DESCRIPTION);
-        int priorityIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY);
+        int titleIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_TITLE);
+        int descriptionIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DESCRIPTION_HTML);
+        int numberIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM);
+        int difficultyIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY);
 
         mCursor.moveToPosition(position); // get to the right location in the cursor
 
         // Determine the values of the wanted data
         final int id = mCursor.getInt(idIndex);
+        String title = mCursor.getString(titleIndex);
         String description = mCursor.getString(descriptionIndex);
-        int priority = mCursor.getInt(priorityIndex);
+        String num = mCursor.getString(numberIndex);
+        String difficulty = mCursor.getString(difficultyIndex);
 
         //Set values
         holder.itemView.setTag(id);
-        holder.challengeDescriptionView.setText(description);
+        holder.challengeTitleView.setText(title);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            holder.challengeDescriptionView.setText(Html.fromHtml(description.replaceFirst("Description", ""), Html.FROM_HTML_MODE_COMPACT));
+        } else {
+            holder.challengeDescriptionView.setText(Html.fromHtml(description.replaceFirst("Description", "")));
+        }
+
+        holder.challengeNumberView.setText("#" + num);
+        holder.challengeDifficultyView.setText(difficulty);
 
     }
 
@@ -98,9 +114,12 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
     // Inner class for creating ViewHolders
     class ChallengeViewHolder extends RecyclerView.ViewHolder {
 
-        // Class variables for the challenge description and priority TextViews
+        // Class variables for the challenge description TextView
+        CardView cv;
+        TextView challengeTitleView;
         TextView challengeDescriptionView;
-        TextView priorityView;
+        TextView challengeNumberView;
+        TextView challengeDifficultyView;
 
         /**
          * Constructor for the ChallengeViewHolder
@@ -109,9 +128,11 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
          */
         public ChallengeViewHolder(View itemView) {
             super(itemView);
-
+            cv = (CardView)itemView.findViewById(R.id.card_view);
+            challengeTitleView = (TextView) itemView.findViewById(R.id.challengeTitle);
             challengeDescriptionView = (TextView) itemView.findViewById(R.id.challengeDescription);
-            priorityView = (TextView) itemView.findViewById(R.id.priorityTextView);
+            challengeNumberView = (TextView) itemView.findViewById(R.id.challengeNumber);
+            challengeDifficultyView = (TextView) itemView.findViewById(R.id.challengeDifficulty);
         }
     }
 }

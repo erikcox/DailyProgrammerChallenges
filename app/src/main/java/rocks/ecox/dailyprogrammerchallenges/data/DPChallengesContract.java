@@ -27,6 +27,7 @@ public class DPChallengesContract {
         public static final String COLUMN_CHALLENGE_NUM = "challenge_number";
         public static final String COLUMN_TITLE = "clean_title";
         public static final String COLUMN_DESCRIPTION = "description";
+        public static final String COLUMN_DESCRIPTION_HTML = "description_html";
         public static final String COLUMN_AUTHOR = "author";
         public static final String COLUMN_COMMENTS_NUM = "num_comments";
         public static final String COLUMN_UPVOTES_NUM = "ups";

@@ -4,10 +4,12 @@ import android.os.Build;
 import android.text.Html;
 
 import com.activeandroid.util.SQLiteUtils;
+import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import java.util.List;
 
+import io.fabric.sdk.android.Fabric;
 import okhttp3.OkHttpClient;
 import retrofit.Callback;
 import retrofit.RestAdapter;
@@ -17,8 +19,6 @@ import rocks.ecox.dailyprogrammerchallenges.api.RedditApi;
 import rocks.ecox.dailyprogrammerchallenges.models.Challenge;
 import rocks.ecox.dailyprogrammerchallenges.models.Child;
 import timber.log.Timber;
-
-import static android.R.attr.id;
 
 public class UpdateChallenges {
 
@@ -50,11 +50,12 @@ public class UpdateChallenges {
                             Challenge ch = new Challenge();
 
                             ch.setPostId(c.getData().getPostId());
-                            ch.setPostTitle(Html.fromHtml(c.getData().getPostTitle()).toString());
+                            ch.setPostTitle(c.getData().getPostTitle());
+                            ch.setPostDescription(c.getData().getPostDescription());
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                ch.setPostDescription(Html.fromHtml(c.getData().getPostDescription(), Html.FROM_HTML_MODE_COMPACT).toString());
+                                ch.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml(), Html.FROM_HTML_MODE_COMPACT).toString());
                             } else {
-                                ch.setPostDescription(Html.fromHtml(c.getData().getPostDescription()).toString());
+                                ch.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml()).toString());
                             }
                             ch.setPostAuthor(c.getData().getPostAuthor());
                             ch.setPostUrl(c.getData().getPostUrl());
@@ -71,23 +72,26 @@ public class UpdateChallenges {
                             // Set difficulty from title field
                             ch.setChallengeDifficulty(DataParsing.getChallengeDifficulty(title));
 
+                            // Set cleanedPostTitle field
+                            ch.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
+
                             if (ch.getChallengeDifficulty().equals("Not a valid challenge")) {
                                 ch.setShowChallenge(false);
                             } else {
                                 ch.setShowChallenge(true);
                             }
 
-                            // Set cleanedPostTitle field
-                            ch.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
                             ch.save();
                             Timber.d("Done processing post id: %s", id);
                         } else {
                             Timber.d("Number of matching post id's for %s: %s", c.getData().getPostId(), duplicateChallanges.size());
                         }
                     } catch (NullPointerException e) {
-                        // Need to initialize Crashlytics first
-//                        Crashlytics.logException(e);
-                        Timber.e("ERROR setting data to id %s. Exception: %s", id, e.toString());
+                        // Check if Crashlytics is running before logging exception
+                        if (Fabric.isInitialized()) {
+                            Crashlytics.logException(e);
+                        }
+                            e.printStackTrace();
                     }
                 }
 
