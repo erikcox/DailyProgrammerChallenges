@@ -25,11 +25,16 @@ import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 import rocks.ecox.dailyprogrammerchallenges.utility.UpdateChallenges;
 import timber.log.Timber;
 
+import static rocks.ecox.dailyprogrammerchallenges.utility.DataParsing.storePosition;
+
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
 
     // Constant for referring to a unique loader
-    private static final int CHALLENGE_LOADER_ID = 0;
+    private static final int CHALLENGE_LOADER_ALL = 0;
+    private static final int CHALLENGE_LOADER_EASY = 1;
+    private static final int CHALLENGE_LOADER_INTERMEDIATE = 2;
+    private static final int CHALLENGE_LOADER_HARD = 3;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -69,9 +74,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Get data from reddit and create Challenge objects
         UpdateChallenges.update();
-
-        getSupportLoaderManager().initLoader(CHALLENGE_LOADER_ID, null, this);
-
+        startLoader(0);
     }
 
     /**
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onResume();
 
         // Re-queries for all challenges
-        getSupportLoaderManager().restartLoader(CHALLENGE_LOADER_ID, null, this);
+        restartLoader(0);
     }
 
     @Override
@@ -115,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements
      * Implements the required callbacks to take care of loading data at all stages of loading.
      */
     @Override
-    public Loader<Cursor> onCreateLoader(int id, final Bundle loaderArgs) {
+    public Loader<Cursor> onCreateLoader(final int id, final Bundle loaderArgs) {
 
         return new AsyncTaskLoader<Cursor>(this) {
 
@@ -137,17 +140,23 @@ public class MainActivity extends AppCompatActivity implements
             // loadInBackground() performs asynchronous loading of data
             @Override
             public Cursor loadInBackground() {
-                // Will implement to load data
+                // Query and load challenge data
+                String sortQuery;
 
-                // Query and load all challenge data in the background; sort by priority
+                if (id >= 1 && id <=3) {
+                    sortQuery = " AND difficulty_num = " + id;
+                } else {
+                    sortQuery = "";
+                }
+                Timber.d("id: %s QUERY: %s", id, sortQuery);
 
                 try {
                     return getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
                             null,
-                            "show_challenge = 1",
+                            "show_challenge = 1" + sortQuery,
                             null,
-                            DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " DESC");
-
+                            DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " DESC, "
+                                    + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");
                 } catch (Exception e) {
                     Timber.e("Failed to asynchronously load data.");
                     e.printStackTrace();
@@ -188,10 +197,31 @@ public class MainActivity extends AppCompatActivity implements
         mAdapter.swapCursor(null);
     }
 
+    public void startLoader(int page) {
+        getSupportLoaderManager().initLoader(getLoaderId(page), null, this);
+    }
+
+    public void restartLoader(int page) {
+        getSupportLoaderManager().restartLoader(getLoaderId(page), null, this);
+    }
+
+    public int getLoaderId(int page) {
+        switch (page) {
+            case 1:
+                return CHALLENGE_LOADER_EASY;
+            case 2:
+                return CHALLENGE_LOADER_INTERMEDIATE;
+            case 3:
+                return CHALLENGE_LOADER_HARD;
+            default:
+                return CHALLENGE_LOADER_ALL;
+        }
+    }
+
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class PlaceholderFragment extends Fragment {
+    public static class ChallengeFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -199,15 +229,15 @@ public class MainActivity extends AppCompatActivity implements
         private static final String ARG_SECTION_NUMBER = "section_number";
         protected RecyclerView mRecyclerView;
 
-        public PlaceholderFragment() {
+        public ChallengeFragment() {
         }
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
+        public static ChallengeFragment newInstance(int sectionNumber) {
+            ChallengeFragment fragment = new ChallengeFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
             fragment.setArguments(args);
@@ -240,9 +270,8 @@ public class MainActivity extends AppCompatActivity implements
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            // getItem is called to instantiate the fragment for the given page
+            return ChallengeFragment.newInstance(position + 1);
         }
 
         @Override
@@ -253,6 +282,8 @@ public class MainActivity extends AppCompatActivity implements
 
         @Override
         public CharSequence getPageTitle(int position) {
+            storePosition(position, getApplicationContext());
+
             switch (position) {
                 case 0:
                     return "ALL";

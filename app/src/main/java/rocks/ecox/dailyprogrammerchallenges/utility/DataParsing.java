@@ -1,5 +1,8 @@
 package rocks.ecox.dailyprogrammerchallenges.utility;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.crashlytics.android.Crashlytics;
 
 import java.util.regex.Matcher;
@@ -81,6 +84,13 @@ public class DataParsing {
         }
 
         return cleanPostTitle;
+    }
+
+    public static void storePosition(int position, Context c) {
+        SharedPreferences currentPage = c.getSharedPreferences("PageNum", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = currentPage.edit();
+        editor.putString("PageNum", String.valueOf(position));
+        editor.apply();
     }
 
 }
