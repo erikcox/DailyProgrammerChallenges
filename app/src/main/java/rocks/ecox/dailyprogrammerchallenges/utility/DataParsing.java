@@ -86,11 +86,16 @@ public class DataParsing {
         return cleanPostTitle;
     }
 
-    public static void storePosition(int position, Context c) {
+    public static void setPageNum(int position, Context c) {
         SharedPreferences currentPage = c.getSharedPreferences("PageNum", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = currentPage.edit();
         editor.putString("PageNum", String.valueOf(position));
         editor.apply();
+    }
+
+    public static String getPageNum(Context c) {
+        SharedPreferences currentPage = c.getSharedPreferences("PageNum", Context.MODE_PRIVATE);
+        return currentPage.getString("PageNum", "0");
     }
 
 }

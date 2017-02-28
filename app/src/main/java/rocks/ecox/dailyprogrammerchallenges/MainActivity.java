@@ -25,7 +25,7 @@ import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 import rocks.ecox.dailyprogrammerchallenges.utility.UpdateChallenges;
 import timber.log.Timber;
 
-import static rocks.ecox.dailyprogrammerchallenges.utility.DataParsing.storePosition;
+import static rocks.ecox.dailyprogrammerchallenges.utility.DataParsing.setPageNum;
 
 public class MainActivity extends AppCompatActivity implements
         LoaderManager.LoaderCallbacks<Cursor> {
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Get data from reddit and create Challenge objects
         UpdateChallenges.update();
-        startLoader(0);
+//        startLoader(0);
     }
 
     /**
@@ -143,12 +143,11 @@ public class MainActivity extends AppCompatActivity implements
                 // Query and load challenge data
                 String sortQuery;
 
-                if (id >= 1 && id <=3) {
+                if (id >= 1 && id <= 3) {
                     sortQuery = " AND difficulty_num = " + id;
                 } else {
                     sortQuery = "";
                 }
-                Timber.d("id: %s QUERY: %s", id, sortQuery);
 
                 try {
                     return getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
@@ -271,6 +270,8 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page
+            Timber.d("Position: %s Title: %s", position, getPageTitle(position));
+            startLoader(position - 1);
             return ChallengeFragment.newInstance(position + 1);
         }
 
@@ -282,7 +283,7 @@ public class MainActivity extends AppCompatActivity implements
 
         @Override
         public CharSequence getPageTitle(int position) {
-            storePosition(position, getApplicationContext());
+            setPageNum(position, getApplicationContext());
 
             switch (position) {
                 case 0:
