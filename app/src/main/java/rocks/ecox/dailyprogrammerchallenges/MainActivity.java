@@ -29,7 +29,7 @@ import static rocks.ecox.dailyprogrammerchallenges.utility.DataParsing.setPageNu
 
 public class MainActivity extends AppCompatActivity {
 
-    // Constant for referring to a unique loader
+    // Constants for referring to a unique loader
     private static final int CHALLENGE_LOADER_ALL = 0;
     private static final int CHALLENGE_LOADER_EASY = 1;
     private static final int CHALLENGE_LOADER_INTERMEDIATE = 2;
