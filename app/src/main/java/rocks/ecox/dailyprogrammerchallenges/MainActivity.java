@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    public class SectionsPagerAdapter extends FragmentStatePagerAdapter implements
+    private class SectionsPagerAdapter extends FragmentStatePagerAdapter implements
             LoaderManager.LoaderCallbacks<Cursor> {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
             // getItem is called to instantiate the fragment for the given page
             Timber.d("Position: %s Title: %s", position, getPageTitle(position));
             startLoader(position - 1);
+            // TODO: put this in onResume: restartLoader(0);
             return ChallengeFragment.newInstance(position + 1);
         }
 
@@ -274,15 +275,15 @@ public class MainActivity extends AppCompatActivity {
             mAdapter.swapCursor(null);
         }
 
-        public void startLoader(int page) {
+        void startLoader(int page) {
             getSupportLoaderManager().initLoader(getLoaderId(page), null, this);
         }
 
-        public void restartLoader(int page) {
+        void restartLoader(int page) {
             getSupportLoaderManager().restartLoader(getLoaderId(page), null, this);
         }
 
-        public int getLoaderId(int page) {
+        int getLoaderId(int page) {
             switch (page) {
                 case 1:
                     return CHALLENGE_LOADER_EASY;
