@@ -1,5 +1,6 @@
 package rocks.ecox.dailyprogrammerchallenges;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -50,15 +51,18 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    static CustomCursorAdapter mAdapter;
+    // a static variable to get a reference of our application context
+    public static Context contextOfApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        contextOfApplication = getApplicationContext();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -69,11 +73,9 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-        mAdapter = new CustomCursorAdapter(getApplicationContext());
 
         // Get data from reddit and create Challenge objects
         UpdateChallenges.update();
-//        startLoader(0);
     }
 
     /**
@@ -110,12 +112,14 @@ public class MainActivity extends AppCompatActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class ChallengeFragment extends Fragment {
+    public static class ChallengeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+        // LoaderManager.LoaderCallbacks<Object>
         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        CustomCursorAdapter mAdapter;
         protected RecyclerView mRecyclerView;
 
         public ChallengeFragment() {
@@ -138,21 +142,90 @@ public class MainActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+            mAdapter = new CustomCursorAdapter(getContext());
             mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewChallenges);
             mRecyclerView.setLayoutManager(
                     new LinearLayoutManager(getActivity()));
             mRecyclerView.setAdapter(mAdapter);
-
+            getLoaderManager().initLoader(0, null, this);
             return rootView;
         }
+
+        @Override
+        public Loader<Cursor> onCreateLoader(final int id, final Bundle loaderArgs) {
+
+            return new AsyncTaskLoader<Cursor>(getContext()) {
+
+                // Initialize a Cursor, this will hold all the challenge data
+                Cursor mChallengeData = null;
+
+                // onStartLoading() is called when a loader first starts loading data
+                @Override
+                protected void onStartLoading() {
+                    if (mChallengeData != null) {
+                        // Delivers any previously loaded data immediately
+                        deliverResult(mChallengeData);
+                    } else {
+                        // Force a new load
+                        forceLoad();
+                    }
+                }
+
+                // loadInBackground() performs asynchronous loading of data
+                @Override
+                public Cursor loadInBackground() {
+                    // Query and load challenge data
+                    String sortQuery;
+                    Context applicationContext = MainActivity.getContextOfApplication();
+
+                    if (id >= 1 && id <= 3) {
+                        sortQuery = " AND difficulty_num = " + id;
+                    } else {
+                        sortQuery = "";
+                    }
+
+                    try {
+                        return applicationContext.getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
+                                null,
+                                "show_challenge = 1" + sortQuery,
+                                null,
+                                DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " DESC, "
+                                        + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");
+                    } catch (Exception e) {
+                        Timber.e("Failed to asynchronously load data.");
+                        e.printStackTrace();
+                        return null;
+                    }
+                }
+
+                // deliverResult sends the result of the load, a Cursor, to the registered listener
+                public void deliverResult(Cursor data) {
+                    mChallengeData = data;
+                    super.deliverResult(data);
+                }
+            };
+
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            // Cursor Object
+            mAdapter.swapCursor(data);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
+            // Loader<Object> loader
+            mAdapter.swapCursor(null);
+        }
+
     }
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    private class SectionsPagerAdapter extends FragmentStatePagerAdapter implements
-            LoaderManager.LoaderCallbacks<Cursor> {
+    private class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -161,9 +234,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page
-            Timber.d("Position: %s Title: %s", position, getPageTitle(position));
-            startLoader(position - 1);
-            // TODO: put this in onResume: restartLoader(0);
             return ChallengeFragment.newInstance(position + 1);
         }
 
@@ -190,110 +260,10 @@ public class MainActivity extends AppCompatActivity {
             return null;
         }
 
-        /**
-         * Instantiates and returns a new AsyncTaskLoader with the given ID.
-         * This loader will return challenge data as a Cursor or null if an error occurs.
-         *
-         * Implements the required callbacks to take care of loading data at all stages of loading.
-         */
-        @Override
-        public Loader<Cursor> onCreateLoader(final int id, final Bundle loaderArgs) {
+    }
 
-            return new AsyncTaskLoader<Cursor>(getApplicationContext()) {
-
-                // Initialize a Cursor, this will hold all the challenge data
-                Cursor mChallengeData = null;
-
-                // onStartLoading() is called when a loader first starts loading data
-                @Override
-                protected void onStartLoading() {
-                    if (mChallengeData != null) {
-                        // Delivers any previously loaded data immediately
-                        deliverResult(mChallengeData);
-                    } else {
-                        // Force a new load
-                        forceLoad();
-                    }
-                }
-
-                // loadInBackground() performs asynchronous loading of data
-                @Override
-                public Cursor loadInBackground() {
-                    // Query and load challenge data
-                    String sortQuery;
-
-                    if (id >= 1 && id <= 3) {
-                        sortQuery = " AND difficulty_num = " + id;
-                    } else {
-                        sortQuery = "";
-                    }
-
-                    try {
-                        return getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
-                                null,
-                                "show_challenge = 1" + sortQuery,
-                                null,
-                                DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " DESC, "
-                                        + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");
-                    } catch (Exception e) {
-                        Timber.e("Failed to asynchronously load data.");
-                        e.printStackTrace();
-                        return null;
-                    }
-                }
-
-                // deliverResult sends the result of the load, a Cursor, to the registered listener
-                public void deliverResult(Cursor data) {
-                    mChallengeData = data;
-                    super.deliverResult(data);
-                }
-            };
-
-        }
-
-        /**
-         * Called when a previously created loader has finished its load.
-         *
-         * @param loader The Loader that has finished.
-         * @param data The data generated by the Loader.
-         */
-        @Override
-        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-            // Update the data that the adapter uses to create ViewHolders
-            mAdapter.swapCursor(data);
-        }
-
-        /**
-         * Called when a previously created loader is being reset, and thus
-         * making its data unavailable.
-         * onLoaderReset removes any references this activity had to the loader's data.
-         *
-         * @param loader The Loader that is being reset.
-         */
-        @Override
-        public void onLoaderReset(Loader<Cursor> loader) {
-            mAdapter.swapCursor(null);
-        }
-
-        void startLoader(int page) {
-            getSupportLoaderManager().initLoader(getLoaderId(page), null, this);
-        }
-
-        void restartLoader(int page) {
-            getSupportLoaderManager().restartLoader(getLoaderId(page), null, this);
-        }
-
-        int getLoaderId(int page) {
-            switch (page) {
-                case 1:
-                    return CHALLENGE_LOADER_EASY;
-                case 2:
-                    return CHALLENGE_LOADER_INTERMEDIATE;
-                case 3:
-                    return CHALLENGE_LOADER_HARD;
-                default:
-                    return CHALLENGE_LOADER_ALL;
-            }
-        }
+    public static Context getContextOfApplication()
+    {
+        return contextOfApplication;
     }
 }
