@@ -169,12 +169,6 @@ public class MainActivity extends AppCompatActivity {
             return rootView;
         }
 
-//        @Override
-//        public void onResume() {
-//            getLoaderManager().restartLoader(position, null, this);
-//            super.onResume();
-//        }
-
         @Override
         public Loader<Cursor> onCreateLoader(final int id, final Bundle loaderArgs) {
 
