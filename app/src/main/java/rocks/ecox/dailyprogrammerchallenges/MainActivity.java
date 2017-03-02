@@ -30,11 +30,7 @@ import static rocks.ecox.dailyprogrammerchallenges.utility.DataParsing.setPageNu
 
 public class MainActivity extends AppCompatActivity {
 
-    // Constants for referring to a unique loader
-    private static final int CHALLENGE_LOADER_ALL = 0;
-    private static final int CHALLENGE_LOADER_EASY = 1;
-    private static final int CHALLENGE_LOADER_INTERMEDIATE = 2;
-    private static final int CHALLENGE_LOADER_HARD = 3;
+    static int tabPosition;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -51,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private ViewPager mViewPager;
 
-    // a static variable to get a reference of our application context
+    // A static variable to get a reference of the application Context
     public static Context contextOfApplication;
 
     @Override
@@ -73,6 +69,22 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        // Listener to determine the currently tab in view
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                tabPosition = tab.getPosition();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
 
         // Get data from reddit and create Challenge objects
         UpdateChallenges.update();
@@ -119,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
+        private static final String ARG_TAB_POSITION = "tab_position";
         CustomCursorAdapter mAdapter;
         protected RecyclerView mRecyclerView;
 
@@ -133,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
             ChallengeFragment fragment = new ChallengeFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putInt(ARG_TAB_POSITION, MainActivity.getTabPosition());
             fragment.setArguments(args);
             return fragment;
         }
@@ -142,14 +156,24 @@ public class MainActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+            Bundle bundle = getArguments();
+            int position = bundle.getInt("tab_position");
+            Timber.d("Position: %s", position);
+
             mAdapter = new CustomCursorAdapter(getContext());
             mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewChallenges);
             mRecyclerView.setLayoutManager(
                     new LinearLayoutManager(getActivity()));
             mRecyclerView.setAdapter(mAdapter);
-            getLoaderManager().initLoader(0, null, this);
+            getLoaderManager().initLoader(position, null, this);
             return rootView;
         }
+
+//        @Override
+//        public void onResume() {
+//            getLoaderManager().restartLoader(position, null, this);
+//            super.onResume();
+//        }
 
         @Override
         public Loader<Cursor> onCreateLoader(final int id, final Bundle loaderArgs) {
@@ -185,12 +209,13 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     try {
-                        return applicationContext.getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
+                        final Cursor query = applicationContext.getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
                                 null,
                                 "show_challenge = 1" + sortQuery,
                                 null,
                                 DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " DESC, "
                                         + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");
+                        return query;
                     } catch (Exception e) {
                         Timber.e("Failed to asynchronously load data.");
                         e.printStackTrace();
@@ -266,4 +291,9 @@ public class MainActivity extends AppCompatActivity {
     {
         return contextOfApplication;
     }
+
+    public static int getTabPosition() {
+        return tabPosition;
+    }
+
 }
