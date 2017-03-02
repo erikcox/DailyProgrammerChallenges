@@ -30,8 +30,6 @@ import static rocks.ecox.dailyprogrammerchallenges.utility.DataParsing.setPageNu
 
 public class MainActivity extends AppCompatActivity {
 
-    static int tabPosition;
-
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -69,22 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-        // Listener to determine the currently tab in view
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                tabPosition = tab.getPosition();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-            }
-        });
 
         // Get data from reddit and create Challenge objects
         UpdateChallenges.update();
@@ -131,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-        private static final String ARG_TAB_POSITION = "tab_position";
         CustomCursorAdapter mAdapter;
         protected RecyclerView mRecyclerView;
 
@@ -146,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
             ChallengeFragment fragment = new ChallengeFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            args.putInt(ARG_TAB_POSITION, MainActivity.getTabPosition());
             fragment.setArguments(args);
             return fragment;
         }
@@ -157,15 +137,14 @@ public class MainActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             Bundle bundle = getArguments();
-            int position = bundle.getInt("tab_position");
-            Timber.d("Position: %s", position);
+            int tabPosition = bundle.getInt(ARG_SECTION_NUMBER) - 1;
 
             mAdapter = new CustomCursorAdapter(getContext());
             mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewChallenges);
             mRecyclerView.setLayoutManager(
                     new LinearLayoutManager(getActivity()));
             mRecyclerView.setAdapter(mAdapter);
-            getLoaderManager().initLoader(position, null, this);
+            getLoaderManager().initLoader(tabPosition, null, this);
             return rootView;
         }
 
@@ -252,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page
+            // getItem is called to instantiate the fragment for the given page\
             return ChallengeFragment.newInstance(position + 1);
         }
 
@@ -285,9 +264,4 @@ public class MainActivity extends AppCompatActivity {
     {
         return contextOfApplication;
     }
-
-    public static int getTabPosition() {
-        return tabPosition;
-    }
-
 }
