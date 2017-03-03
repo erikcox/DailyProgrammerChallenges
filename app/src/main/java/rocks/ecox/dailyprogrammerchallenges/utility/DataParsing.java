@@ -25,8 +25,6 @@ public class DataParsing {
                 Crashlytics.logException(e);
                 Timber.e("%s threw the exception: %s", cnm.group().substring(1), e);
             }
-
-            Timber.d("Cleaned challenge number: %s", challengeNumber);
         } else {
             Timber.w("Couldn't find challenge number in: %s.", title);
         }
@@ -47,8 +45,6 @@ public class DataParsing {
             Timber.w("Can't find a difficulty in: %s", lowerTitle);
         }
 
-        Timber.d("Difficulty: %s", challengeDifficulty);
-
         return challengeDifficulty;
     }
 
@@ -65,8 +61,6 @@ public class DataParsing {
             Timber.w("Can't find a difficulty number for: %s", difficulty);
         }
 
-        Timber.d("Difficulty number for %s is: %s", difficulty, difficultyNumber);
-
         return difficultyNumber;
     }
 
@@ -78,7 +72,6 @@ public class DataParsing {
 
         if (tm.find()) {
             cleanPostTitle = tm.group().substring(1);
-            Timber.d("Cleaned Title: %s", cleanPostTitle);
         } else {
             Timber.w("Couldn't clean post title: %s", title);
         }

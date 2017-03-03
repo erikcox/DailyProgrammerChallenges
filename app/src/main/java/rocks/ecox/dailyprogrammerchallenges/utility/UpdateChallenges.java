@@ -95,9 +95,6 @@ public class UpdateChallenges {
                             }
 
                             ch.save();
-                            Timber.d("Done processing post id: %s", id);
-                        } else {
-                            Timber.d("Number of matching post id's for %s: %s", c.getData().getPostId(), duplicateChallanges.size());
                         }
                     } catch (NullPointerException e) {
                         // Check if Crashlytics is running before logging exception
