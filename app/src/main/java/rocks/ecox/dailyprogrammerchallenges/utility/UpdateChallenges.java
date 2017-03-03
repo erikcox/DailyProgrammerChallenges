@@ -6,7 +6,9 @@ import android.text.Html;
 import com.activeandroid.util.SQLiteUtils;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.google.gson.GsonBuilder;
 
+import java.lang.reflect.Modifier;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
@@ -15,6 +17,7 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.converter.GsonConverter;
 import rocks.ecox.dailyprogrammerchallenges.api.RedditApi;
 import rocks.ecox.dailyprogrammerchallenges.models.Challenge;
 import rocks.ecox.dailyprogrammerchallenges.models.Child;
@@ -30,7 +33,14 @@ public class UpdateChallenges {
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
 
-        RestAdapter restAdapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API).build();
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setConverter(new GsonConverter(new GsonBuilder()
+                        .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
+                        .serializeNulls()
+                        .create()))
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setEndpoint(API)
+                .build();
         final RedditApi redditData = restAdapter.create(RedditApi.class);
 
         // Get json data
