@@ -68,10 +68,12 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         holder.itemView.setTag(id);
         holder.challengeTitleView.setText(title);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            holder.challengeDescriptionView.setText(Html.fromHtml(description.replaceFirst("Description", ""), Html.FROM_HTML_MODE_COMPACT));
-        } else {
-            holder.challengeDescriptionView.setText(Html.fromHtml(description.replaceFirst("Description", "")));
+        if(!description.isEmpty()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                holder.challengeDescriptionView.setText(Html.fromHtml(description.replaceFirst("Description", ""), Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                holder.challengeDescriptionView.setText(Html.fromHtml(description.replaceFirst("Description", "")));
+            }
         }
 
         holder.challengeNumberView.setText("#" + num);

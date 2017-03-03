@@ -62,11 +62,15 @@ public class UpdateChallenges {
                             ch.setPostId(c.getData().getPostId());
                             ch.setPostTitle(c.getData().getPostTitle());
                             ch.setPostDescription(c.getData().getPostDescription());
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                ch.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml(), Html.FROM_HTML_MODE_COMPACT).toString());
-                            } else {
-                                ch.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml()).toString());
+
+                            if(c.getData().getPostDescriptionHtml() != null) {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    ch.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml(), Html.FROM_HTML_MODE_COMPACT).toString());
+                                } else {
+                                    ch.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml()).toString());
+                                }
                             }
+
                             ch.setPostAuthor(c.getData().getPostAuthor());
                             ch.setPostUrl(c.getData().getPostUrl());
                             ch.setPostUps(c.getData().getUps());

@@ -3,7 +3,6 @@ package rocks.ecox.dailyprogrammerchallenges;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Debug;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -22,7 +21,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 import rocks.ecox.dailyprogrammerchallenges.utility.UpdateChallenges;
@@ -81,14 +79,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (BuildConfig.DEBUG) { // Don't even consider it otherwise
-            if (Debug.isDebuggerConnected()) {
-                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            } else {
-                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-            }
-        }
     }
 
     @Override
