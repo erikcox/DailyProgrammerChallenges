@@ -59,3 +59,5 @@ freeline_project_description.json
 # Fabric / Crashlytics
 fabric.properties
 
+# Full resolution icon image
+app/src/main/res/ic_launcher_full_res.svg
