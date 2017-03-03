@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         contextOfApplication = getApplicationContext();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // Add app icon to toolbar
+        toolbar.setLogo(R.mipmap.ic_launcher);
         setSupportActionBar(toolbar);
 
         // Create the adapter that will return a fragment for each of the three

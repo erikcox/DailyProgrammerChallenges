@@ -61,3 +61,5 @@ fabric.properties
 
 # Full resolution icon image
 app/src/main/res/ic_launcher_full_res.svg
+app/src/main/res/ic_launcher_full_res_dark.svg
+/app/src/main/res/values/colors_cyan_yellow.xml
