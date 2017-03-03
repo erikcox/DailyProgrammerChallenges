@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
+import timber.log.Timber;
 
 public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursorAdapter.ChallengeViewHolder> {
 
@@ -40,8 +41,13 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int position = cvh.getAdapterPosition();
+                int idIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry._ID);
+                mCursor.moveToPosition(position);
+                final int dbId = mCursor.getInt(idIndex);
 
                 Intent intent = new Intent(MainActivity.contextOfApplication, DetailActivity.class);
+                intent.putExtra("EXTRA_DBID", dbId);
                 mContext.startActivity(intent);
             }
         });
