@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
-    <color name="Easy">#6ab53f</color>
-    <color name="Intermediate">#f1b102</color>
-    <color name="Hard">#f70206</color>
+    <!--App icon blue: #80c8cf, closest to cyan 200 (#80deea) and 300 (#4dd0e1)-->
+    <color name="colorPrimary">#80deea</color>
+    <!--cyan 700 (006064)-->
+    <color name="colorPrimaryDark">#0097A7</color>
+    <!--App icon yellow: #daddbe, closest to lime 100 (f0f4c3)-->
+    <color name="colorAccent">#FBC02D</color>
 </resources>
