@@ -112,7 +112,7 @@ public class UpdateChallenges {
 
             @Override
             public void failure(RetrofitError error) {
-                Timber.d("Retrofit error: %s", error.getMessage());
+                Timber.e("Retrofit error: %s", error.getMessage());
             }
         });
     }
