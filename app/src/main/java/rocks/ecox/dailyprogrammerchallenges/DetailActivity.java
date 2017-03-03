@@ -15,7 +15,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +27,7 @@ import timber.log.Timber;
 
 import static rocks.ecox.dailyprogrammerchallenges.utility.DataParsing.setPageNum;
 
-public class MainActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -53,11 +52,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         contextOfApplication = getApplicationContext();
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        // Add app icon to toolbar
-        toolbar.setLogo(R.mipmap.ic_launcher);
-        setSupportActionBar(toolbar);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -115,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-        ChallengeCursorAdapter mAdapter;
+        DetailsCursorAdapter mAdapter;
         protected RecyclerView mRecyclerView;
 
         public ChallengeFragment() {
@@ -141,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle bundle = getArguments();
             int tabPosition = bundle.getInt(ARG_SECTION_NUMBER) - 1;
 
-            mAdapter = new ChallengeCursorAdapter(getContext());
+            mAdapter = new DetailsCursorAdapter(getContext());
             mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewChallenges);
             mRecyclerView.setLayoutManager(
                     new LinearLayoutManager(getActivity()));
@@ -175,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 public Cursor loadInBackground() {
                     // Query and load challenge data
                     String sortQuery;
-                    Context applicationContext = MainActivity.getContextOfApplication();
+                    Context applicationContext = DetailActivity.getContextOfApplication();
 
                     if (id >= 1 && id <= 3) {
                         sortQuery = " AND difficulty_num = " + id;
@@ -239,8 +233,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            // Show 4 total pages.
-            return 4;
+            // Show 2 total pages.
+            return 2;
         }
 
         @Override
@@ -249,13 +243,9 @@ public class MainActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    return "ALL";
+                    return "DESCRIPTION";
                 case 1:
-                    return "EASY";
-                case 2:
-                    return "MEDIUM";
-                case 3:
-                    return "HARD";
+                    return "SOLUTIONS";
             }
             return null;
         }

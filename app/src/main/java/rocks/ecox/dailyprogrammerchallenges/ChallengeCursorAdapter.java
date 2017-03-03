@@ -1,6 +1,7 @@
 package rocks.ecox.dailyprogrammerchallenges;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.support.v7.widget.CardView;
@@ -13,13 +14,13 @@ import android.widget.TextView;
 
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 
-public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapter.ChallengeViewHolder> {
+public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursorAdapter.ChallengeViewHolder> {
 
     // Class variables for the Cursor that holds challenge data and the Context
     private Cursor mCursor;
     private Context mContext;
 
-    public CustomCursorAdapter(Context mContext) {
+    public ChallengeCursorAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
@@ -34,8 +35,18 @@ public class CustomCursorAdapter extends RecyclerView.Adapter<CustomCursorAdapte
         // Inflate the challenge_layout to a view
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.challenge_layout, parent, false);
+        final ChallengeViewHolder cvh = new ChallengeViewHolder(view);
 
-        return new ChallengeViewHolder(view);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MainActivity.contextOfApplication, DetailActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+
+        return cvh;
     }
 
 
