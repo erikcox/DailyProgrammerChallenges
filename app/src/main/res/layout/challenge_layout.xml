@@ -51,7 +51,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_below="@+id/challengeDescription"
                     android:textColor="@android:color/black"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     android:textStyle="italic"
                     tools:text="314"/>
 
@@ -62,7 +62,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/challengeDescription"
                     android:textColor="@android:color/black"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     android:textStyle="italic"
                     tools:text="Hard"/>
 

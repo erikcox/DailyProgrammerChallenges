@@ -13,16 +13,12 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
-import rocks.ecox.dailyprogrammerchallenges.utility.UpdateChallenges;
 import timber.log.Timber;
 
 import static rocks.ecox.dailyprogrammerchallenges.utility.DataParsing.setPageNum;
@@ -32,10 +28,8 @@ public class DetailActivity extends AppCompatActivity {
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
+     * {@link android.support.v4.app.FragmentStatePagerAdapter} derivative, which will keep every
+     * loaded fragment in memory.
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -65,7 +59,7 @@ public class DetailActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(mViewPager);
 
         // Get data from reddit and create Challenge objects
-        UpdateChallenges.update();
+//        UpdateChallenges.update();
     }
 
     /**
@@ -77,52 +71,28 @@ public class DetailActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class ChallengeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
         // LoaderManager.LoaderCallbacks<Object>
         /**
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-        DetailsCursorAdapter mAdapter;
-        protected RecyclerView mRecyclerView;
+        private static final String ARG_CHALLENGE_ID = "challenge_id";
 
-        public ChallengeFragment() {
+        public DetailFragment() {
         }
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static ChallengeFragment newInstance(int sectionNumber) {
-            ChallengeFragment fragment = new ChallengeFragment();
+        public static DetailFragment newInstance(int dbId) {
+            DetailFragment fragment = new DetailFragment();
             Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putInt(ARG_CHALLENGE_ID, dbId);
             fragment.setArguments(args);
             return fragment;
         }
@@ -130,17 +100,27 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+            View rootView = inflater.inflate(R.layout.detail_layout, container, false);
 
             Bundle bundle = getArguments();
-            int tabPosition = bundle.getInt(ARG_SECTION_NUMBER) - 1;
+            int challengeId = bundle.getInt(ARG_CHALLENGE_ID);
 
-            mAdapter = new DetailsCursorAdapter(getContext());
-            mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewChallenges);
-            mRecyclerView.setLayoutManager(
-                    new LinearLayoutManager(getActivity()));
-            mRecyclerView.setAdapter(mAdapter);
-            getLoaderManager().initLoader(tabPosition, null, this);
+            TextView detailChallengeTitle = (TextView) rootView.findViewById(R.id.detailChallengeTitle);
+            TextView detailChallengeDescription = (TextView) rootView.findViewById(R.id.detailChallengeDescription);
+            TextView detailChallengeAuthor = (TextView) rootView.findViewById(R.id.detailChallengeAuthor);
+
+            String title = "Challenge title";
+            String description = "Challenge description goes here. Lots and lots of words going on for ever."
+                    + "Challenge description goes here. Lots and lots of words going on for ever."
+                    + "Challenge description goes here. Lots and lots of words going on for ever.";
+            String author = "/u/DeletedAccount";
+
+            getLoaderManager().initLoader(0, null, this); // Need to pass challenge id & flag to say it's one record
+
+            detailChallengeTitle.setText(title);
+            detailChallengeDescription.setText(description);
+            detailChallengeAuthor.setText(author);
+
             return rootView;
         }
 
@@ -204,13 +184,13 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             // Cursor Object
-            mAdapter.swapCursor(data);
+//            mAdapter.swapCursor(data);
         }
 
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {
             // Loader<Object> loader
-            mAdapter.swapCursor(null);
+//            mAdapter.swapCursor(null);
         }
 
     }
@@ -228,7 +208,7 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page\
-            return ChallengeFragment.newInstance(position + 1);
+            return DetailFragment.newInstance(position + 1);
         }
 
         @Override
