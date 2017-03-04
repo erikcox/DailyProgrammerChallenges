@@ -44,10 +44,10 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                 int position = cvh.getAdapterPosition();
                 int idIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry._ID);
                 mCursor.moveToPosition(position);
-                final int dbId = mCursor.getInt(idIndex);
+                final String dbId = mCursor.getString(idIndex);
 
                 Intent intent = new Intent(MainActivity.contextOfApplication, DetailActivity.class);
-                intent.putExtra("EXTRA_DBID", dbId);
+                intent.putExtra("EXTRA_DB_ID", dbId);
                 mContext.startActivity(intent);
             }
         });

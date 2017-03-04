@@ -40,12 +40,15 @@ public class DetailActivity extends AppCompatActivity {
 
     // A static variable to get a reference of the application Context
     public static Context contextOfApplication;
+    public String dbId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         contextOfApplication = getApplicationContext();
+
+        dbId = getIntent().getStringExtra("EXTRA_DB_ID");
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -80,7 +83,8 @@ public class DetailActivity extends AppCompatActivity {
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private static final String ARG_CHALLENGE_ID = "challenge_id";
+        private static final String ARG_CHALLENGE_POSITION = "challenge_position";
+        private static final String ARG_CHALLENGE_ID = "db_id";
 
         public DetailFragment() {
         }
@@ -89,11 +93,14 @@ public class DetailActivity extends AppCompatActivity {
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static DetailFragment newInstance(int dbId) {
+        public static DetailFragment newInstance(int position, String dbId) {
             DetailFragment fragment = new DetailFragment();
             Bundle args = new Bundle();
-            args.putInt(ARG_CHALLENGE_ID, dbId);
+            args.putInt(ARG_CHALLENGE_POSITION, position);
+            args.putString(ARG_CHALLENGE_ID, dbId);
+
             fragment.setArguments(args);
+
             return fragment;
         }
 
@@ -102,8 +109,7 @@ public class DetailActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.detail_layout, container, false);
 
-            Bundle bundle = getArguments();
-            int challengeId = bundle.getInt(ARG_CHALLENGE_ID);
+            String rowId = getArguments().getString(ARG_CHALLENGE_ID);
 
             TextView detailChallengeTitle = (TextView) rootView.findViewById(R.id.detailChallengeTitle);
             TextView detailChallengeDescription = (TextView) rootView.findViewById(R.id.detailChallengeDescription);
@@ -207,8 +213,12 @@ public class DetailActivity extends AppCompatActivity {
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page\
-            return DetailFragment.newInstance(position + 1);
+            // getItem is called to instantiate the fragment for the given page
+            DetailFragment fragment = new DetailFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("db_id", getDbId());
+            fragment.setArguments(bundle);
+            return fragment.newInstance(position + 1, getDbId());
         }
 
         @Override
@@ -229,11 +239,13 @@ public class DetailActivity extends AppCompatActivity {
             }
             return null;
         }
-
     }
 
-    public static Context getContextOfApplication()
-    {
+    public static Context getContextOfApplication() {
         return contextOfApplication;
+    }
+
+    public String getDbId(){
+        return dbId;
     }
 }
