@@ -35,7 +35,6 @@
             android:id="@+id/detailChallengeAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="false"
             android:layout_below="@+id/detailChallengeDescription"
             android:textColor="@android:color/black"
             android:textSize="12sp"

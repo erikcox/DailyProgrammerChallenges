@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -45,17 +44,17 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_detail);
         contextOfApplication = getApplicationContext();
 
         dbId = getIntent().getStringExtra("EXTRA_DB_ID");
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = (ViewPager) findViewById(R.id.container_detail);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs_detail);
         tabLayout.setupWithViewPager(mViewPager);
 
     }
@@ -103,7 +102,7 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.detail_layout, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
             String rowId = getArguments().getString(ARG_CHALLENGE_ID);
             mAdapter = new ChallengeCursorAdapter(getContext());
@@ -158,23 +157,30 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
+     * A {@link FragmentStatePagerAdapter} that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
     private class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page
             DetailFragment fragment = new DetailFragment();
             Bundle bundle = new Bundle();
             bundle.putString("db_id", getDbId());
             fragment.setArguments(bundle);
-            return fragment.newInstance(position + 1, getDbId());
+            if (position == 0) {
+                return DetailFragment.newInstance(position + 1, getDbId());
+            } else if (position == 1) {
+                // TODO: add SolutionFragment reference here
+                return DetailFragment.newInstance(position + 1, getDbId());
+            } else {
+                return null;
+            }
+
         }
 
         @Override
