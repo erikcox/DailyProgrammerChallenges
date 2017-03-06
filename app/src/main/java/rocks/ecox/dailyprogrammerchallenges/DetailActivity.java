@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import me.grantland.widget.AutofitTextView;
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 import timber.log.Timber;
 
@@ -111,7 +110,10 @@ public class DetailActivity extends AppCompatActivity {
             Uri challenge = DPChallengesContract.ChallengeEntry.CONTENT_URI.buildUpon().appendPath(rowId).build();
             String title = "";
             String description = "";
-            String author = "";
+            String author = "xxx";
+            TextView detailChallengeTitle = (TextView) rootView.findViewById(R.id.detailChallengeTitle);
+            TextView detailChallengeDescription = (TextView) rootView.findViewById(R.id.detailChallengeDescription);
+            TextView detailChallengeAuthor = (TextView) rootView.findViewById(R.id.detailChallengeAuthor);
 
             Timber.d("URI: %s", challenge);
 
@@ -140,10 +142,6 @@ public class DetailActivity extends AppCompatActivity {
 //                            Toast.LENGTH_SHORT).show();
 //                } while (mCursor.moveToNext());
 //            }
-
-            TextView detailChallengeTitle = (TextView) rootView.findViewById(R.id.detailChallengeTitle);
-            AutofitTextView detailChallengeDescription = (AutofitTextView) rootView.findViewById(R.id.detailChallengeDescription);
-            TextView detailChallengeAuthor = (TextView) rootView.findViewById(R.id.detailChallengeAuthor);
 
             detailChallengeTitle.setText(title);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
