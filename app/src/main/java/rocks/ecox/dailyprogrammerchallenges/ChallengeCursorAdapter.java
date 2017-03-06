@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
-import timber.log.Timber;
 
 public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursorAdapter.ChallengeViewHolder> {
 
@@ -33,9 +32,9 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
     @Override
     public ChallengeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        // Inflate the challenge_layout to a view
+        // Inflate the card_layout to a view
         View view = LayoutInflater.from(mContext)
-                .inflate(R.layout.challenge_layout, parent, false);
+                .inflate(R.layout.card_layout, parent, false);
         final ChallengeViewHolder cvh = new ChallengeViewHolder(view);
 
         view.setOnClickListener(new View.OnClickListener() {
