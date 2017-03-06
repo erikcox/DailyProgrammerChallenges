@@ -13,16 +13,18 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="0dp"
         app:cardBackgroundColor="@color/cardview_light_background"
         card_view:cardElevation="2dp"
-        card_view:cardUseCompatPadding="true"
-        >
+        card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            >
+            android:paddingBottom="0dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="8dp">
 
             <TextView
                 android:id="@+id/challengeTitle"
@@ -47,9 +49,15 @@
             <TextView
                 android:id="@+id/challengeNumber"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="38dp"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentEnd="false"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="false"
+                android:layout_alignWithParentIfMissing="false"
                 android:layout_below="@+id/challengeDescription"
+                android:gravity="bottom"
                 android:textColor="@android:color/black"
                 android:textSize="12sp"
                 android:textStyle="italic"
@@ -60,8 +68,9 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignLeft="@+id/completed_button"
-                android:layout_below="@+id/challengeDescription"
+                android:layout_alignTop="@+id/completed_button"
+                android:layout_toLeftOf="@+id/completed_button"
+                android:layout_toStartOf="@+id/completed_button"
                 android:contentDescription="@string/description_favorite_button"
                 app:srcCompat="@drawable/heart_empty"
                 tools:src="@drawable/heart_empty"/>
@@ -71,8 +80,9 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignLeft="@+id/share_button"
-                android:layout_below="@+id/challengeDescription"
+                android:layout_alignTop="@+id/share_button"
+                android:layout_toLeftOf="@+id/share_button"
+                android:layout_toStartOf="@+id/share_button"
                 android:contentDescription="@string/description_completed_button"
                 app:srcCompat="@drawable/checkmark_outline"
                 tools:src="@drawable/checkmark_outline"/>
@@ -82,8 +92,9 @@
                 style="?android:attr/borderlessButtonStyle"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_alignLeft="@+id/challengeDifficulty"
-                android:layout_below="@+id/challengeDescription"
+                android:layout_alignTop="@+id/challengeDifficulty"
+                android:layout_toLeftOf="@+id/challengeDifficulty"
+                android:layout_toStartOf="@+id/challengeDifficulty"
                 android:contentDescription="@string/description_share_button"
                 app:srcCompat="@drawable/share"
                 tools:src="@drawable/share"/>
@@ -91,9 +102,11 @@
             <TextView
                 android:id="@+id/challengeDifficulty"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="38dp"
+                android:layout_alignBottom="@+id/share_buttonfalse"
                 android:layout_alignParentRight="true"
                 android:layout_below="@+id/challengeDescription"
+                android:gravity="bottom"
                 android:textColor="@android:color/black"
                 android:textSize="12sp"
                 android:textStyle="italic"
