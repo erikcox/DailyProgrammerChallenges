@@ -3,15 +3,13 @@ package rocks.ecox.dailyprogrammerchallenges;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.AsyncTaskLoader;
-import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -52,8 +50,6 @@ public class DetailActivity extends AppCompatActivity {
         contextOfApplication = getApplicationContext();
 
         dbId = getIntent().getStringExtra("EXTRA_DB_ID");
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
@@ -63,8 +59,6 @@ public class DetailActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        // Get data from reddit and create Challenge objects
-//        UpdateChallenges.update();
     }
 
     /**
@@ -79,7 +73,7 @@ public class DetailActivity extends AppCompatActivity {
     /**
      * A placeholder fragment containing a simple view.
      */
-    public static class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    public static class DetailFragment extends Fragment {
         // LoaderManager.LoaderCallbacks<Object>
         /**
          * The fragment argument representing the section number for this
@@ -113,10 +107,11 @@ public class DetailActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.detail_layout, container, false);
 
             String rowId = getArguments().getString(ARG_CHALLENGE_ID);
-            String[] rowIdList = {rowId};
             mAdapter = new ChallengeCursorAdapter(getContext());
-            getLoaderManager().initLoader(Integer.parseInt(rowId), null, this);
             Uri challenge = DPChallengesContract.ChallengeEntry.CONTENT_URI.buildUpon().appendPath(rowId).build();
+            String title = "";
+            String description = "";
+            String author = "";
 
             Timber.d("URI: %s", challenge);
 
@@ -125,20 +120,16 @@ public class DetailActivity extends AppCompatActivity {
                     null,
                     null,
                     null);
-            mCursor.moveToPosition(Integer.parseInt(rowId) -1);
-            String title = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_TITLE));
-            String description = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DESCRIPTION_HTML));
-            String author = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_AUTHOR));
-            Timber.d("DATA: %s | %s | %s", rowId, title, description);
-            mCursor.close();
-
-//            if (mCursor == null) {
-//                Timber.d("URI TEST: %s <--NULL", mCursor.getPosition());
-//            } else {
-//                mCursor.moveToPosition(0);
-//                Timber.d("URI TEST %s:", mCursor.getString(2));
-//            }
-//            mCursor.close();
+            try {
+                mCursor.moveToPosition(Integer.parseInt(rowId) - 1);
+                title = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_TITLE));
+                description = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DESCRIPTION_HTML));
+                author = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_AUTHOR));
+                Timber.d("DATA: %s | %s | %s", rowId, title, description);
+                mCursor.close();
+            } catch (NullPointerException e) {
+                Timber.e("Cursor error", e);
+            }
 
 //            if (mCursor.moveToFirst()) {
 //                do{
@@ -155,73 +146,15 @@ public class DetailActivity extends AppCompatActivity {
             TextView detailChallengeAuthor = (TextView) rootView.findViewById(R.id.detailChallengeAuthor);
 
             detailChallengeTitle.setText(title);
-            // TODO: set sdk check  and put 2nd fromHtml statement
-            detailChallengeDescription.setText(Html.fromHtml(description));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                detailChallengeDescription.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT));
+            } else {
+                detailChallengeDescription.setText(Html.fromHtml(description));
+            }
             // TODO: Display author, currently not showing
-            detailChallengeAuthor.setText("Challenge by: " + author);
+            detailChallengeAuthor.setText(String.format("%s%s", getString(R.string.author_label), author));
 
             return rootView;
-        }
-
-        @Override
-        public Loader<Cursor> onCreateLoader(final int id, final Bundle loaderArgs) {
-
-            return new AsyncTaskLoader<Cursor>(getContext()) {
-
-                // Initialize a Cursor, this will hold all the challenge data
-                Cursor mChallengeData = null;
-
-                // onStartLoading() is called when a loader first starts loading data
-                @Override
-                protected void onStartLoading() {
-                    if (mChallengeData != null) {
-                        // Delivers any previously loaded data immediately
-                        deliverResult(mChallengeData);
-                    } else {
-                        // Force a new load
-                        forceLoad();
-                    }
-                }
-
-                // loadInBackground() performs asynchronous loading of data
-                @Override
-                public Cursor loadInBackground() {
-                    Context applicationContext = DetailActivity.getContextOfApplication();
-
-                    try {
-                        final Cursor query = applicationContext.getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
-                                null,
-                                "_id = " + id,
-                                null,
-                                DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " DESC, "
-                                        + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");
-                        return query;
-                    } catch (Exception e) {
-                        Timber.e("Failed to asynchronously load data.");
-                        e.printStackTrace();
-                        return null;
-                    }
-                }
-
-                // deliverResult sends the result of the load, a Cursor, to the registered listener
-                public void deliverResult(Cursor data) {
-                    mChallengeData = data;
-                    super.deliverResult(data);
-                }
-            };
-
-        }
-
-        @Override
-        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-            // Cursor Object
-            mAdapter.swapCursor(data);
-        }
-
-        @Override
-        public void onLoaderReset(Loader<Cursor> loader) {
-            // Loader<Object> loader
-            mAdapter.swapCursor(null);
         }
 
     }
