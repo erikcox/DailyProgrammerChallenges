@@ -8,45 +8,47 @@
               android:orientation="vertical"
               android:padding="2dp"
               tools:context="rocks.ecox.dailyprogrammerchallenges.DetailActivity">
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        >
-
-        <TextView
-            android:id="@+id/detailChallengeTitle"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="Challenge title"/>
+            android:padding="8dp"
+            >
 
-        <org.sufficientlysecure.htmltextview.HtmlTextView
-            android:id="@+id/detailChallengeDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/detailChallengeTitle"
-            android:paddingBottom="4dp"
-            android:textColor="@android:color/black"
-            android:textSize="12sp"
-            android:autoLink="all"
-            android:longClickable="false"
-            tools:text="Challenge description goes here..."/>
+            <TextView
+                android:id="@+id/detailChallengeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:text="Challenge title"/>
 
-        <TextView
-            android:id="@+id/detailChallengeAuthor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/detailChallengeDescription"
-            android:textColor="@android:color/black"
-            android:textSize="12sp"
-            android:textStyle="italic"
-            tools:text="Created by /u/DeletedUser"/>
+            <me.grantland.widget.AutofitTextView
+                android:id="@+id/detailChallengeDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/detailChallengeTitle"
+                android:paddingBottom="4dp"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                android:autoLink="all"
+                android:longClickable="false"
+                tools:text="Challenge description goes here..."/>
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/detailChallengeAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/detailChallengeDescription"
+                android:textColor="@android:color/black"
+                android:textSize="12sp"
+                android:textStyle="italic"
+                tools:text="Created by /u/DeletedUser"/>
+
+        </RelativeLayout>
+    </ScrollView>
 
 </LinearLayout>

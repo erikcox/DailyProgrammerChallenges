@@ -14,14 +14,13 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.sufficientlysecure.htmltextview.HtmlResImageGetter;
-import org.sufficientlysecure.htmltextview.HtmlTextView;
-
+import me.grantland.widget.AutofitTextView;
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 import timber.log.Timber;
 
@@ -152,13 +151,13 @@ public class DetailActivity extends AppCompatActivity {
 //            }
 
             TextView detailChallengeTitle = (TextView) rootView.findViewById(R.id.detailChallengeTitle);
-            HtmlTextView detailChallengeDescription = (HtmlTextView) rootView.findViewById(R.id.detailChallengeDescription);
+            AutofitTextView detailChallengeDescription = (AutofitTextView) rootView.findViewById(R.id.detailChallengeDescription);
             TextView detailChallengeAuthor = (TextView) rootView.findViewById(R.id.detailChallengeAuthor);
 
             detailChallengeTitle.setText(title);
-
-            detailChallengeDescription.setHtml(description, new HtmlResImageGetter(detailChallengeDescription));
-
+            // TODO: set sdk check  and put 2nd fromHtml statement
+            detailChallengeDescription.setText(Html.fromHtml(description));
+            // TODO: Display author, currently not showing
             detailChallengeAuthor.setText("Challenge by: " + author);
 
             return rootView;
