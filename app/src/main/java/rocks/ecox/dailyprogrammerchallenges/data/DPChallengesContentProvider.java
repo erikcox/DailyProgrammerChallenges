@@ -15,7 +15,7 @@ import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.Cha
 
 public class DPChallengesContentProvider extends ContentProvider {
 
-    // Challenges directory
+    // Challenges directoryCHALLENGE_WITH_ID
     public static final int CHALLENGES = 100;
     // Single challenge
     public static final int CHALLENGE_WITH_ID = 101;
@@ -70,6 +70,7 @@ public class DPChallengesContentProvider extends ContentProvider {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
                 break;
+            // TODO: add CHALLENGE_WITH_ID insert
             // Set the value for the returnedUri and write the default case for unknown URI's
             // Default case throws an UnsupportedOperationException
             default:
@@ -100,6 +101,16 @@ public class DPChallengesContentProvider extends ContentProvider {
         switch (match) {
             // Query for the challenges directory
             case CHALLENGES:
+                retCursor = db.query(TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
+            // Query for the challenges with a specific id
+            case CHALLENGE_WITH_ID:
                 retCursor = db.query(TABLE_NAME,
                         projection,
                         selection,

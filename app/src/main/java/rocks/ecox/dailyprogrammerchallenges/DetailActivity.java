@@ -2,6 +2,7 @@ package rocks.ecox.dailyprogrammerchallenges;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -49,7 +50,6 @@ public class DetailActivity extends AppCompatActivity {
         contextOfApplication = getApplicationContext();
 
         dbId = getIntent().getStringExtra("EXTRA_DB_ID");
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -85,6 +85,7 @@ public class DetailActivity extends AppCompatActivity {
          */
         private static final String ARG_CHALLENGE_POSITION = "challenge_position";
         private static final String ARG_CHALLENGE_ID = "db_id";
+        ChallengeCursorAdapter mAdapter;
 
         public DetailFragment() {
         }
@@ -110,6 +111,38 @@ public class DetailActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.detail_layout, container, false);
 
             String rowId = getArguments().getString(ARG_CHALLENGE_ID);
+            String[] rowIdList = {rowId};
+            mAdapter = new ChallengeCursorAdapter(getContext());
+            getLoaderManager().initLoader(Integer.parseInt(rowId), null, this);
+            // content://rocks.ecox.dailyprogrammerchallenges/challenges/1
+//            DPChallengesContract.ChallengeEntry.CONTENT_URI.buildUpon().appendPath(rowId).build();
+            Uri challenge = DPChallengesContract.ChallengeEntry.CONTENT_URI.buildUpon().appendPath(rowId).build();
+            Timber.d("URI: %s", challenge);
+            Cursor mCursor = getContextOfApplication().getContentResolver().query(challenge,
+                    null,
+                    null,
+                    null,
+                    null);
+            mCursor.moveToPosition(Integer.parseInt(rowId) -1);
+            Timber.d("DATA: %s | %s", rowId, mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_TITLE)));
+
+//            if (mCursor == null) {
+//                Timber.d("URI TEST: %s <--NULL", mCursor.getPosition());
+//            } else {
+//                mCursor.moveToPosition(0);
+//                Timber.d("URI TEST %s:", mCursor.getString(2));
+//            }
+//            mCursor.close();
+
+//            if (mCursor.moveToFirst()) {
+//                do{
+//                    Toast.makeText(this,
+//                            mCursor.getString(mCursor.getColumnIndex(challenge._ID)) +
+//                                    ", " +  mCursor.getString(mCursor.getColumnIndex( challenge.NAME)) +
+//                                    ", " + mCursor.getString(mCursor.getColumnIndex( challenge.GRADE)),
+//                            Toast.LENGTH_SHORT).show();
+//                } while (mCursor.moveToNext());
+//            }
 
             TextView detailChallengeTitle = (TextView) rootView.findViewById(R.id.detailChallengeTitle);
             TextView detailChallengeDescription = (TextView) rootView.findViewById(R.id.detailChallengeDescription);
@@ -120,8 +153,6 @@ public class DetailActivity extends AppCompatActivity {
                     + "Challenge description goes here. Lots and lots of words going on for ever."
                     + "Challenge description goes here. Lots and lots of words going on for ever.";
             String author = "/u/DeletedAccount";
-
-            getLoaderManager().initLoader(0, null, this); // Need to pass challenge id & flag to say it's one record
 
             detailChallengeTitle.setText(title);
             detailChallengeDescription.setText(description);
@@ -153,20 +184,12 @@ public class DetailActivity extends AppCompatActivity {
                 // loadInBackground() performs asynchronous loading of data
                 @Override
                 public Cursor loadInBackground() {
-                    // Query and load challenge data
-                    String sortQuery;
                     Context applicationContext = DetailActivity.getContextOfApplication();
-
-                    if (id >= 1 && id <= 3) {
-                        sortQuery = " AND difficulty_num = " + id;
-                    } else {
-                        sortQuery = "";
-                    }
 
                     try {
                         final Cursor query = applicationContext.getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
                                 null,
-                                "show_challenge = 1" + sortQuery,
+                                "_id = " + id,
                                 null,
                                 DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " DESC, "
                                         + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");
@@ -190,13 +213,13 @@ public class DetailActivity extends AppCompatActivity {
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             // Cursor Object
-//            mAdapter.swapCursor(data);
+            mAdapter.swapCursor(data);
         }
 
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {
             // Loader<Object> loader
-//            mAdapter.swapCursor(null);
+            mAdapter.swapCursor(null);
         }
 
     }
