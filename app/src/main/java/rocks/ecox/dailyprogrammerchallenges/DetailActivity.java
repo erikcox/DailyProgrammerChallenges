@@ -19,6 +19,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.sufficientlysecure.htmltextview.HtmlResImageGetter;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 import timber.log.Timber;
 
@@ -114,17 +117,21 @@ public class DetailActivity extends AppCompatActivity {
             String[] rowIdList = {rowId};
             mAdapter = new ChallengeCursorAdapter(getContext());
             getLoaderManager().initLoader(Integer.parseInt(rowId), null, this);
-            // content://rocks.ecox.dailyprogrammerchallenges/challenges/1
-//            DPChallengesContract.ChallengeEntry.CONTENT_URI.buildUpon().appendPath(rowId).build();
             Uri challenge = DPChallengesContract.ChallengeEntry.CONTENT_URI.buildUpon().appendPath(rowId).build();
+
             Timber.d("URI: %s", challenge);
+
             Cursor mCursor = getContextOfApplication().getContentResolver().query(challenge,
                     null,
                     null,
                     null,
                     null);
             mCursor.moveToPosition(Integer.parseInt(rowId) -1);
-            Timber.d("DATA: %s | %s", rowId, mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_TITLE)));
+            String title = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_TITLE));
+            String description = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DESCRIPTION_HTML));
+            String author = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_AUTHOR));
+            Timber.d("DATA: %s | %s | %s", rowId, title, description);
+            mCursor.close();
 
 //            if (mCursor == null) {
 //                Timber.d("URI TEST: %s <--NULL", mCursor.getPosition());
@@ -145,18 +152,14 @@ public class DetailActivity extends AppCompatActivity {
 //            }
 
             TextView detailChallengeTitle = (TextView) rootView.findViewById(R.id.detailChallengeTitle);
-            TextView detailChallengeDescription = (TextView) rootView.findViewById(R.id.detailChallengeDescription);
+            HtmlTextView detailChallengeDescription = (HtmlTextView) rootView.findViewById(R.id.detailChallengeDescription);
             TextView detailChallengeAuthor = (TextView) rootView.findViewById(R.id.detailChallengeAuthor);
 
-            String title = "Challenge title";
-            String description = "Challenge description goes here. Lots and lots of words going on for ever."
-                    + "Challenge description goes here. Lots and lots of words going on for ever."
-                    + "Challenge description goes here. Lots and lots of words going on for ever.";
-            String author = "/u/DeletedAccount";
-
             detailChallengeTitle.setText(title);
-            detailChallengeDescription.setText(description);
-            detailChallengeAuthor.setText(author);
+
+            detailChallengeDescription.setHtml(description, new HtmlResImageGetter(detailChallengeDescription));
+
+            detailChallengeAuthor.setText("Challenge by: " + author);
 
             return rootView;
         }

@@ -38,7 +38,7 @@ public class DataParsing {
         if (lowerTitle.contains("easy")) {
             challengeDifficulty = "Easy";
         } else if (lowerTitle.contains("intermediate")) {
-            challengeDifficulty = "Intermediate";
+            challengeDifficulty = "Medium";
         } else if (lowerTitle.contains("hard")) {
             challengeDifficulty = "Hard";
         } else {
@@ -53,7 +53,7 @@ public class DataParsing {
 
         if (difficulty.contains("Easy")) {
             difficultyNumber = 1;
-        } else if (difficulty.contains("Intermediate")) {
+        } else if (difficulty.contains("Medium")) {
             difficultyNumber = 2;
         } else if (difficulty.contains("Hard")) {
             difficultyNumber = 3;
