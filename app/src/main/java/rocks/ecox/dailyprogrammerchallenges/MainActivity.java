@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // Add app icon to toolbar
-        toolbar.setLogo(R.mipmap.ic_launcher);
+        toolbar.setLogo(R.mipmap.ic_launcher_debug);
         setSupportActionBar(toolbar);
 
         // Create the adapter that will return a fragment for each of the three
@@ -211,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             // Cursor Object
             mAdapter.swapCursor(data);
+            mAdapter.notifyDataSetChanged();
         }
 
         @Override
