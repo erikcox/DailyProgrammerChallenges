@@ -63,11 +63,14 @@ public class Challenge extends Model {
     @Column(name = "favorite_challenge")
     private boolean favoriteChallenge = false;
 
+    @Column(name = "completed_challenge")
+    private boolean completedChallenge = false;
+
     public Challenge() {
         super();
     }
 
-    public Challenge(String postId, String postTitle, String cleanedPostTitle, String postDescription, String postDescriptionHtml, String postAuthor, int postUtc, String postUrl, int challengeNumber, String challengeDifficulty, int challengeDifficultyNumber, int postUps, int numberOfComments, boolean showChallenge, boolean favoriteChallenge) {
+    public Challenge(String postId, String postTitle, String cleanedPostTitle, String postDescription, String postDescriptionHtml, String postAuthor, int postUtc, String postUrl, int challengeNumber, String challengeDifficulty, int challengeDifficultyNumber, int postUps, int numberOfComments, boolean showChallenge, boolean favoriteChallenge, boolean completedChallenge) {
         super();
         this.postId = postId;
         this.postTitle = postTitle;
@@ -84,6 +87,7 @@ public class Challenge extends Model {
         this.numberOfComments = numberOfComments;
         this.showChallenge = showChallenge;
         this.favoriteChallenge = favoriteChallenge;
+        this.favoriteChallenge = completedChallenge;
     }
 
     public Data getData() {
@@ -212,5 +216,13 @@ public class Challenge extends Model {
 
     public void setFavoriteChallenge(boolean favoriteChallenge) {
         this.favoriteChallenge = favoriteChallenge;
+    }
+
+    public boolean isCompletedChallenge() {
+        return completedChallenge;
+    }
+
+    public void setCompletedChallenge(boolean completedChallenge) {
+        this.completedChallenge = completedChallenge;
     }
 }
