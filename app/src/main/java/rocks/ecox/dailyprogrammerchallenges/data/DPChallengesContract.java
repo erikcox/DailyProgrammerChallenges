@@ -35,6 +35,7 @@ public class DPChallengesContract {
         public static final String COLUMN_URL = "url";
         public static final String COLUMN_TIMESTAMP = "timestamp";
         public static final String COLUMN_VISIBILITY = "show_challenge";
+        public static final String COLUMN_FAVORITE = "favorite_challenge";
 
     }
 }

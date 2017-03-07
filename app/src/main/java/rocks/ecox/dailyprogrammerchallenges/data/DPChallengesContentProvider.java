@@ -10,8 +10,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
-import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.*;
+import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.AUTHORITY;
+import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.ChallengeEntry;
 import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.ChallengeEntry.TABLE_NAME;
+import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.PATH_CHALLENGES;
 
 public class DPChallengesContentProvider extends ContentProvider {
 
@@ -177,11 +179,16 @@ public class DPChallengesContentProvider extends ContentProvider {
         // match code
         int match = sUriMatcher.match(uri);
 
+        String id = uri.getPathSegments().get(1);
 
         switch (match) {
+            case CHALLENGES:
+                // Update a single task by getting the id
+                // Using selections
+                challengesUpdated = mDPCDbHelper.getWritableDatabase().update(TABLE_NAME, values, "_id=?", new String[]{id});
+                break;
             case CHALLENGE_WITH_ID:
                 // Update a single task by getting the id
-                String id = uri.getPathSegments().get(1);
                 // Using selections
                 challengesUpdated = mDPCDbHelper.getWritableDatabase().update(TABLE_NAME, values, "_id=?", new String[]{id});
                 break;

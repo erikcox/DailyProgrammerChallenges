@@ -60,11 +60,14 @@ public class Challenge extends Model {
     @Column(name = "show_challenge")
     private boolean showChallenge = true;
 
+    @Column(name = "favorite_challenge")
+    private boolean favoriteChallenge = false;
+
     public Challenge() {
         super();
     }
 
-    public Challenge(String postId, String postTitle, String cleanedPostTitle, String postDescription, String postDescriptionHtml, String postAuthor, int postUtc, String postUrl, int challengeNumber, String challengeDifficulty, int challengeDifficultyNumber, int postUps, int numberOfComments, boolean showChallenge) {
+    public Challenge(String postId, String postTitle, String cleanedPostTitle, String postDescription, String postDescriptionHtml, String postAuthor, int postUtc, String postUrl, int challengeNumber, String challengeDifficulty, int challengeDifficultyNumber, int postUps, int numberOfComments, boolean showChallenge, boolean favoriteChallenge) {
         super();
         this.postId = postId;
         this.postTitle = postTitle;
@@ -80,14 +83,7 @@ public class Challenge extends Model {
         this.postUps = postUps;
         this.numberOfComments = numberOfComments;
         this.showChallenge = showChallenge;
-    }
-
-    public String getKind() {
-        return kind;
-    }
-
-    public void setKind(String kind) {
-        this.kind = kind;
+        this.favoriteChallenge = favoriteChallenge;
     }
 
     public Data getData() {
@@ -208,5 +204,13 @@ public class Challenge extends Model {
 
     public void setShowChallenge(boolean showChallenge) {
         this.showChallenge = showChallenge;
+    }
+
+    public boolean isFavoriteChallenge() {
+        return favoriteChallenge;
+    }
+
+    public void setFavoriteChallenge(boolean favoriteChallenge) {
+        this.favoriteChallenge = favoriteChallenge;
     }
 }

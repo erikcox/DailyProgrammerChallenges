@@ -1,8 +1,10 @@
 package rocks.ecox.dailyprogrammerchallenges;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 
@@ -36,6 +40,41 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         View view = LayoutInflater.from(mContext)
                 .inflate(R.layout.card_layout, parent, false);
         final ChallengeViewHolder cvh = new ChallengeViewHolder(view);
+        final ToggleButton fav = (ToggleButton) view.findViewById(R.id.favorite_button);
+
+        fav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mContext, "Favorited: " + fav.isChecked(), Toast.LENGTH_SHORT).show();
+
+                // Tell the db to mark / unmark this as favorite
+                int position = cvh.getAdapterPosition();
+                int idIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry._ID);
+                mCursor.moveToPosition(position);
+                final String dbId = mCursor.getString(idIndex);
+                String[] rowId = {dbId};
+                Uri challenge = DPChallengesContract.ChallengeEntry.CONTENT_URI.buildUpon().appendPath(dbId).build();
+                ContentValues values = new ContentValues();
+                int columnValue;
+
+                if (fav.isChecked()) {
+                    columnValue = 1;
+                } else {
+                    columnValue = 0;
+                }
+
+                values.put(DPChallengesContract.ChallengeEntry.COLUMN_FAVORITE, columnValue);
+                mContext.getContentResolver().update(challenge, values, "_id = ?", rowId);
+
+//                mContext.getContentResolver().update(DPChallengesContract.ChallengeEntry.CONTENT_URI,
+//                        null,
+//                        "show_challenge = 1" + sortQuery,
+//                        null,
+//                        DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " DESC, "
+//                                + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");
+
+            }
+        });
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
