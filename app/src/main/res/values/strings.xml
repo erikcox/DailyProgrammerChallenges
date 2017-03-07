@@ -5,4 +5,10 @@
     <string name="description_favorite_button">Favorite button</string>
     <string name="description_completed_button">Completed button</string>
     <string name="description_share_button">Share button</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="nav_about">About</string>
+    <string name="nav_completed">Completed</string>
+    <string name="nav_saved">Saved</string>
+    <string name="nav_challenges">Challenges</string>
 </resources>
