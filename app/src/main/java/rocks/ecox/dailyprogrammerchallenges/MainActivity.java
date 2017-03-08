@@ -1,6 +1,7 @@
 package rocks.ecox.dailyprogrammerchallenges;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -84,6 +85,29 @@ public class MainActivity extends AppCompatActivity {
                         // Set item in checked state
                         menuItem.setChecked(true);
                         // TODO: handle navigation
+                        Class activity = null;
+                        switch(menuItem.getItemId()) {
+                            case R.id.nav_challenges:
+                                // activity = MainActivity.class; // already in this view
+                                break;
+                            case R.id.nav_saved:
+                                // activity = SavedActivity.class; // TODO: create this activity
+                                break;
+                            case R.id.nav_completed:
+                                // activity = CompletedActivity.class; // TODO: create this activity
+                                break;
+                            case R.id.nav_about:
+                                activity = AboutActivity.class;
+                                break;
+                            default:
+                                // activity = MainActivity.class; // already in this view
+                                break;
+                        }
+
+                        if (activity != null) {
+                            Intent intent = new Intent(MainActivity.contextOfApplication, activity);
+                            startActivity(intent);
+                        }
                         // Closing drawer on item click
                         mDrawerLayout.closeDrawers();
                         return true;
