@@ -84,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // Set item in checked state
                         menuItem.setChecked(true);
-                        // TODO: handle navigation
                         Class activity = null;
                         switch(menuItem.getItemId()) {
                             case R.id.nav_challenges:
