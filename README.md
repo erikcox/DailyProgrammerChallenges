@@ -7,7 +7,7 @@
 The following **required** functionality is completed:
 
 ### Core Platform Development
-* [ ] App integrates a third-party library.
+* [x] App integrates a third-party library.
 
 * [ ] App validates all input from servers and users. If data does not exist or is in the wrong format, the app logs this fact and does not crash.
 
@@ -35,27 +35,25 @@ The following **required** functionality is completed:
 
 ### Material Design
 
-* [ ] App theme extends AppCompat.
+* [x] App theme extends AppCompat.
 
-* [ ] App uses an app bar and associated toolbars.
+* [x] App uses an app bar and associated toolbars.
 
-* [ ] App uses standard and simple transitions between activities.
+* [x] App uses standard and simple transitions between activities.
 
 ### Building
 
-* [ ] App builds from a clean repository checkout with no additional configuration.
+* [x] App builds from a clean repository checkout with no additional configuration.
 
 * [ ] App builds and deploys using the installRelease Gradle task.
 
 * [ ] App is equipped with a signing configuration, and the keystore and passwords are included in the repository. Keystore is referred to by a relative path.
 
-* [ ] All app dependencies are managed by Gradle.
+* [x] All app dependencies are managed by Gradle.
 
 ### Data Persistence
 
-* [ ] App stores data locally either by implementing a ContentProvider OR using Firebase Realtime Database. No third party frameworks may be used.
-
-* [ ] Must implement at least one of the three
+* [x] App stores data locally either by implementing a ContentProvider OR using Firebase Realtime Database. No third party frameworks may be used.
 
 * [ ] If it regularly pulls or sends data to/from a web service or API, app updates data in its cache at regular intervals using a SyncAdapter or JobDispacter.
 
@@ -65,38 +63,39 @@ The following **required** functionality is completed:
 
 **OR**
 
-* [ ] It it performs short duration, on-demand requests(such as search), app uses an AsyncTask.
+* [x] It it performs short duration, on-demand requests(such as search), app uses an AsyncTask.
 
-* [ ] App uses a Loader to move its data to its views.
+* [x] App uses a Loader to move its data to its views.
 
 The following **optional** features are implemented:
-* [ ] 
-* [ ] 
-* [ ] 
 
-## Video Walkthrough 
+* [x] App uses `Fabric` & `Crashlytics` for metrics
 
-Here's a walkthrough of implemented user stories:
-!['Video Walkthrough'](walkthrough.gif)
+* [x] App uses `Stetho` for db and network inspection
+ 
+* [x] App uses `Timber` for logging and uses build variants to determine which logs to output 
+
+* [x] App uses `JRAW` library and `gson` for reddit processing 
+
+* [x] App uses `Active Android` for DB persistence 
+
+* [x] App uses `Retrofit` for handling network requests 
 
 ## Notes
 
-* 
-* 
-* 
-* 
+* In order to get Crashlytics to work, you need a `fabric.properties` file at the root of the project with your Fabric secret key
 
 ## Mockups
-!['All challenges'](01_All_Challenges.png)
-!['Navigation drawer'](02_Navigation_Drawer.png)
-!['Sort options'](03_Sort_Options.png)
-!['Share'](04_Share.png)
-!['Detail problem'](05_Detail_Problem.png)
-!['Detail solution'](06_Detail_Solution.png)
-!['Saved'](07_Saved.png)
-!['Completed'](08_Completed.png)
-!['About'](09_About.png)
-!['Widget'](10_Widget.png)
+!['All challenges'](/mocks/01_All_Challenges.png)
+!['Navigation drawer'](/mocks/02_Navigation_Drawer.png)
+!['Sort options'](/mocks/03_Sort_Options.png)
+!['Share'](/mocks/04_Share.png)
+!['Detail problem'](/mocks/05_Detail_Problem.png)
+!['Detail solution'](/mocks/06_Detail_Solution.png)
+!['Saved'](/mocks/07_Saved.png)
+!['Completed'](/mocks/08_Completed.png)
+!['About'](/mocks/09_About.png)
+!['Widget'](/mocks/10_Widget.png)
 
 ## License
 
