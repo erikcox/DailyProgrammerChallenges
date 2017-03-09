@@ -12,6 +12,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -41,6 +42,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         final ChallengeViewHolder cvh = new ChallengeViewHolder(view);
         final ToggleButton fav = (ToggleButton) view.findViewById(R.id.favorite_button);
         final ToggleButton comp = (ToggleButton) view.findViewById(R.id.completed_button);
+        final ImageButton share = (ImageButton) view.findViewById(R.id.share_button);
 
         fav.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +102,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                 mCursor.moveToPosition(position);
                 final String dbId = mCursor.getString(idIndex);
 
-                Intent intent = new Intent(MainActivity.contextOfApplication, DetailActivity.class);
+                Intent intent = new Intent(mContext, DetailActivity.class);
                 intent.putExtra("EXTRA_DB_ID", dbId);
                 mContext.startActivity(intent);
             }
@@ -211,6 +213,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         TextView challengeDifficultyView;
         ToggleButton challengeFavorite;
         ToggleButton challengeComplete;
+        ImageButton challengeShare;
 
         /**
          * Constructor for the ChallengeViewHolder
@@ -226,6 +229,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
             challengeDifficultyView = (TextView) itemView.findViewById(R.id.challengeDifficulty);
             challengeFavorite = (ToggleButton) itemView.findViewById(R.id.favorite_button);
             challengeComplete = (ToggleButton) itemView.findViewById(R.id.completed_button);
+            challengeShare = (ImageButton) itemView.findViewById(R.id.share_button);
         }
     }
 }
