@@ -77,7 +77,6 @@
                 android:focusableInTouchMode="false"
                 android:textOff=""
                 android:textOn=""
-                android:onClick="favoriteButton"
                 tools:background="@drawable/favorite"/>
 
             <ToggleButton

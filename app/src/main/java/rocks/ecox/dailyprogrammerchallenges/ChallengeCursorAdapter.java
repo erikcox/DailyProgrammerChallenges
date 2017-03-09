@@ -12,6 +12,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -41,6 +42,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         final ChallengeViewHolder cvh = new ChallengeViewHolder(view);
         final ToggleButton fav = (ToggleButton) view.findViewById(R.id.favorite_button);
         final ToggleButton comp = (ToggleButton) view.findViewById(R.id.completed_button);
+        final ImageButton share = (ImageButton) view.findViewById(R.id.share_button);
 
         fav.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,8 +102,9 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                 mCursor.moveToPosition(position);
                 final String dbId = mCursor.getString(idIndex);
 
-                Intent intent = new Intent(MainActivity.contextOfApplication, DetailActivity.class);
+                Intent intent = new Intent(mContext, DetailActivity.class);
                 intent.putExtra("EXTRA_DB_ID", dbId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
         });
@@ -125,6 +128,8 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         int descriptionIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DESCRIPTION_HTML);
         int numberIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM);
         int difficultyIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY);
+        int favoriteIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_FAVORITE);
+        int completedIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_COMPLETED);
 
         mCursor.moveToPosition(position); // get to the right location in the cursor
 
@@ -134,12 +139,14 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         String description = mCursor.getString(descriptionIndex);
         String num = mCursor.getString(numberIndex);
         String difficulty = mCursor.getString(difficultyIndex);
+        String favorite = mCursor.getString(favoriteIndex);
+        String complete = mCursor.getString(completedIndex);
 
         //Set values
         holder.itemView.setTag(id);
         holder.challengeTitleView.setText(title);
 
-        if(!description.isEmpty()) {
+        if (!description.isEmpty()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 holder.challengeDescriptionView.setText(Html.fromHtml(description.replaceFirst("Description", ""), Html.FROM_HTML_MODE_COMPACT));
             } else {
@@ -149,6 +156,18 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
 
         holder.challengeNumberView.setText("#" + num);
         holder.challengeDifficultyView.setText(difficulty);
+
+        if (favorite.equals("1")) {
+            holder.challengeFavorite.setChecked(true);
+        } else {
+            holder.challengeFavorite.setChecked(false);
+        }
+
+        if (complete.equals("1")) {
+            holder.challengeComplete.setChecked(true);
+        } else {
+            holder.challengeComplete.setChecked(false);
+        }
 
     }
 
@@ -193,6 +212,9 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         TextView challengeDescriptionView;
         TextView challengeNumberView;
         TextView challengeDifficultyView;
+        ToggleButton challengeFavorite;
+        ToggleButton challengeComplete;
+        ImageButton challengeShare;
 
         /**
          * Constructor for the ChallengeViewHolder
@@ -206,6 +228,9 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
             challengeDescriptionView = (TextView) itemView.findViewById(R.id.challengeDescription);
             challengeNumberView = (TextView) itemView.findViewById(R.id.challengeNumber);
             challengeDifficultyView = (TextView) itemView.findViewById(R.id.challengeDifficulty);
+            challengeFavorite = (ToggleButton) itemView.findViewById(R.id.favorite_button);
+            challengeComplete = (ToggleButton) itemView.findViewById(R.id.completed_button);
+            challengeShare = (ImageButton) itemView.findViewById(R.id.share_button);
         }
     }
 }

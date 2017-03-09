@@ -84,17 +84,16 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(MenuItem menuItem) {
                         // Set item in checked state
                         menuItem.setChecked(true);
-                        // TODO: handle navigation
                         Class activity = null;
                         switch(menuItem.getItemId()) {
                             case R.id.nav_challenges:
                                 // activity = MainActivity.class; // already in this view
                                 break;
                             case R.id.nav_saved:
-                                // activity = SavedActivity.class; // TODO: create this activity
+                                 activity = SavedActivity.class;
                                 break;
                             case R.id.nav_completed:
-                                // activity = CompletedActivity.class; // TODO: create this activity
+                                 activity = CompletedActivity.class;
                                 break;
                             case R.id.nav_about:
                                 activity = AboutActivity.class;
