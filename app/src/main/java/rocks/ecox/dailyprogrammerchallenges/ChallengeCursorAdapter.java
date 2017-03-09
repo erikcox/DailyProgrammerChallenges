@@ -104,6 +104,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
 
                 Intent intent = new Intent(mContext, DetailActivity.class);
                 intent.putExtra("EXTRA_DB_ID", dbId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
         });
