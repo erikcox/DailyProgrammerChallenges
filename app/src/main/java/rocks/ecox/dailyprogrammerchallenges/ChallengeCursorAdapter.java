@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
+import timber.log.Timber;
 
 public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursorAdapter.ChallengeViewHolder> {
 
@@ -125,6 +126,8 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         int descriptionIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DESCRIPTION_HTML);
         int numberIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM);
         int difficultyIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY);
+        int favoriteIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_FAVORITE);
+        int completedIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_COMPLETED);
 
         mCursor.moveToPosition(position); // get to the right location in the cursor
 
@@ -134,12 +137,13 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         String description = mCursor.getString(descriptionIndex);
         String num = mCursor.getString(numberIndex);
         String difficulty = mCursor.getString(difficultyIndex);
+        String favorite = mCursor.getString(favoriteIndex);
 
         //Set values
         holder.itemView.setTag(id);
         holder.challengeTitleView.setText(title);
 
-        if(!description.isEmpty()) {
+        if (!description.isEmpty()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 holder.challengeDescriptionView.setText(Html.fromHtml(description.replaceFirst("Description", ""), Html.FROM_HTML_MODE_COMPACT));
             } else {
@@ -149,6 +153,13 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
 
         holder.challengeNumberView.setText("#" + num);
         holder.challengeDifficultyView.setText(difficulty);
+
+        if (favorite.equals("1")) {
+            Timber.d("Favorite debug: %s | %s", favorite, title);
+            holder.challengeFavorite.setChecked(true);
+        } else {
+            holder.challengeFavorite.setChecked(false);
+        }
 
     }
 
@@ -193,6 +204,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         TextView challengeDescriptionView;
         TextView challengeNumberView;
         TextView challengeDifficultyView;
+        ToggleButton challengeFavorite;
 
         /**
          * Constructor for the ChallengeViewHolder
@@ -206,6 +218,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
             challengeDescriptionView = (TextView) itemView.findViewById(R.id.challengeDescription);
             challengeNumberView = (TextView) itemView.findViewById(R.id.challengeNumber);
             challengeDifficultyView = (TextView) itemView.findViewById(R.id.challengeDifficulty);
+            challengeFavorite = (ToggleButton) itemView.findViewById(R.id.favorite_button);
         }
     }
 }
