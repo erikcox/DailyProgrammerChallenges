@@ -14,17 +14,17 @@ import timber.log.Timber;
 
 import static com.activeandroid.Cache.getContext;
 
-public class SavedActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class CompletedActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
     private ChallengeCursorAdapter mAdapter;
     protected RecyclerView mRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_favorite);
+        setContentView(R.layout.activity_completed);
 
         mAdapter = new ChallengeCursorAdapter(getContext());
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewFavorite);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewCompleted);
         mRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
@@ -56,7 +56,7 @@ public class SavedActivity extends AppCompatActivity implements LoaderManager.Lo
             @Override
             public Cursor loadInBackground() {
                 // Query and load challenge data
-                String sortQuery ="favorite_challenge = 1"; // TODO: Add ability to sort favorite by newest/oldest?
+                String sortQuery = "completed_challenge = 1"; // TODO: Add ability to sort favorite by newest/oldest?
 
                 try {
                     final Cursor query = getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,

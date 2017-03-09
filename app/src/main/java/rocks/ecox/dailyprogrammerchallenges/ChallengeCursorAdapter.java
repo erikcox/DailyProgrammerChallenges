@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
-import timber.log.Timber;
 
 public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursorAdapter.ChallengeViewHolder> {
 
@@ -138,6 +137,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         String num = mCursor.getString(numberIndex);
         String difficulty = mCursor.getString(difficultyIndex);
         String favorite = mCursor.getString(favoriteIndex);
+        String complete = mCursor.getString(completedIndex);
 
         //Set values
         holder.itemView.setTag(id);
@@ -155,10 +155,15 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         holder.challengeDifficultyView.setText(difficulty);
 
         if (favorite.equals("1")) {
-            Timber.d("Favorite debug: %s | %s", favorite, title);
             holder.challengeFavorite.setChecked(true);
         } else {
             holder.challengeFavorite.setChecked(false);
+        }
+
+        if (complete.equals("1")) {
+            holder.challengeComplete.setChecked(true);
+        } else {
+            holder.challengeComplete.setChecked(false);
         }
 
     }
@@ -205,6 +210,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         TextView challengeNumberView;
         TextView challengeDifficultyView;
         ToggleButton challengeFavorite;
+        ToggleButton challengeComplete;
 
         /**
          * Constructor for the ChallengeViewHolder
@@ -219,6 +225,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
             challengeNumberView = (TextView) itemView.findViewById(R.id.challengeNumber);
             challengeDifficultyView = (TextView) itemView.findViewById(R.id.challengeDifficulty);
             challengeFavorite = (ToggleButton) itemView.findViewById(R.id.favorite_button);
+            challengeComplete = (ToggleButton) itemView.findViewById(R.id.completed_button);
         }
     }
 }

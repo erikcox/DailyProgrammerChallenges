@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                                  activity = SavedActivity.class;
                                 break;
                             case R.id.nav_completed:
-                                // activity = CompletedActivity.class; // TODO: create this activity
+                                 activity = CompletedActivity.class;
                                 break;
                             case R.id.nav_about:
                                 activity = AboutActivity.class;
