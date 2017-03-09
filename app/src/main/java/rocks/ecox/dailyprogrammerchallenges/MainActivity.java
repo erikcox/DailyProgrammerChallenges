@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                                 // activity = MainActivity.class; // already in this view
                                 break;
                             case R.id.nav_saved:
-                                // activity = SavedActivity.class; // TODO: create this activity
+                                 activity = SavedActivity.class;
                                 break;
                             case R.id.nav_completed:
                                 // activity = CompletedActivity.class; // TODO: create this activity
