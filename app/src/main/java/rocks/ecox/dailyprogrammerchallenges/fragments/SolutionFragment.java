@@ -70,6 +70,7 @@ public class SolutionFragment extends Fragment {
                 null,
                 null,
                 null);
+
         try {
             mCursor.moveToPosition(Integer.parseInt(rowId) - 1);
             title = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_TITLE));
@@ -82,12 +83,13 @@ public class SolutionFragment extends Fragment {
         }
 
         detailChallengeTitle.setText(title);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             detailChallengeDescription.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT));
         } else {
             detailChallengeDescription.setText(Html.fromHtml(description));
         }
-        // TODO: Display author, currently not showing
+
         detailChallengeAuthor.setText(String.format("%s%s", getString(R.string.author_label), author));
 
         return rootView;
