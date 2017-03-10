@@ -5,7 +5,7 @@
               android:layout_height="wrap_content"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
-              tools:context="rocks.ecox.dailyprogrammerchallenges.MainActivity"
+              tools:context="rocks.ecox.dailyprogrammerchallenges.activities.MainActivity"
               xmlns:card_view="http://schemas.android.com/apk/res-auto"
               android:padding="2dp">
 

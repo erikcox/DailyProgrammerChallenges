@@ -1,35 +1,67 @@
-package rocks.ecox.dailyprogrammerchallenges;
+package rocks.ecox.dailyprogrammerchallenges.fragments;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import rocks.ecox.dailyprogrammerchallenges.activities.MainActivity;
+import rocks.ecox.dailyprogrammerchallenges.R;
+import rocks.ecox.dailyprogrammerchallenges.adapters.ChallengeCursorAdapter;
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 import timber.log.Timber;
 
-import static com.activeandroid.Cache.getContext;
-
-public class CompletedActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
-    private ChallengeCursorAdapter mAdapter;
+/**
+ * A placeholder fragment containing a simple view.
+ */
+public class ChallengeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    // LoaderManager.LoaderCallbacks<Object>
+    /**
+     * The fragment argument representing the section number for this
+     * fragment.
+     */
+    private static final String ARG_SECTION_NUMBER = "section_number";
+    ChallengeCursorAdapter mAdapter;
     protected RecyclerView mRecyclerView;
 
+    public ChallengeFragment() {
+    }
+
+    /**
+     * Returns a new instance of this fragment for the given section
+     * number.
+     */
+    public static ChallengeFragment newInstance(int sectionNumber) {
+        ChallengeFragment fragment = new ChallengeFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_completed);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        Bundle bundle = getArguments();
+        int tabPosition = bundle.getInt(ARG_SECTION_NUMBER) - 1;
 
         mAdapter = new ChallengeCursorAdapter(getContext());
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewCompleted);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewChallenges);
         mRecyclerView.setLayoutManager(
-                new LinearLayoutManager(this));
+                new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
-
-        getSupportLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(tabPosition, null, this);
+        return rootView;
     }
 
     @Override
@@ -56,12 +88,19 @@ public class CompletedActivity extends AppCompatActivity implements LoaderManage
             @Override
             public Cursor loadInBackground() {
                 // Query and load challenge data
-                String sortQuery = "completed_challenge = 1"; // TODO: Add ability to sort favorite by newest/oldest?
+                String sortQuery;
+                Context applicationContext = MainActivity.getContextOfApplication();
+
+                if (id >= 1 && id <= 3) {
+                    sortQuery = " AND difficulty_num = " + id;
+                } else {
+                    sortQuery = "";
+                }
 
                 try {
-                    final Cursor query = getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
+                    final Cursor query = applicationContext.getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
                             null,
-                            sortQuery,
+                            "show_challenge = 1" + sortQuery,
                             null,
                             DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " DESC, "
                                     + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");

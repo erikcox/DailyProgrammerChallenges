@@ -1,4 +1,4 @@
-package rocks.ecox.dailyprogrammerchallenges;
+package rocks.ecox.dailyprogrammerchallenges.adapters;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -16,6 +16,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import rocks.ecox.dailyprogrammerchallenges.activities.DetailActivity;
+import rocks.ecox.dailyprogrammerchallenges.R;
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 
 public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursorAdapter.ChallengeViewHolder> {

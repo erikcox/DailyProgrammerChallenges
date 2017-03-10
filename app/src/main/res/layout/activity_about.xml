@@ -7,7 +7,7 @@
                                                  android:layout_height="match_parent"
                                                  android:fitsSystemWindows="true"
                                                  android:padding="@dimen/md_keylines"
-                                                 tools:context="rocks.ecox.dailyprogrammerchallenges.MainActivity">
+                                                 tools:context="rocks.ecox.dailyprogrammerchallenges.activities.MainActivity">
 
     <ScrollView
         android:layout_width="wrap_content"
