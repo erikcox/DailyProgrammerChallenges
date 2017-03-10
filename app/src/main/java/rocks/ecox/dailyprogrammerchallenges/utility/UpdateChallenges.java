@@ -19,6 +19,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 import rocks.ecox.dailyprogrammerchallenges.api.RedditChallengeApi;
+import rocks.ecox.dailyprogrammerchallenges.api.RedditSolutionApi;
 import rocks.ecox.dailyprogrammerchallenges.models.Challenge;
 import rocks.ecox.dailyprogrammerchallenges.models.Child;
 import timber.log.Timber;
@@ -41,9 +42,11 @@ public class UpdateChallenges {
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setEndpoint(API)
                 .build();
-        final RedditChallengeApi redditData = restAdapter.create(RedditChallengeApi.class);
 
-        // Get json data
+        final RedditChallengeApi redditData = restAdapter.create(RedditChallengeApi.class);
+        final RedditSolutionApi redditSolutions = restAdapter.create(RedditSolutionApi.class);
+
+        // Get challenge json data
         redditData.getFeed(subreddit, new Callback<Challenge>() {
             @Override
             public void success(Challenge challenge, Response response) {
