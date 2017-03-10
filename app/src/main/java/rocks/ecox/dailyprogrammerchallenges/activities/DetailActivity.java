@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import rocks.ecox.dailyprogrammerchallenges.R;
 import rocks.ecox.dailyprogrammerchallenges.fragments.DetailFragment;
+import rocks.ecox.dailyprogrammerchallenges.fragments.SolutionFragment;
 
 import static rocks.ecox.dailyprogrammerchallenges.utility.DataParsing.setPageNum;
 
@@ -79,8 +80,7 @@ public class DetailActivity extends AppCompatActivity {
             if (position == 0) {
                 return DetailFragment.newInstance(position + 1, getDbId());
             } else if (position == 1) {
-                // TODO: add SolutionFragment reference here
-                return DetailFragment.newInstance(position + 1, getDbId());
+                return SolutionFragment.newInstance(position + 1, getDbId());
             } else {
                 return null;
             }
