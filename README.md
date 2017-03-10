@@ -9,7 +9,7 @@ The following **required** functionality is completed:
 ### Core Platform Development
 * [x] App integrates a third-party library.
 
-* [ ] App validates all input from servers and users. If data does not exist or is in the wrong format, the app logs this fact and does not crash.
+* [x] App validates all input from servers and users. If data does not exist or is in the wrong format, the app logs this fact and does not crash.
 
 * [ ] App includes support for accessibility. That includes content descriptions, navigation using a D-pad, and, if applicable, non-audio versions of audio cues.
 
@@ -21,17 +21,9 @@ The following **required** functionality is completed:
 
 * [ ] App integrates two or more Google services. Google service integrations can be a part of Google Play Services or Firebase.
 
-* [ ] Each service imported in the build.gradle is used in the app.
-
-* [ ] If Location is used, the app customizes the user’s experience by using the device's location.
-
-* [ ] If Admob is used, the app displays test ads. If Admob was not used, student meets specifications.
+* [x] Each service imported in the build.gradle is used in the app.
 
 * [ ] If Analytics is used, the app creates only one analytics instance. If Analytics was not used, student meets specifications.
-
-* [ ] If Maps is used, the map provides relevant information to the user. If Maps was not used, student meets specifications.
-
-* [ ] If Identity is used, the user’s identity influences some portion of the app. If Identity was not used, student meets specifications.
 
 ### Material Design
 
@@ -54,14 +46,6 @@ The following **required** functionality is completed:
 ### Data Persistence
 
 * [x] App stores data locally either by implementing a ContentProvider OR using Firebase Realtime Database. No third party frameworks may be used.
-
-* [ ] If it regularly pulls or sends data to/from a web service or API, app updates data in its cache at regular intervals using a SyncAdapter or JobDispacter.
-
-**OR**
-
-* [ ] If it needs to pull or send data to/from a web service or API only once, or on a per request basis (such as a search application), app uses an IntentService to do so.
-
-**OR**
 
 * [x] It it performs short duration, on-demand requests(such as search), app uses an AsyncTask.
 
