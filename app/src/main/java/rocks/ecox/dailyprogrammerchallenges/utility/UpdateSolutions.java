@@ -18,18 +18,19 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
-import rocks.ecox.dailyprogrammerchallenges.api.RedditChallengeApi;
 import rocks.ecox.dailyprogrammerchallenges.api.RedditSolutionApi;
 import rocks.ecox.dailyprogrammerchallenges.models.Challenge;
 import rocks.ecox.dailyprogrammerchallenges.models.Child;
 import timber.log.Timber;
 
-public class UpdateChallenges {
+public class UpdateSolutions {
 
     public static void update() {
         // Reddit API stuff
         String API = "https://www.reddit.com/";
         String subreddit = "dailyprogrammer";
+        String challenge = "5yaiin";
+
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
                 .build();
@@ -43,71 +44,72 @@ public class UpdateChallenges {
                 .setEndpoint(API)
                 .build();
 
-        final RedditChallengeApi redditData = restAdapter.create(RedditChallengeApi.class);
+        final RedditSolutionApi redditSolutions = restAdapter.create(RedditSolutionApi.class);
 
         // Get challenge json data
-        redditData.getFeed(subreddit, new Callback<Challenge>() {
+        redditSolutions.getFeed(subreddit, challenge, new Callback<Challenge>() {
             @Override
-            public void success(Challenge challenge, Response response) {
-                for (Child c : challenge.getData().getChildren()) {
+            public void success(Solution solution, Response response) {
+                for (Child c : solution.getData().getChildren()) {
                     try {
                         // Check if challenge already exists in DB
-                        List<Challenge> duplicateChallanges =
-                                SQLiteUtils.rawQuery(Challenge.class,
-                                        "SELECT * FROM Challenges WHERE post_id = ?",
+                        // TODO: create Solutions DB and Solution class
+                        List<Solution> duplicateSolutions =
+                                SQLiteUtils.rawQuery(Solution.class,
+                                        "SELECT * FROM Solutions WHERE post_id = ?",
                                         new String[] {c.getData().getPostId() });
 
-                        if (duplicateChallanges.size() == 0) {
+                        if (duplicateSolutions.size() == 0) {
                             // Set challenge attributes
-                            Challenge ch = new Challenge();
+                            Solution sol = new Solution();
 
-                            ch.setPostId(c.getData().getPostId());
-                            ch.setPostTitle(c.getData().getPostTitle());
-                            ch.setPostDescription(c.getData().getPostDescription());
+                            sol.setPostId(c.getData().getPostId());
+                            sol.setPostTitle(c.getData().getPostTitle());
+                            sol.setPostDescription(c.getData().getPostDescription());
 
                             if(c.getData().getPostDescriptionHtml() != null) {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                    ch.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml(), Html.FROM_HTML_MODE_COMPACT).toString());
+                                    sol.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml(), Html.FROM_HTML_MODE_COMPACT).toString());
                                 } else {
-                                    ch.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml()).toString());
+                                    sol.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml()).toString());
                                 }
                             }
 
-                            ch.setPostAuthor(c.getData().getPostAuthor());
-                            ch.setPostUrl(c.getData().getPostUrl());
-                            ch.setPostUps(c.getData().getUps());
-                            ch.setPostUtc(c.getData().getPostUtc());
-                            ch.setNumberOfComments(c.getData().getNumberOfComments());
+                            sol.setPostAuthor(c.getData().getPostAuthor());
+                            sol.setPostUrl(c.getData().getPostUrl());
+                            sol.setPostUps(c.getData().getUps());
+                            sol.setPostUtc(c.getData().getPostUtc());
+                            sol.setNumberOfComments(c.getData().getNumberOfComments());
 
-                            String title = ch.getPostTitle();
-                            String id = ch.getPostId();
+                            String title = sol.getPostTitle();
+                            String id = sol.getPostId();
 
                             // Set challenge number from title field
-                            ch.setChallengeNumber(DataParsing.getChallengeNumber(title));
+                            sol.setChallengeNumber(DataParsing.getChallengeNumber(title));
 
                             // Set difficulty from title field
-                            ch.setChallengeDifficulty(DataParsing.getChallengeDifficulty(title));
+                            sol.setChallengeDifficulty(DataParsing.getChallengeDifficulty(title));
 
                             // Set difficulty number flag for sorting
-                            ch.setChallengeDifficultyNumber(DataParsing.getChallengeDifficultyNumber(ch.getChallengeDifficulty()));
+                            sol.setChallengeDifficultyNumber(DataParsing.getChallengeDifficultyNumber(sol.getChallengeDifficulty()));
 
                             // Set cleanedPostTitle field
-                            ch.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
+                            sol.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
 
-                            if (ch.getChallengeDifficulty().equals("Not a valid challenge")) {
-                                ch.setShowChallenge(false);
+                            if (sol.getChallengeDifficulty().equals("Not a valid challenge")) {
+                                sol.setShowChallenge(false);
                             } else {
-                                ch.setShowChallenge(true);
+                                sol.setShowChallenge(true);
                             }
 
-                            ch.save();
+                            sol.save();
                         }
                     } catch (NullPointerException e) {
                         // Check if Crashlytics is running before logging exception
                         if (Fabric.isInitialized()) {
                             Crashlytics.logException(e);
                         }
-                            e.printStackTrace();
+                        e.printStackTrace();
                     }
                 }
 
