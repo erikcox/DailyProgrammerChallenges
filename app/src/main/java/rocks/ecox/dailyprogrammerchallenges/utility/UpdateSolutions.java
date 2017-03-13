@@ -25,11 +25,11 @@ import timber.log.Timber;
 
 public class UpdateSolutions {
 
-    public static void update() {
+    public static void update(final String postId) {
         // Reddit API stuff
         String API = "https://www.reddit.com/";
         String subreddit = "dailyprogrammer";
-        String challenge = "5yaiin";
+        String challenge = postId;
 
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
@@ -76,7 +76,7 @@ public class UpdateSolutions {
 
                             sol.setCommentUps(c.getData().getCommentUps());
 
-                            // TODO: add logic for showComment
+                            // TODO: add logic for showComment boolean
 
                             sol.save();
                         }
@@ -93,7 +93,7 @@ public class UpdateSolutions {
 
             @Override
             public void failure(RetrofitError error) {
-                Timber.e("Retrofit error: %s", error.getMessage());
+                Timber.e("Retrofit error on : %s | %s", postId, error.getMessage());
             }
         });
     }

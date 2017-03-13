@@ -4,6 +4,10 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class DataComment_ {
+    @SerializedName("kind")
+    @Expose
+    private String kind;
+
     @SerializedName("parent_id")
     @Expose
     private String commentParentId;
@@ -23,6 +27,10 @@ public class DataComment_ {
     @SerializedName("ups")
     @Expose
     private int commentUps;
+
+    public String getKind() {
+        return kind;
+    }
 
     public String getCommentParentId() {
         return commentParentId;

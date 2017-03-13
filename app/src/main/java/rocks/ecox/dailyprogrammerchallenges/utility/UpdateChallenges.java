@@ -19,7 +19,6 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 import rocks.ecox.dailyprogrammerchallenges.api.RedditChallengeApi;
-import rocks.ecox.dailyprogrammerchallenges.api.RedditSolutionApi;
 import rocks.ecox.dailyprogrammerchallenges.models.Challenge;
 import rocks.ecox.dailyprogrammerchallenges.models.Child;
 import timber.log.Timber;
@@ -101,6 +100,8 @@ public class UpdateChallenges {
                             }
 
                             ch.save();
+
+                            UpdateSolutions.update(ch.getPostId());
                         }
                     } catch (NullPointerException e) {
                         // Check if Crashlytics is running before logging exception
