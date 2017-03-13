@@ -19,8 +19,8 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 import rocks.ecox.dailyprogrammerchallenges.api.RedditSolutionApi;
-import rocks.ecox.dailyprogrammerchallenges.models.Challenge;
-import rocks.ecox.dailyprogrammerchallenges.models.Child;
+import rocks.ecox.dailyprogrammerchallenges.models.ChildComment;
+import rocks.ecox.dailyprogrammerchallenges.models.Solution;
 import timber.log.Timber;
 
 public class UpdateSolutions {
@@ -46,61 +46,37 @@ public class UpdateSolutions {
 
         final RedditSolutionApi redditSolutions = restAdapter.create(RedditSolutionApi.class);
 
-        // Get challenge json data
-        redditSolutions.getFeed(subreddit, challenge, new Callback<Challenge>() {
+        // Get solution json data
+        redditSolutions.getFeed(subreddit, challenge, new Callback<Solution>() {
             @Override
             public void success(Solution solution, Response response) {
-                for (Child c : solution.getData().getChildren()) {
+                for (ChildComment c : solution.getData().getChildren()) {
                     try {
-                        // Check if challenge already exists in DB
-                        // TODO: create Solutions DB and Solution class
+                        // Check if solution already exists in DB
                         List<Solution> duplicateSolutions =
                                 SQLiteUtils.rawQuery(Solution.class,
-                                        "SELECT * FROM Solutions WHERE post_id = ?",
-                                        new String[] {c.getData().getPostId() });
+                                        "SELECT * FROM Solutions WHERE parent_id = ?",
+                                        new String[] {c.getData().getCommentParentId() });
 
                         if (duplicateSolutions.size() == 0) {
-                            // Set challenge attributes
+                            // Set solution attributes
                             Solution sol = new Solution();
 
-                            sol.setPostId(c.getData().getPostId());
-                            sol.setPostTitle(c.getData().getPostTitle());
-                            sol.setPostDescription(c.getData().getPostDescription());
+                            sol.setCommentParentId(c.getData().getCommentParentId());
+                            sol.setCommentId(c.getData().getCommentId());
+                            sol.setCommentText(c.getData().getCommentText());
 
-                            if(c.getData().getPostDescriptionHtml() != null) {
+                            if(c.getData().getCommentTextHtml() != null) {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                    sol.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml(), Html.FROM_HTML_MODE_COMPACT).toString());
+                                    sol.setCommentTextHtml(Html.fromHtml(c.getData().getCommentTextHtml(), Html.FROM_HTML_MODE_COMPACT).toString());
                                 } else {
-                                    sol.setPostDescriptionHtml(Html.fromHtml(c.getData().getPostDescriptionHtml()).toString());
+                                    sol.setCommentTextHtml(Html.fromHtml(c.getData().getCommentTextHtml()).toString());
                                 }
                             }
 
-                            sol.setPostAuthor(c.getData().getPostAuthor());
-                            sol.setPostUrl(c.getData().getPostUrl());
-                            sol.setPostUps(c.getData().getUps());
-                            sol.setPostUtc(c.getData().getPostUtc());
-                            sol.setNumberOfComments(c.getData().getNumberOfComments());
+                            sol.setCommentUps(c.getData().getCommentUps());
 
-                            String title = sol.getPostTitle();
-                            String id = sol.getPostId();
-
-                            // Set challenge number from title field
-                            sol.setChallengeNumber(DataParsing.getChallengeNumber(title));
-
-                            // Set difficulty from title field
-                            sol.setChallengeDifficulty(DataParsing.getChallengeDifficulty(title));
-
-                            // Set difficulty number flag for sorting
-                            sol.setChallengeDifficultyNumber(DataParsing.getChallengeDifficultyNumber(sol.getChallengeDifficulty()));
-
-                            // Set cleanedPostTitle field
-                            sol.setCleanedPostTitle(DataParsing.getCleanPostTitle(title));
-
-                            if (sol.getChallengeDifficulty().equals("Not a valid challenge")) {
-                                sol.setShowChallenge(false);
-                            } else {
-                                sol.setShowChallenge(true);
-                            }
+                            // TODO: add logic for showComment
 
                             sol.save();
                         }
