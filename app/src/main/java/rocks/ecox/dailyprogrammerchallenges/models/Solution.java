@@ -22,7 +22,7 @@ public class Solution extends Model {
     @Column(name = "parent_id")
     private String commentParentId;
 
-    @Column(name = "id")
+    @Column(name = "comment_id")
     private String commentId;
 
     @Column(name = "body")
