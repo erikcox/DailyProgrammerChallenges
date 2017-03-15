@@ -74,6 +74,10 @@ public class UpdateSolutions {
 
                                 s.setCommentUps(c.getData().getCommentUps());
 
+                                if (s.getCommentText() == null) {
+                                    s.setShowComment(false);
+                                }
+
                                 s.save();
                             //}
                         } catch (NullPointerException e) {

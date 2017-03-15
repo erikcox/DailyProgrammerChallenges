@@ -16,9 +16,11 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import rocks.ecox.dailyprogrammerchallenges.activities.DetailActivity;
 import rocks.ecox.dailyprogrammerchallenges.R;
+import rocks.ecox.dailyprogrammerchallenges.activities.DetailActivity;
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
+import rocks.ecox.dailyprogrammerchallenges.utility.UpdateSolutions;
+import timber.log.Timber;
 
 public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursorAdapter.ChallengeViewHolder> {
 
@@ -54,6 +56,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                 int idIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry._ID);
                 mCursor.moveToPosition(position);
                 final String dbId = mCursor.getString(idIndex);
+
                 String[] rowId = {dbId};
                 Uri challenge = DPChallengesContract.ChallengeEntry.CONTENT_URI.buildUpon().appendPath(dbId).build();
                 ContentValues values = new ContentValues();
@@ -103,6 +106,16 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                 int idIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry._ID);
                 mCursor.moveToPosition(position);
                 final String dbId = mCursor.getString(idIndex);
+
+                int postIdIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_POST_ID);
+                final String postId = mCursor.getString(postIdIndex);
+                Timber.d("POSTID: %s", postId);
+
+                try {
+                    UpdateSolutions.update(postId);
+                } catch (NullPointerException e) {
+                    Timber.e("Can't parse challenge id's. %s", e);
+                }
 
                 Intent intent = new Intent(mContext, DetailActivity.class);
                 intent.putExtra("EXTRA_DB_ID", dbId);

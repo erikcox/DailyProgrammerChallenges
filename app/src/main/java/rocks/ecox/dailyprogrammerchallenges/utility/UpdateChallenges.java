@@ -38,7 +38,7 @@ public class UpdateChallenges {
                         .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
                         .serializeNulls()
                         .create()))
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLogLevel(RestAdapter.LogLevel.BASIC)
                 .setEndpoint(API)
                 .build();
 
@@ -109,16 +109,6 @@ public class UpdateChallenges {
                             e.printStackTrace();
                     }
                 }
-
-                try {
-                    List<String> challengeIds = Challenge.getChallengeIds();
-                    for (String id : challengeIds) {
-                        UpdateSolutions.update(id);
-                    }
-                } catch (NullPointerException e) {
-                    Timber.e("Can't parse challenge id's. %s", e);
-                }
-
             }
 
             @Override
@@ -126,5 +116,6 @@ public class UpdateChallenges {
                 Timber.e("Retrofit error: %s", error.getMessage());
             }
         });
+
     }
 }
