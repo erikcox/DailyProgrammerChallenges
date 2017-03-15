@@ -109,12 +109,11 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
 
                 int postIdIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_POST_ID);
                 final String postId = mCursor.getString(postIdIndex);
-                Timber.d("POSTID: %s", postId);
 
                 try {
                     UpdateSolutions.update(postId);
                 } catch (NullPointerException e) {
-                    Timber.e("Can't parse challenge id's. %s", e);
+                    Timber.e(e);
                 }
 
                 Intent intent = new Intent(mContext, DetailActivity.class);

@@ -1,4 +1,4 @@
-package rocks.ecox.dailyprogrammerchallenges.models;
+package rocks.ecox.dailyprogrammerchallenges.models.solution;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -18,7 +18,7 @@ public class Solution extends Model {
 
     @SerializedName("data")
     @Expose
-    private DataComment data;
+    private DataSolution data;
 
     @Column(name = "parent_id")
     private String commentParentId;
@@ -52,11 +52,11 @@ public class Solution extends Model {
         this.showComment = showComment;
     }
 
-    public DataComment getData() {
+    public DataSolution getData() {
         return data;
     }
 
-    public void setData(DataComment data) {
+    public void setData(DataSolution data) {
         this.data = data;
     }
 

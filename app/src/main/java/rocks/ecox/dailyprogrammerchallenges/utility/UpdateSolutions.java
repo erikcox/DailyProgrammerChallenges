@@ -18,8 +18,8 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 import rocks.ecox.dailyprogrammerchallenges.api.RedditSolutionApi;
-import rocks.ecox.dailyprogrammerchallenges.models.ChildComment;
-import rocks.ecox.dailyprogrammerchallenges.models.Solution;
+import rocks.ecox.dailyprogrammerchallenges.models.solution.ChildSolution;
+import rocks.ecox.dailyprogrammerchallenges.models.solution.Solution;
 import timber.log.Timber;
 
 public class UpdateSolutions {
@@ -51,7 +51,7 @@ public class UpdateSolutions {
             public void success(List<Solution> solutions, Response response) {
                 List<String> comments = Solution.getChildrenIds(challenge);
                 for (Solution sol : solutions) {
-                    for (ChildComment c : sol.getData().getChildren()) {
+                    for (ChildSolution c : sol.getData().getChildren()) {
                         try {
 
                             // Check if comment is already in DB & kind is t1, NOT t3

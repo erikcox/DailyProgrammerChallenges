@@ -1,4 +1,4 @@
-package rocks.ecox.dailyprogrammerchallenges.models;
+package rocks.ecox.dailyprogrammerchallenges.models.challenge;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,20 +1,19 @@
-package rocks.ecox.dailyprogrammerchallenges.models;
+package rocks.ecox.dailyprogrammerchallenges.models.challenge;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ChildComment {
+public class Child {
 
     @SerializedName("data")
     @Expose
-    private DataComment_ data;
+    private Data_ data;
 
-    public DataComment_ getData() {
+    public Data_ getData() {
         return data;
     }
 
-    public void setData(DataComment_ data) {
+    public void setData(Data_ data) {
         this.data = data;
     }
-
 }

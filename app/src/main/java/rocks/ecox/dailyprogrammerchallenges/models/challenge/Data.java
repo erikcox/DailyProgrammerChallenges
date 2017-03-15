@@ -1,4 +1,4 @@
-package rocks.ecox.dailyprogrammerchallenges.models;
+package rocks.ecox.dailyprogrammerchallenges.models.challenge;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -6,17 +6,16 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DataComment {
+public class Data {
     @SerializedName("children")
     @Expose
-    private List<ChildComment> children = new ArrayList<ChildComment>();
+    private List<Child> children = new ArrayList<Child>();
 
-    public List<ChildComment> getChildren() {
+    public List<Child> getChildren() {
         return children;
     }
 
-    public void setChildren(List<ChildComment> children) {
+    public void setChildren(List<Child> children) {
         this.children = children;
     }
-
 }

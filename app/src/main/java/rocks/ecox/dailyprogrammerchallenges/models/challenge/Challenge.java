@@ -1,4 +1,4 @@
-package rocks.ecox.dailyprogrammerchallenges.models;
+package rocks.ecox.dailyprogrammerchallenges.models.challenge;
 
 import android.provider.BaseColumns;
 

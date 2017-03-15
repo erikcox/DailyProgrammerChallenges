@@ -1,9 +1,9 @@
-package rocks.ecox.dailyprogrammerchallenges.models;
+package rocks.ecox.dailyprogrammerchallenges.models.solution;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class DataComment_ {
+public class DataSolution_ {
     @SerializedName("kind")
     @Expose
     private String kind;
