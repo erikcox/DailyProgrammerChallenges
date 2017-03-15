@@ -1,9 +1,6 @@
 package rocks.ecox.dailyprogrammerchallenges.utility;
 
-import android.os.Build;
-import android.text.Html;
-
-import com.activeandroid.util.SQLiteUtils;
+import com.activeandroid.ActiveAndroid;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
@@ -19,6 +16,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 import rocks.ecox.dailyprogrammerchallenges.api.RedditSolutionApi;
+import rocks.ecox.dailyprogrammerchallenges.models.ChildComment;
 import rocks.ecox.dailyprogrammerchallenges.models.Solution;
 import timber.log.Timber;
 
@@ -50,41 +48,31 @@ public class UpdateSolutions {
             @Override
             public void success(List<Solution> solutions, Response response) {
                 for (Solution sol : solutions) {
-                    try {
-                        if (sol.getData().getChildren().size() > 0 && sol.getData().getChildren().get(0).getData().getCommentParentId() != null) {
+                    for (ChildComment c : sol.getData().getChildren()) {
+                        ActiveAndroid.beginTransaction();
+                        try {
+                            Timber.d("Solution RAW: %s", c.getData().getCommentText());
 
-                            // Catch dupes
-                            List<Solution> duplicateSolutions =
-                                    SQLiteUtils.rawQuery(Solution.class,
-                                            "SELECT * FROM Solutions WHERE parent_id = ?",
-                                            new String[] {sol.getData().getChildren().get(0).getData().getCommentParentId() });
-
-                            if (duplicateSolutions.size() == 0) {
-                                sol.setCommentParentId(sol.getCommentParentId());
-                                sol.setCommentId(sol.getCommentId());
-                                sol.setCommentParentId(sol.getCommentParentId());
-                                sol.setCommentText(sol.getCommentText());
-
-                                if(sol.getCommentTextHtml() != null) {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                        sol.setCommentTextHtml(Html.fromHtml(sol.getCommentTextHtml(), Html.FROM_HTML_MODE_COMPACT).toString());
-                                    } else {
-                                        sol.setCommentTextHtml(Html.fromHtml(sol.getCommentTextHtml()).toString());
-                                    }
-                                }
-
-                                sol.setCommentUps(sol.getCommentUps());
-                            }
-
+                            Solution s = new Solution();
+                            s.setCommentParentId(c.getData().getCommentParentId());
+                            Timber.d("Solution GET: %s", sol.getCommentParentId());
+                            s.setCommentId(c.getData().getCommentId());
+                            s.setCommentText(c.getData().getCommentText());
+                            // TODO: add HTML comments with version condition
+                            //s.setCommentTextHtml();
+                            s.setCommentUps(c.getData().getCommentUps());
                             // TODO: add logic for showComment boolean
-                            sol.save();
+                            s.save();
+                        } catch (NullPointerException e) {
+                            // Check if Crashlytics is running before logging exception
+                            if (Fabric.isInitialized()) {
+                                Crashlytics.logException(e);
+                            }
+                            e.printStackTrace();
                         }
-                    } catch (NullPointerException e) {
-                        // Check if Crashlytics is running before logging exception
-                        if (Fabric.isInitialized()) {
-                            Crashlytics.logException(e);
+                        finally {
+                            ActiveAndroid.endTransaction();
                         }
-                        e.printStackTrace();
                     }
                 }
             }

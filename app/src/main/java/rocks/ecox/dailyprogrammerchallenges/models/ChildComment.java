@@ -16,4 +16,5 @@ public class ChildComment {
     public void setData(DataComment_ data) {
         this.data = data;
     }
+
 }

@@ -18,4 +18,5 @@ public class DataComment {
     public void setChildren(List<ChildComment> children) {
         this.children = children;
     }
+
 }
