@@ -1,6 +1,8 @@
 package rocks.ecox.dailyprogrammerchallenges.utility;
 
-import com.activeandroid.ActiveAndroid;
+import android.os.Build;
+import android.text.Html;
+
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
@@ -26,7 +28,7 @@ public class UpdateSolutions {
         // Reddit API stuff
         String API = "https://www.reddit.com/";
         String subreddit = "dailyprogrammer";
-        String challenge = postId;
+        final String challenge = postId;
 
         new OkHttpClient.Builder()
                 .addNetworkInterceptor(new StethoInterceptor())
@@ -47,31 +49,39 @@ public class UpdateSolutions {
         redditSolutions.getFeed(subreddit, challenge, new Callback<List<Solution>>() {
             @Override
             public void success(List<Solution> solutions, Response response) {
+                List<String> comments = Solution.getChildrenIds(challenge);
                 for (Solution sol : solutions) {
                     for (ChildComment c : sol.getData().getChildren()) {
-                        ActiveAndroid.beginTransaction();
                         try {
-                            String txt = c.getData().getCommentText();
-                            Timber.d("Solution RAW: %s", txt);
 
-                            Solution s = new Solution();
-                            s.setCommentText(txt);
-                            s.setCommentId(c.getData().getCommentId());
-                            Timber.d("Solution GET: %s", s.getCommentText());
-                            // TODO: add HTML comments with version condition
-                            //s.setCommentTextHtml();
-                            s.setCommentUps(c.getData().getCommentUps());
-                            // TODO: add logic for showComment boolean
-                            s.save();
+                            // Check if comment is already in DB & kind is t1, NOT t3
+                            // c.getData().getKind() always returns null
+                            //if (!comments.contains(c.getData().getCommentId())) {
+                                Solution s = new Solution();
+
+                                s.setCommentId(c.getData().getCommentId());
+                                s.setCommentParentId(challenge);
+
+                                s.setCommentText(c.getData().getCommentText());
+
+                                if (c.getData().getCommentTextHtml() != null) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                        s.setCommentTextHtml(Html.fromHtml(c.getData().getCommentTextHtml(), Html.FROM_HTML_MODE_COMPACT).toString());
+                                    } else {
+                                        s.setCommentTextHtml(Html.fromHtml(c.getData().getCommentTextHtml()).toString());
+                                    }
+                                }
+
+                                s.setCommentUps(c.getData().getCommentUps());
+
+                                s.save();
+                            //}
                         } catch (NullPointerException e) {
                             // Check if Crashlytics is running before logging exception
                             if (Fabric.isInitialized()) {
                                 Crashlytics.logException(e);
                             }
                             e.printStackTrace();
-                        }
-                        finally {
-                            ActiveAndroid.endTransaction();
                         }
                     }
                 }

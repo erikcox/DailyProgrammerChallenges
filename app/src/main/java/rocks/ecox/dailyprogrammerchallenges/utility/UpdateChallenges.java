@@ -110,6 +110,15 @@ public class UpdateChallenges {
                     }
                 }
 
+                try {
+                    List<String> challengeIds = Challenge.getChallengeIds();
+                    for (String id : challengeIds) {
+                        UpdateSolutions.update(id);
+                    }
+                } catch (NullPointerException e) {
+                    Timber.e("Can't parse challenge id's. %s", e);
+                }
+
             }
 
             @Override

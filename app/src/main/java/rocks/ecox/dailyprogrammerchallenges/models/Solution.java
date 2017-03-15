@@ -1,14 +1,15 @@
 package rocks.ecox.dailyprogrammerchallenges.models;
 
-import android.provider.BaseColumns;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-@Table(name = "Solutions", id = BaseColumns._ID)
+import java.util.List;
+
+@Table(name = "Solutions")
 public class Solution extends Model {
 
     @SerializedName("kind")
@@ -107,4 +108,11 @@ public class Solution extends Model {
         this.showComment = showComment;
     }
 
+    public static List<String> getChildrenIds(String postId) {
+        return new Select("comment_id")
+                .from(Solution.class)
+                .where("parent_id = ?", postId)
+                .orderBy("ups")
+                .executeSingle();
+    }
 }

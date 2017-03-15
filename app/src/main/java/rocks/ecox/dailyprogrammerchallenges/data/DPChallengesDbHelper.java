@@ -9,7 +9,7 @@ import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.*;
 public class DPChallengesDbHelper extends SQLiteOpenHelper {
 
     // The name of the database
-    private static final String DATABASE_NAME = "RestClient.db";
+    private static final String DATABASE_NAME = "RedditData.db";
 
     // If you change the database schema, you must increment the database version
     private static final int VERSION = 1;
@@ -19,7 +19,7 @@ public class DPChallengesDbHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, VERSION);
     }
 
-
+    // TODO: remove this if Active Android already does this, otherwise add Solution table too
     /**
      * Called when the Challenges database is created for the first time.
      */

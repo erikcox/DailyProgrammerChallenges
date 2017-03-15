@@ -22,7 +22,6 @@ import android.view.MenuItem;
 import rocks.ecox.dailyprogrammerchallenges.R;
 import rocks.ecox.dailyprogrammerchallenges.fragments.ChallengeFragment;
 import rocks.ecox.dailyprogrammerchallenges.utility.UpdateChallenges;
-import rocks.ecox.dailyprogrammerchallenges.utility.UpdateSolutions;
 
 import static rocks.ecox.dailyprogrammerchallenges.utility.DataParsing.setPageNum;
 
@@ -118,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Get data from reddit and create Challenge objects
         UpdateChallenges.update();
-        UpdateSolutions.update("5qp3ou");
     }
 
     /**
