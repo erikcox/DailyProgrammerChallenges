@@ -51,13 +51,13 @@ public class UpdateSolutions {
                     for (ChildComment c : sol.getData().getChildren()) {
                         ActiveAndroid.beginTransaction();
                         try {
-                            Timber.d("Solution RAW: %s", c.getData().getCommentText());
+                            String txt = c.getData().getCommentText();
+                            Timber.d("Solution RAW: %s", txt);
 
                             Solution s = new Solution();
-                            s.setCommentParentId(c.getData().getCommentParentId());
-                            Timber.d("Solution GET: %s", sol.getCommentParentId());
+                            s.setCommentText(txt);
                             s.setCommentId(c.getData().getCommentId());
-                            s.setCommentText(c.getData().getCommentText());
+                            Timber.d("Solution GET: %s", s.getCommentText());
                             // TODO: add HTML comments with version condition
                             //s.setCommentTextHtml();
                             s.setCommentUps(c.getData().getCommentUps());

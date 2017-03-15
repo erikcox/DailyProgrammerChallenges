@@ -3,7 +3,6 @@ package rocks.ecox.dailyprogrammerchallenges.utility;
 import android.os.Build;
 import android.text.Html;
 
-import com.activeandroid.ActiveAndroid;
 import com.activeandroid.util.SQLiteUtils;
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
@@ -50,7 +49,6 @@ public class UpdateChallenges {
             @Override
             public void success(Challenge challenge, Response response) {
                 for (Child c : challenge.getData().getChildren()) {
-                    ActiveAndroid.beginTransaction();
                     try {
                         // Check if challenge already exists in DB
                         List<Challenge> duplicateChallanges =
@@ -102,8 +100,6 @@ public class UpdateChallenges {
                             }
 
                             ch.save();
-
-                            UpdateSolutions.update(ch.getPostId());
                         }
                     } catch (NullPointerException e) {
                         // Check if Crashlytics is running before logging exception
@@ -111,9 +107,6 @@ public class UpdateChallenges {
                             Crashlytics.logException(e);
                         }
                             e.printStackTrace();
-                    }
-                    finally {
-                        ActiveAndroid.endTransaction();
                     }
                 }
 

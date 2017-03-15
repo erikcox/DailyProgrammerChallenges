@@ -39,6 +39,10 @@ android {
         pickFirst 'META-INF/license.txt'
         exclude 'META-INF/LICENSE'
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
