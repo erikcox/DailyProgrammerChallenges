@@ -76,7 +76,6 @@ public class SolutionFragment extends Fragment {
             title = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_TITLE));
             description = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DESCRIPTION_HTML));
             author = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_AUTHOR));
-            Timber.d("DATA: %s | %s | %s", rowId, title, description);
             mCursor.close();
         } catch (NullPointerException e) {
             Timber.e("Cursor error", e);

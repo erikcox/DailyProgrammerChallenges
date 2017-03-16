@@ -121,7 +121,6 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                                     "SELECT * FROM Solutions WHERE comment_id = ?",
                                     new String[] {postId});
 
-                    Timber.d("DUPES: %s", dupes.size());
                     if (dupes.size() == 0) {
                         UpdateSolutions.update(postId);
                     }
