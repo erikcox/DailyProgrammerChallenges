@@ -126,7 +126,6 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
         return cvh;
     }
 
-
     /**
      * Called by the RecyclerView to display data at a specified position in the Cursor.
      *
