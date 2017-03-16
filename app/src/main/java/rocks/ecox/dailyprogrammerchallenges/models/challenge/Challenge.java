@@ -5,11 +5,8 @@ import android.provider.BaseColumns;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Select;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 @Table(name = "Challenges", id = BaseColumns._ID)
 public class Challenge extends Model {
@@ -229,11 +226,4 @@ public class Challenge extends Model {
         this.completedChallenge = completedChallenge;
     }
 
-    public static List<String> getChallengeIds() {
-        return new Select("post_id")
-                .from(Challenge.class)
-                .where("post_id IS NOT NULL")
-                .orderBy("post_id ASC")
-                .executeSingle();
-    }
 }

@@ -16,9 +16,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.activeandroid.util.SQLiteUtils;
+
+import java.util.List;
+
 import rocks.ecox.dailyprogrammerchallenges.R;
 import rocks.ecox.dailyprogrammerchallenges.activities.DetailActivity;
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
+import rocks.ecox.dailyprogrammerchallenges.models.solution.Solution;
 import rocks.ecox.dailyprogrammerchallenges.utility.UpdateSolutions;
 import timber.log.Timber;
 
@@ -111,7 +116,15 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                 final String postId = mCursor.getString(postIdIndex);
 
                 try {
-                    UpdateSolutions.update(postId);
+                    List<Solution> dupes =
+                            SQLiteUtils.rawQuery(Solution.class,
+                                    "SELECT * FROM Solutions WHERE comment_id = ?",
+                                    new String[] {postId});
+
+                    Timber.d("DUPES: %s", dupes.size());
+                    if (dupes.size() == 0) {
+                        UpdateSolutions.update(postId);
+                    }
                 } catch (NullPointerException e) {
                     Timber.e(e);
                 }

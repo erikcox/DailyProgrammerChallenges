@@ -49,7 +49,6 @@ public class UpdateSolutions {
         redditSolutions.getFeed(subreddit, challenge, new Callback<List<Solution>>() {
             @Override
             public void success(List<Solution> solutions, Response response) {
-                List<String> comments = Solution.getChildrenIds(challenge);
                 for (Solution sol : solutions) {
                     for (ChildSolution c : sol.getData().getChildren()) {
                         try {
