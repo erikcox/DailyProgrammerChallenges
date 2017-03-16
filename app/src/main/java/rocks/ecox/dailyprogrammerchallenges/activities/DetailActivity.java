@@ -33,6 +33,7 @@ public class DetailActivity extends AppCompatActivity {
     // A static variable to get a reference of the application Context
     public static Context contextOfApplication;
     public String dbId;
+    public static String challengeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class DetailActivity extends AppCompatActivity {
         contextOfApplication = getApplicationContext();
 
         dbId = getIntent().getStringExtra("EXTRA_DB_ID");
+        challengeId = getIntent().getStringExtra("EXTRA_CHALLENGE_ID");
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
@@ -76,11 +78,12 @@ public class DetailActivity extends AppCompatActivity {
             DetailFragment fragment = new DetailFragment();
             Bundle bundle = new Bundle();
             bundle.putString("db_id", getDbId());
+            bundle.putString("challenge_id", challengeId);
             fragment.setArguments(bundle);
             if (position == 0) {
                 return DetailFragment.newInstance(position + 1, getDbId());
             } else if (position == 1) {
-                return SolutionFragment.newInstance(position + 1, getDbId());
+                return SolutionFragment.newInstance(position + 1);
             } else {
                 return null;
             }
@@ -109,6 +112,10 @@ public class DetailActivity extends AppCompatActivity {
 
     public static Context getContextOfApplication() {
         return contextOfApplication;
+    }
+
+    public static String getChallengeParent() {
+        return challengeId;
     }
 
     public String getDbId(){

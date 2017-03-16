@@ -1,34 +1,36 @@
 package rocks.ecox.dailyprogrammerchallenges.fragments;
 
+import android.content.Context;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.AsyncTaskLoader;
+import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import rocks.ecox.dailyprogrammerchallenges.activities.DetailActivity;
 import rocks.ecox.dailyprogrammerchallenges.R;
-import rocks.ecox.dailyprogrammerchallenges.adapters.ChallengeCursorAdapter;
+import rocks.ecox.dailyprogrammerchallenges.activities.DetailActivity;
+import rocks.ecox.dailyprogrammerchallenges.adapters.SolutionCursorAdapter;
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 import timber.log.Timber;
 
 /**
  * A placeholder fragment containing a simple view.
  */
-public class SolutionFragment extends Fragment {
-    // LoaderManager.LoaderCallbacks<Object>
+public class SolutionFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     /**
      * The fragment argument representing the section number for this
      * fragment.
      */
-    private static final String ARG_CHALLENGE_POSITION = "challenge_position";
-    private static final String ARG_CHALLENGE_ID = "db_id";
-    ChallengeCursorAdapter mAdapter;
+    private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_CHALLENGE_ID = "challenge_id";
+    SolutionCursorAdapter mAdapter;
+    protected RecyclerView mRecyclerView;
 
     public SolutionFragment() {
     }
@@ -37,61 +39,94 @@ public class SolutionFragment extends Fragment {
      * Returns a new instance of this fragment for the given section
      * number.
      */
-    public static SolutionFragment newInstance(int position, String dbId) {
+    public static SolutionFragment newInstance(int sectionNumber) {
         SolutionFragment fragment = new SolutionFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_CHALLENGE_POSITION, position);
-        args.putString(ARG_CHALLENGE_ID, dbId);
-
+        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
-
         return fragment;
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_solution, container, false);
 
-        String rowId = getArguments().getString(ARG_CHALLENGE_ID);
-        mAdapter = new ChallengeCursorAdapter(getContext());
-        Uri challenge = DPChallengesContract.ChallengeEntry.CONTENT_URI.buildUpon().appendPath(rowId).build();
-        String title = "";
-        String description = "";
-        String author = "xxx";
-        TextView detailChallengeTitle = (TextView) rootView.findViewById(R.id.detailChallengeTitle);
-        TextView detailChallengeDescription = (TextView) rootView.findViewById(R.id.detailChallengeDescription);
-        TextView detailChallengeAuthor = (TextView) rootView.findViewById(R.id.detailChallengeAuthor);
+        Bundle bundle = getArguments();
+        int tabPosition = bundle.getInt(ARG_SECTION_NUMBER) - 1;
 
-        Timber.d("URI: %s", challenge);
-
-        Cursor mCursor = DetailActivity.getContextOfApplication().getContentResolver().query(challenge,
-                null,
-                null,
-                null,
-                null);
-
-        try {
-            mCursor.moveToPosition(Integer.parseInt(rowId) - 1);
-            title = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_TITLE));
-            description = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_DESCRIPTION_HTML));
-            author = mCursor.getString(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_AUTHOR));
-            mCursor.close();
-        } catch (NullPointerException e) {
-            Timber.e("Cursor error", e);
-        }
-
-        detailChallengeTitle.setText(title);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            detailChallengeDescription.setText(Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT));
-        } else {
-            detailChallengeDescription.setText(Html.fromHtml(description));
-        }
-
-        detailChallengeAuthor.setText(String.format("%s%s", getString(R.string.author_label), author));
+        mAdapter = new SolutionCursorAdapter(getContext());
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerViewSolutions);
+        mRecyclerView.setLayoutManager(
+                new LinearLayoutManager(getActivity()));
+        mRecyclerView.setAdapter(mAdapter);
+        getLoaderManager().initLoader(tabPosition, null, this);
 
         return rootView;
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(final int id, final Bundle loaderArgs) {
+
+        return new AsyncTaskLoader<Cursor>(getContext()) {
+
+            // Initialize a Cursor, this will hold all the challenge data
+            Cursor mSolutionData = null;
+
+            // onStartLoading() is called when a loader first starts loading data
+            @Override
+            protected void onStartLoading() {
+                if (mSolutionData != null) {
+                    // Delivers any previously loaded data immediately
+                    deliverResult(mSolutionData);
+                } else {
+                    // Force a new load
+                    forceLoad();
+                }
+            }
+
+            // loadInBackground() performs asynchronous loading of data
+            @Override
+            public Cursor loadInBackground() {
+                // Query and load challenge data
+                String queryParam = "\"" + DetailActivity.getChallengeParent() + "\"";
+                Timber.d("QUERY PARAM: %s", DPChallengesContract.SolutionEntry.TABLE_NAME);
+                Context applicationContext = DetailActivity.getContextOfApplication();
+
+                try {
+                    final Cursor query = applicationContext.getContentResolver().query(DPChallengesContract.SolutionEntry.SOLUTION_URI,
+                            null,
+                            DPChallengesContract.SolutionEntry.COLUMN_SHOW_COMMENT + " = 1 AND " + DPChallengesContract.SolutionEntry.COLUMN_PARENT_ID + " = " + queryParam,
+                            null,
+                            DPChallengesContract.SolutionEntry.COLUMN_UPS + " DESC");
+                    query.moveToFgirst();
+                    return query;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            // deliverResult sends the result of the load, a Cursor, to the registered listener
+            public void deliverResult(Cursor data) {
+                mSolutionData = data;
+                super.deliverResult(data);
+            }
+        };
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        // Cursor Object
+        mAdapter.swapCursor(data);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        // Loader<Object> loader
+        mAdapter.swapCursor(null);
     }
 
 }

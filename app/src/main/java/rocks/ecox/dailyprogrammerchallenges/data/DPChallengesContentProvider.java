@@ -12,9 +12,9 @@ import android.support.annotation.NonNull;
 
 import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.AUTHORITY;
 import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.ChallengeEntry;
-import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.ChallengeEntry.TABLE_NAME;
 import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.PATH_CHALLENGES;
 import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.PATH_SOLUTIONS;
+import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.SolutionEntry;
 
 public class DPChallengesContentProvider extends ContentProvider {
 
@@ -71,7 +71,7 @@ public class DPChallengesContentProvider extends ContentProvider {
         switch (match) {
             case CHALLENGES:
                 // Inserting values into Challenges table
-                id = db.insert(TABLE_NAME, null, values);
+                id = db.insert(ChallengeEntry.TABLE_NAME, null, values);
                 if (id > 0) {
                     returnUri = ContentUris.withAppendedId(ChallengeEntry.CONTENT_URI, id);
                 } else {
@@ -81,9 +81,9 @@ public class DPChallengesContentProvider extends ContentProvider {
             // TODO: add CHALLENGE_WITH_ID insert
             case SOLUTIONS:
                 // Inserting values into Solutions table
-                id = db.insert(TABLE_NAME, null, values);
+                id = db.insert(SolutionEntry.TABLE_NAME, null, values);
                 if (id > 0) {
-                    returnUri = ContentUris.withAppendedId(DPChallengesContract.SolutionEntry.SOLUTION_URI, id);
+                    returnUri = ContentUris.withAppendedId(SolutionEntry.SOLUTION_URI, id);
                 } else {
                     throw new android.database.SQLException("Failed to insert row into " + uri);
                 }
@@ -118,7 +118,7 @@ public class DPChallengesContentProvider extends ContentProvider {
         switch (match) {
             // Query for the challenges directory
             case CHALLENGES:
-                retCursor = db.query(TABLE_NAME,
+                retCursor = db.query(ChallengeEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -128,7 +128,7 @@ public class DPChallengesContentProvider extends ContentProvider {
                 break;
             // Query for the challenges with a specific id
             case CHALLENGE_WITH_ID:
-                retCursor = db.query(TABLE_NAME,
+                retCursor = db.query(ChallengeEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -138,7 +138,7 @@ public class DPChallengesContentProvider extends ContentProvider {
                 break;
             // Query for the solutions directory
             case SOLUTIONS:
-                retCursor = db.query(TABLE_NAME,
+                retCursor = db.query(SolutionEntry.TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -176,7 +176,7 @@ public class DPChallengesContentProvider extends ContentProvider {
                 // Get the challenge ID from the URI path
                 String id = uri.getPathSegments().get(1);
                 // Use selections/selectionArgs to filter for this ID
-                challengesDeleted = db.delete(TABLE_NAME, "_id=?", new String[]{id});
+                challengesDeleted = db.delete(ChallengeEntry.TABLE_NAME, "_id=?", new String[]{id});
                 break;
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -209,12 +209,12 @@ public class DPChallengesContentProvider extends ContentProvider {
             case CHALLENGES:
                 // Update a single task by getting the id
                 // Using selections
-                challengesUpdated = mDPCDbHelper.getWritableDatabase().update(TABLE_NAME, values, "_id=?", new String[]{id});
+                challengesUpdated = mDPCDbHelper.getWritableDatabase().update(ChallengeEntry.TABLE_NAME, values, "_id=?", new String[]{id});
                 break;
             case CHALLENGE_WITH_ID:
                 // Update a single task by getting the id
                 // Using selections
-                challengesUpdated = mDPCDbHelper.getWritableDatabase().update(TABLE_NAME, values, "_id=?", new String[]{id});
+                challengesUpdated = mDPCDbHelper.getWritableDatabase().update(ChallengeEntry.TABLE_NAME, values, "_id=?", new String[]{id});
                 break;
             default:
                 throw new UnsupportedOperationException("Not yet implemented");
@@ -239,13 +239,13 @@ public class DPChallengesContentProvider extends ContentProvider {
         switch (match) {
             case CHALLENGES:
                 // Challenge directory
-                return "vnd.android.cursor.dir" + "/" + DPChallengesContract.AUTHORITY + "/" + DPChallengesContract.PATH_CHALLENGES;
+                return "vnd.android.cursor.dir" + "/" + AUTHORITY + "/" + PATH_CHALLENGES;
             case CHALLENGE_WITH_ID:
                 // Single challenge
-                return "vnd.android.cursor.item" + "/" + DPChallengesContract.AUTHORITY + "/" + DPChallengesContract.PATH_CHALLENGES;
+                return "vnd.android.cursor.item" + "/" + AUTHORITY + "/" + PATH_CHALLENGES;
             case SOLUTIONS:
                 // Solution directory
-                return "vnd.android.cursor.dir" + "/" + DPChallengesContract.AUTHORITY + "/" + DPChallengesContract.PATH_SOLUTIONS;
+                return "vnd.android.cursor.dir" + "/" + AUTHORITY + "/" + PATH_SOLUTIONS;
             default:
                 throw new UnsupportedOperationException("Not yet implemented");
         }

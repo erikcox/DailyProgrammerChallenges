@@ -109,8 +109,10 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
             public void onClick(View view) {
                 int position = cvh.getAdapterPosition();
                 int idIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry._ID);
+                int challengeIdIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_POST_ID);
                 mCursor.moveToPosition(position);
                 final String dbId = mCursor.getString(idIndex);
+                final String challengeId = mCursor.getString(challengeIdIndex);
 
                 int postIdIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_POST_ID);
                 final String postId = mCursor.getString(postIdIndex);
@@ -130,6 +132,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
 
                 Intent intent = new Intent(mContext, DetailActivity.class);
                 intent.putExtra("EXTRA_DB_ID", dbId);
+                intent.putExtra("EXTRA_CHALLENGE_ID", challengeId);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }
