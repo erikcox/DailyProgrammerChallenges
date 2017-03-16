@@ -99,7 +99,7 @@ public class SolutionFragment extends Fragment implements LoaderManager.LoaderCa
                             DPChallengesContract.SolutionEntry.COLUMN_SHOW_COMMENT + " = 1 AND " + DPChallengesContract.SolutionEntry.COLUMN_PARENT_ID + " = " + queryParam,
                             null,
                             DPChallengesContract.SolutionEntry.COLUMN_UPS + " DESC");
-                    query.moveToFgirst();
+                    query.moveToFirst();
                     return query;
                 } catch (Exception e) {
                     e.printStackTrace();
