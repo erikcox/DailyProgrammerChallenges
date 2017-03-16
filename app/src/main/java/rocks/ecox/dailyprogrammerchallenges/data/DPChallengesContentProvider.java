@@ -14,23 +14,29 @@ import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.AUT
 import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.ChallengeEntry;
 import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.ChallengeEntry.TABLE_NAME;
 import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.PATH_CHALLENGES;
+import static rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract.PATH_SOLUTIONS;
 
 public class DPChallengesContentProvider extends ContentProvider {
 
-    // Challenges directoryCHALLENGE_WITH_ID
+    // Challenges directory
     public static final int CHALLENGES = 100;
     // Single challenge
     public static final int CHALLENGE_WITH_ID = 101;
+
+    // Solutions directory (no use for single solution)
+    public static final int SOLUTIONS = 200;
 
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
     public static UriMatcher buildUriMatcher() {
         UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
-        // Directory
+        // Challenge directory
         uriMatcher.addURI(AUTHORITY, PATH_CHALLENGES, CHALLENGES);
         // Single challenge
         uriMatcher.addURI(AUTHORITY, PATH_CHALLENGES + "/#", CHALLENGE_WITH_ID);
+        // Solution directory
+        uriMatcher.addURI(AUTHORITY, PATH_SOLUTIONS, SOLUTIONS);
 
         return uriMatcher;
 
@@ -38,7 +44,6 @@ public class DPChallengesContentProvider extends ContentProvider {
 
     // Member variable for a DPChallengesDbHelper that's initialized in the onCreate() method
     private DPChallengesDbHelper mDPCDbHelper;
-
 
     /* onCreate() is where you should initialize anything you’ll need to setup
     your underlying data source.
@@ -61,11 +66,12 @@ public class DPChallengesContentProvider extends ContentProvider {
         // Write URI matching code to identify the match for the challenges directory
         int match = sUriMatcher.match(uri);
         Uri returnUri;
+        long id;
 
         switch (match) {
             case CHALLENGES:
                 // Inserting values into Challenges table
-                long id = db.insert(TABLE_NAME, null, values);
+                id = db.insert(TABLE_NAME, null, values);
                 if (id > 0) {
                     returnUri = ContentUris.withAppendedId(ChallengeEntry.CONTENT_URI, id);
                 } else {
@@ -73,6 +79,15 @@ public class DPChallengesContentProvider extends ContentProvider {
                 }
                 break;
             // TODO: add CHALLENGE_WITH_ID insert
+            case SOLUTIONS:
+                // Inserting values into Solutions table
+                id = db.insert(TABLE_NAME, null, values);
+                if (id > 0) {
+                    returnUri = ContentUris.withAppendedId(DPChallengesContract.SolutionEntry.SOLUTION_URI, id);
+                } else {
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                break;
             // Set the value for the returnedUri and write the default case for unknown URI's
             // Default case throws an UnsupportedOperationException
             default:
@@ -121,6 +136,16 @@ public class DPChallengesContentProvider extends ContentProvider {
                         null,
                         sortOrder);
                 break;
+            // Query for the solutions directory
+            case SOLUTIONS:
+                retCursor = db.query(TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder);
+                break;
             // Default exception
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
@@ -132,7 +157,6 @@ public class DPChallengesContentProvider extends ContentProvider {
         // Return the desired Cursor
         return retCursor;
     }
-
 
     // Implement delete to delete a single row of data
     @Override
@@ -214,11 +238,14 @@ public class DPChallengesContentProvider extends ContentProvider {
 
         switch (match) {
             case CHALLENGES:
-                // Directory
+                // Challenge directory
                 return "vnd.android.cursor.dir" + "/" + DPChallengesContract.AUTHORITY + "/" + DPChallengesContract.PATH_CHALLENGES;
             case CHALLENGE_WITH_ID:
                 // Single challenge
                 return "vnd.android.cursor.item" + "/" + DPChallengesContract.AUTHORITY + "/" + DPChallengesContract.PATH_CHALLENGES;
+            case SOLUTIONS:
+                // Solution directory
+                return "vnd.android.cursor.dir" + "/" + DPChallengesContract.AUTHORITY + "/" + DPChallengesContract.PATH_SOLUTIONS;
             default:
                 throw new UnsupportedOperationException("Not yet implemented");
         }
