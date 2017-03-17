@@ -3,6 +3,7 @@ package rocks.ecox.dailyprogrammerchallenges.adapters;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Build;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -108,6 +109,7 @@ public class SolutionCursorAdapter extends RecyclerView.Adapter<SolutionCursorAd
     class SolutionViewHolder extends RecyclerView.ViewHolder {
 
         // Class variables for the solution TextView
+        CardView cv;
         TextView solutionBody;
 
         /**
@@ -117,6 +119,7 @@ public class SolutionCursorAdapter extends RecyclerView.Adapter<SolutionCursorAd
          */
         public SolutionViewHolder(View itemView) {
             super(itemView);
+            cv = (CardView)itemView.findViewById(R.id.solution_card_view);
             solutionBody = (TextView) itemView.findViewById(R.id.solutionBody);
         }
     }
