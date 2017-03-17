@@ -2,6 +2,7 @@ package rocks.ecox.dailyprogrammerchallenges.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -19,7 +20,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import rocks.ecox.dailyprogrammerchallenges.R;
 import rocks.ecox.dailyprogrammerchallenges.fragments.ChallengeFragment;
@@ -121,7 +121,19 @@ public class MainActivity extends AppCompatActivity {
         sort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: add method to resort the RecyclerViews
+                // Create sorting shared pref
+                SharedPreferences sortSettings = getApplicationContext().getSharedPreferences("sortSettings", Context.MODE_PRIVATE);
+                String sortBy = sortSettings.getString("sortBy", "DESC");
+                SharedPreferences sortOrder = getApplicationContext().getSharedPreferences("sortSettings", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sortOrder.edit();
+
+                if (sortBy.equals("ASC")) {
+                    editor.putString("sortBy", "DESC");
+                } else {
+                    editor.putString("sortBy", "ASC");
+                }
+
+                editor.apply();
             }
         });
 
@@ -156,7 +168,6 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        Toast.makeText(contextOfApplication, "ID: " + id, Toast.LENGTH_SHORT).show();
 
         //noinspection SimplifiableIfStatement
         if (id == android.R.id.home) {
