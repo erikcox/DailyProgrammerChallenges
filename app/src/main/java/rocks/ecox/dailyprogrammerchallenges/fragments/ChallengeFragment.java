@@ -1,6 +1,7 @@
 package rocks.ecox.dailyprogrammerchallenges.fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,8 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import rocks.ecox.dailyprogrammerchallenges.activities.MainActivity;
 import rocks.ecox.dailyprogrammerchallenges.R;
+import rocks.ecox.dailyprogrammerchallenges.activities.MainActivity;
 import rocks.ecox.dailyprogrammerchallenges.adapters.ChallengeCursorAdapter;
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 import timber.log.Timber;
@@ -90,6 +91,8 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
                 // Query and load challenge data
                 String sortQuery;
                 Context applicationContext = MainActivity.getContextOfApplication();
+                SharedPreferences sortSettings = ChallengeFragment.this.getContext().getSharedPreferences("sortSettings", Context.MODE_PRIVATE);
+                String sortBy = sortSettings.getString("sortBy", "DESC");
 
                 if (id >= 1 && id <= 3) {
                     sortQuery = " AND difficulty_num = " + id;
@@ -100,9 +103,9 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
                 try {
                     final Cursor query = applicationContext.getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
                             null,
-                            "show_challenge = 1" + sortQuery,
+                            "show_challenge = 1 AND completed_challenge = 0" + sortQuery,
                             null,
-                            DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " DESC, "
+                            DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " " + sortBy + ", "
                                     + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");
                     return query;
                 } catch (Exception e) {
@@ -133,5 +136,9 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
         // Loader<Object> loader
         mAdapter.swapCursor(null);
     }
+
+//    public static void refreshData() {
+//        mAdapter.notifyDataSetChanged();
+//    }
 
 }
