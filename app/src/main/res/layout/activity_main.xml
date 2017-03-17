@@ -30,6 +30,14 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
+                <ImageView
+                    android:id="@+id/sortButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="28dp"
+                    android:layout_gravity="right"
+                    android:adjustViewBounds="true"
+                    app:srcCompat="@drawable/sort"
+                    tools:src="@drawable/sort"/>
             </android.support.v7.widget.Toolbar>
 
             <android.support.design.widget.TabLayout
