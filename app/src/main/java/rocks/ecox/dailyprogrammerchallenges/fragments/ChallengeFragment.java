@@ -100,7 +100,7 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
                 try {
                     final Cursor query = applicationContext.getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
                             null,
-                            "show_challenge = 1" + sortQuery,
+                            "show_challenge = 1 AND completed_challenge = 0" + sortQuery,
                             null,
                             DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " DESC, "
                                     + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");

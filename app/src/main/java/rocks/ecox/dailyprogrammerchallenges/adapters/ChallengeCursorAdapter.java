@@ -101,6 +101,12 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                 values.put(DPChallengesContract.ChallengeEntry.COLUMN_COMPLETED, columnValue);
                 mContext.getContentResolver().update(challenge, values, "_id = ?", rowId);
 
+                // Remove completed items
+                // TODO: find a way to re-add them in both MainActivity and CompletedActivity
+                values.remove(String.valueOf(position));
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, mCursor.getCount());
+
             }
         });
 
