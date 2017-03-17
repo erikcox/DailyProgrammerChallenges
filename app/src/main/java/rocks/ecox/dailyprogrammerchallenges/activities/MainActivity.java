@@ -21,7 +21,6 @@ import android.view.MenuItem;
 
 import rocks.ecox.dailyprogrammerchallenges.R;
 import rocks.ecox.dailyprogrammerchallenges.fragments.ChallengeFragment;
-import rocks.ecox.dailyprogrammerchallenges.utility.UpdateChallenges;
 
 import static rocks.ecox.dailyprogrammerchallenges.utility.DataParsing.setPageNum;
 
@@ -51,9 +50,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         contextOfApplication = getApplicationContext();
-
-        // Get data from reddit and create Challenge objects
-        UpdateChallenges.update();
 
         // Create Navigation drawer and inflate layout
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

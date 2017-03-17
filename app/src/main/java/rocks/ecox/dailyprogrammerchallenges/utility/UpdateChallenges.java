@@ -18,6 +18,7 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
+import rocks.ecox.dailyprogrammerchallenges.activities.SplashActivity;
 import rocks.ecox.dailyprogrammerchallenges.api.RedditChallengeApi;
 import rocks.ecox.dailyprogrammerchallenges.models.challenge.Challenge;
 import rocks.ecox.dailyprogrammerchallenges.models.challenge.Child;
@@ -109,6 +110,7 @@ public class UpdateChallenges {
                             e.printStackTrace();
                     }
                 }
+                SplashActivity.startApp();
             }
 
             @Override
