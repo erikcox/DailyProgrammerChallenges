@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         sort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Sorting...", Toast.LENGTH_SHORT).show();
+                // TODO: add method to resort the RecyclerViews
             }
         });
 
