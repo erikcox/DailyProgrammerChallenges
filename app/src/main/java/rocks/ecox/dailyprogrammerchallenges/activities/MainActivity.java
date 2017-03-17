@@ -17,6 +17,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import rocks.ecox.dailyprogrammerchallenges.R;
@@ -113,6 +115,15 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+
+        // Listener for sort button in toolbar
+        ImageView sort = (ImageView) findViewById(R.id.sortButton);
+        sort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Sorting...", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
