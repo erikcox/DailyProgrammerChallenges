@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         contextOfApplication = getApplicationContext();
 
+        // Get data from reddit and create Challenge objects
+        UpdateChallenges.update();
+
         // Create Navigation drawer and inflate layout
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -115,8 +118,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        // Get data from reddit and create Challenge objects
-        UpdateChallenges.update();
     }
 
     /**
