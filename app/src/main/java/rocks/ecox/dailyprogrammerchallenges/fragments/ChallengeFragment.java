@@ -30,7 +30,7 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
      * fragment.
      */
     private static final String ARG_SECTION_NUMBER = "section_number";
-    static ChallengeCursorAdapter mAdapter;
+    ChallengeCursorAdapter mAdapter;
     protected RecyclerView mRecyclerView;
 
     public ChallengeFragment() {
@@ -137,8 +137,8 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
         mAdapter.swapCursor(null);
     }
 
-    public static void refreshData() {
-        mAdapter.notifyDataSetChanged();
-    }
+//    public static void refreshData() {
+//        mAdapter.notifyDataSetChanged();
+//    }
 
 }

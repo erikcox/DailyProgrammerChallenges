@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 editor.apply();
-                ChallengeFragment.refreshData();
+//                ChallengeFragment.refreshData();
             }
         });
 
