@@ -155,7 +155,7 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void refreshData(MessageEvent event) {
-        Timber.d("Updating sort order.");
+        getLoaderManager().restartLoader(0, null, this);
         mAdapter.notifyDataSetChanged();
     }
 
