@@ -14,6 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import rocks.ecox.dailyprogrammerchallenges.R;
 import rocks.ecox.dailyprogrammerchallenges.activities.MainActivity;
 import rocks.ecox.dailyprogrammerchallenges.adapters.ChallengeCursorAdapter;
@@ -63,6 +67,18 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
         mRecyclerView.setAdapter(mAdapter);
         getLoaderManager().initLoader(tabPosition, null, this);
         return rootView;
+    }
+
+    @Override
+    public void onPause() {
+        EventBus.getDefault().unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        EventBus.getDefault().register(this);
+        super.onResume();
     }
 
     @Override
@@ -137,8 +153,9 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
         mAdapter.swapCursor(null);
     }
 
-//    public static void refreshData() {
-//        mAdapter.notifyDataSetChanged();
-//    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshData() {
+        mAdapter.notifyDataSetChanged();
+    }
 
 }

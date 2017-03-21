@@ -21,6 +21,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import rocks.ecox.dailyprogrammerchallenges.R;
 import rocks.ecox.dailyprogrammerchallenges.fragments.ChallengeFragment;
 
@@ -134,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 editor.apply();
-//                ChallengeFragment.refreshData();
+                EventBus.getDefault().postSticky(this);
             }
         });
 
