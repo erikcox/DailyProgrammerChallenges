@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 
 import rocks.ecox.dailyprogrammerchallenges.R;
 import rocks.ecox.dailyprogrammerchallenges.fragments.ChallengeFragment;
+import rocks.ecox.dailyprogrammerchallenges.fragments.ChallengeFragment.MessageEvent;
 
 import static rocks.ecox.dailyprogrammerchallenges.utility.DataParsing.setPageNum;
 
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 editor.apply();
-                EventBus.getDefault().postSticky(this);
+                EventBus.getDefault().postSticky(new MessageEvent());
             }
         });
 
