@@ -137,8 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 editor.apply();
-//                EventBus.getDefault().postSticky(this);
-                EventBus.getDefault().post(new MessageEvent());
+                EventBus.getDefault().postSticky(new MessageEvent());
             }
         });
 
