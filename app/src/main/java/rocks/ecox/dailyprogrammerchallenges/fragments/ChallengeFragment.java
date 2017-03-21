@@ -70,15 +70,15 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     @Override
-    public void onPause() {
-        EventBus.getDefault().unregister(this);
-        super.onPause();
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
     }
 
     @Override
-    public void onResume() {
-        EventBus.getDefault().register(this);
-        super.onResume();
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -154,8 +154,11 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void refreshData() {
+    public void refreshData(MessageEvent event) {
+        Timber.d("Updating sort order.");
         mAdapter.notifyDataSetChanged();
     }
+
+    public static class MessageEvent { /* Additional fields if needed */ }
 
 }
