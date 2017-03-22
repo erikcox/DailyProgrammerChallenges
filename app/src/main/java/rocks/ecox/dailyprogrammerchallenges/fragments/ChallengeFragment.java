@@ -66,6 +66,7 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
                 new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mAdapter);
         getLoaderManager().initLoader(tabPosition, null, this);
+
         return rootView;
     }
 
@@ -125,7 +126,7 @@ public class ChallengeFragment extends Fragment implements LoaderManager.LoaderC
                                     + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");
                     return query;
                 } catch (Exception e) {
-                    Timber.e("Failed to asynchronously load data.");
+                    Timber.e("Failed to asynchronously load challenge data.");
                     e.printStackTrace();
                     return null;
                 }

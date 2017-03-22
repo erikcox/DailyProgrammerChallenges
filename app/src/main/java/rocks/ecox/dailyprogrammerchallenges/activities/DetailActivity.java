@@ -80,6 +80,7 @@ public class DetailActivity extends AppCompatActivity {
             bundle.putString("db_id", getDbId());
             bundle.putString("challenge_id", challengeId);
             fragment.setArguments(bundle);
+
             if (position == 0) {
                 return DetailFragment.newInstance(position + 1, getDbId());
             } else if (position == 1) {

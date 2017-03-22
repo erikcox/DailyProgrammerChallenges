@@ -70,7 +70,7 @@ public class SolutionFragment extends Fragment implements LoaderManager.LoaderCa
 
         return new AsyncTaskLoader<Cursor>(getContext()) {
 
-            // Initialize a Cursor, this will hold all the challenge data
+            // Initialize a Cursor, this will hold all the solution data
             Cursor mSolutionData = null;
 
             // onStartLoading() is called when a loader first starts loading data
@@ -99,9 +99,10 @@ public class SolutionFragment extends Fragment implements LoaderManager.LoaderCa
                             DPChallengesContract.SolutionEntry.COLUMN_SHOW_COMMENT + " = 1 AND " + DPChallengesContract.SolutionEntry.COLUMN_PARENT_ID + " = " + queryParam,
                             null,
                             DPChallengesContract.SolutionEntry.COLUMN_UPS + " DESC");
-                    query.moveToFirst();
+                    query.moveToFirst(); // Not used in challenge fragment
                     return query;
                 } catch (Exception e) {
+                    Timber.e("Failed to asynchronously load solution data.");
                     e.printStackTrace();
                     return null;
                 }
