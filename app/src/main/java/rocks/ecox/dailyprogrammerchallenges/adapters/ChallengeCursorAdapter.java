@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -58,12 +57,8 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
             public void onClick(View v) {
                 // Tell the db to mark / unmark this as favorite
                 int position = cvh.getAdapterPosition();
-                int idIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry._ID);
                 mCursor.moveToPosition(position);
-                final String dbId = mCursor.getString(idIndex);
 
-                String[] rowId = {dbId};
-                Uri challenge = DPChallengesContract.ChallengeEntry.CONTENT_URI.buildUpon().appendPath(dbId).build();
                 ContentValues values = new ContentValues();
                 int columnValue;
 
@@ -74,7 +69,6 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                 }
 
                 values.put(DPChallengesContract.ChallengeEntry.COLUMN_FAVORITE, columnValue);
-                mContext.getContentResolver().update(challenge, values, "_id = ?", rowId);
 
             }
         });
@@ -84,11 +78,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
             public void onClick(View v) {
                 // Tell the db to mark / unmark this as completed
                 int position = cvh.getAdapterPosition();
-                int idIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry._ID);
                 mCursor.moveToPosition(position);
-                final String dbId = mCursor.getString(idIndex);
-                String[] rowId = {dbId};
-                Uri challenge = DPChallengesContract.ChallengeEntry.CONTENT_URI.buildUpon().appendPath(dbId).build();
                 ContentValues values = new ContentValues();
                 int columnValue;
 
@@ -98,15 +88,12 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                     columnValue = 0;
                 }
 
-                values.put(DPChallengesContract.ChallengeEntry.COLUMN_COMPLETED, columnValue);
-
                 // TODO: find a way to re-add items in both MainActivity and CompletedActivity
 
                 // Remove completed items
+                values.put(DPChallengesContract.ChallengeEntry.COLUMN_COMPLETED, columnValue);
+
                 values.remove(String.valueOf(position));
-
-                mContext.getContentResolver().update(challenge, values, "_id = ?", rowId);
-
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, mCursor.getCount());
 
