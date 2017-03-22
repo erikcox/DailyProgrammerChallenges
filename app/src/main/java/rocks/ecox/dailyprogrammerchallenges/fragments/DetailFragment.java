@@ -63,8 +63,6 @@ public class DetailFragment extends Fragment {
         TextView detailChallengeDescription = (TextView) rootView.findViewById(R.id.detailChallengeDescription);
         TextView detailChallengeAuthor = (TextView) rootView.findViewById(R.id.detailChallengeAuthor);
 
-        Timber.d("URI: %s", challenge);
-
         Cursor mCursor = DetailActivity.getContextOfApplication().getContentResolver().query(challenge,
                 null,
                 null,
