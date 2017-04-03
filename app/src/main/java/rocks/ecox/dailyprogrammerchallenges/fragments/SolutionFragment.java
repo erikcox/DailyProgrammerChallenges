@@ -2,6 +2,7 @@ package rocks.ecox.dailyprogrammerchallenges.fragments;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -12,6 +13,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import rocks.ecox.dailyprogrammerchallenges.R;
 import rocks.ecox.dailyprogrammerchallenges.activities.DetailActivity;
@@ -38,6 +43,18 @@ public class SolutionFragment extends Fragment implements LoaderManager.LoaderCa
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -92,6 +109,8 @@ public class SolutionFragment extends Fragment implements LoaderManager.LoaderCa
                             DPChallengesContract.SolutionEntry.COLUMN_SHOW_COMMENT + " = 1 AND " + DPChallengesContract.SolutionEntry.COLUMN_PARENT_ID + " = " + queryParam,
                             null,
                             DPChallengesContract.SolutionEntry.COLUMN_UPS + " DESC");
+                    Timber.d("Cursor count: %s", query.getCount());
+                    DatabaseUtils.dumpCursor(query);
                     query.moveToFirst(); // Not used in challenge fragment
                     return query;
                 } catch (Exception e) {
@@ -122,5 +141,13 @@ public class SolutionFragment extends Fragment implements LoaderManager.LoaderCa
         // Loader<Object> loader
         mAdapter.swapCursor(null);
     }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void refreshData(MessageEvent event) {
+        getLoaderManager().restartLoader(0, null, this);
+        mAdapter.notifyDataSetChanged();
+    }
+
+    public static class MessageEvent { /* Additional fields if needed */ }
 
 }

@@ -7,6 +7,8 @@ import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.lang.reflect.Modifier;
 import java.util.List;
 
@@ -18,6 +20,8 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import retrofit.converter.GsonConverter;
 import rocks.ecox.dailyprogrammerchallenges.api.RedditSolutionApi;
+import rocks.ecox.dailyprogrammerchallenges.fragments.ChallengeFragment;
+import rocks.ecox.dailyprogrammerchallenges.fragments.SolutionFragment;
 import rocks.ecox.dailyprogrammerchallenges.models.solution.ChildSolution;
 import rocks.ecox.dailyprogrammerchallenges.models.solution.Solution;
 import timber.log.Timber;
@@ -88,6 +92,7 @@ public class UpdateSolutions {
                         }
                     }
                 }
+                EventBus.getDefault().postSticky(new SolutionFragment.MessageEvent());
             }
 
             @Override
