@@ -120,6 +120,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                                     new String[] {postId});
 
                     if (dupes.size() == 0) {
+
                         UpdateSolutions.update(postId);
                     }
                 } catch (NullPointerException e) {

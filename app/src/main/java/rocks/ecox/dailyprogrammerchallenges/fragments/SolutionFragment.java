@@ -19,16 +19,9 @@ import rocks.ecox.dailyprogrammerchallenges.adapters.SolutionCursorAdapter;
 import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 import timber.log.Timber;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class SolutionFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
+
     private static final String ARG_SECTION_NUMBER = "section_number";
-    private static final String ARG_CHALLENGE_ID = "challenge_id";
     SolutionCursorAdapter mAdapter;
     protected RecyclerView mRecyclerView;
 

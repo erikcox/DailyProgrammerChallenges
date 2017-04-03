@@ -97,7 +97,7 @@
             android:value="1"/>
         <meta-data
             android:name="AA_MODELS"
-            android:value="import rocks.ecox.dailyprogrammerchallenges.models.challenge.Challenge, import rocks.ecox.dailyprogrammerchallenges.models.solution.Solution" />
+            android:value="rocks.ecox.dailyprogrammerchallenges.models.challenge.Challenge, rocks.ecox.dailyprogrammerchallenges.models.solution.Solution" />
 
     </application>
 
