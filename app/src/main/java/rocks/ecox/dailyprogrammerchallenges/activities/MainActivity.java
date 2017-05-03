@@ -21,6 +21,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
 import org.greenrobot.eventbus.EventBus;
 
 import rocks.ecox.dailyprogrammerchallenges.R;
@@ -141,6 +145,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // Initialize Ad Mob
+        MobileAds.initialize(getApplicationContext(), getString(R.string.AdUnitId));
+
+        // Load an ad into the AdView
+        AdView mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 
     /**

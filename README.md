@@ -21,11 +21,9 @@ The following **required** functionality is completed:
 
 * [x] App implements Google Analytics service
 
-* [ ] App implements Google Ads service
+* [x] App implements Google Ads service
 
 * [x] Each service imported in the build.gradle is used in the app.
-
-* [ ] If Analytics is used, the app creates only one analytics instance. If Analytics was not used, student meets specifications.
 
 ### Material Design
 
