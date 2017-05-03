@@ -19,7 +19,9 @@ The following **required** functionality is completed:
 
 ### Google Play Services
 
-* [ ] App integrates two or more Google services. Google service integrations can be a part of Google Play Services or Firebase.
+* [x] App implements Google Analytics service
+
+* [ ] App implements Google Ads service
 
 * [x] Each service imported in the build.gradle is used in the app.
 
