@@ -12,4 +12,10 @@
     <dimen name="cards_button_width">48dp</dimen>
     <dimen name="cards_button_height">48dp</dimen>
     <dimen name="navheader_height">222dp</dimen>
+
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">8dp</dimen>
 </resources>

@@ -20,4 +20,6 @@
     <!--Ad unit id-->
     <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
     <string name="AdUnitId">ca-app-pub-3474287381828825~1688212398</string>
+    <string name="appwidget_text">DP Challenges</string>
+    <string name="add_widget">Add widget</string>
 </resources>
