@@ -2,10 +2,10 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
                     android:initialKeyguardLayout="@layout/dpchallenge_widget_provider"
                     android:initialLayout="@layout/dpchallenge_widget_provider"
-                    android:minHeight="110dp"
-                    android:minWidth="250dp"
-                    android:previewImage="@drawable/example_appwidget_preview"
-                    android:resizeMode="horizontal|vertical"
+                    android:minHeight="40dp"
+                    android:minWidth="40dp"
+                    android:previewImage="@mipmap/ic_launcher"
+                    android:resizeMode="none"
                     android:updatePeriodMillis="86400000"
                     android:widgetCategory="home_screen">
 </appwidget-provider>
