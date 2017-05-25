@@ -1,6 +1,5 @@
 package rocks.ecox.dailyprogrammerchallenges.widget;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -9,6 +8,7 @@ import android.content.Intent;
 import android.widget.RemoteViews;
 
 import rocks.ecox.dailyprogrammerchallenges.R;
+import rocks.ecox.dailyprogrammerchallenges.activities.SplashActivity;
 
 /**
  * Implementation of App Widget functionality.
@@ -32,7 +32,7 @@ public class DPChallengeWidgetProvider extends AppWidgetProvider {
         // There may be multiple widgets active, so update all of them
         for (int appWidgetId : appWidgetIds) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.dpchallenge_widget_provider);
-            Intent configIntent = new Intent(context, Activity.class);
+            Intent configIntent = new Intent(context, SplashActivity.class);
 
             PendingIntent configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, 0);
 
