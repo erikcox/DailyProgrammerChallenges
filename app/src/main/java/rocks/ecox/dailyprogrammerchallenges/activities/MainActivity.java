@@ -243,4 +243,5 @@ public class MainActivity extends AppCompatActivity {
     public static Context getContextOfApplication() {
         return contextOfApplication;
     }
+
 }
