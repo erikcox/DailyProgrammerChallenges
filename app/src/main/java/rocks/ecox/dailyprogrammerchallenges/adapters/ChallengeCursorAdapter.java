@@ -113,24 +113,19 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
             }
         });
 
-        // Start new sharing functionality
+        // Start sharing functionality
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Tell the db to mark / unmark this as completed
                 int position = cvh.getAdapterPosition();
                 int idIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry._ID);
-                String url = String.valueOf(mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_URL));
-
-                Timber.d("Share url is: ", url);
 
                 mCursor.moveToPosition(position);
-                final String dbId = mCursor.getString(idIndex);
-                String[] rowId = {dbId};
-                Uri challenge = DPChallengesContract.ChallengeEntry.CONTENT_URI.buildUpon().appendPath(dbId).build();
-                ContentValues values = new ContentValues();
 
-                // New code
+                int urlIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_URL);
+                String url = mCursor.getString(urlIndex);
+
+                // Share the challenge url
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_TEXT, url);
