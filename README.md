@@ -15,7 +15,7 @@ The following **required** functionality is completed:
 
 * [x] App keeps all strings in a strings.xml file and enables RTL layout switching on all layouts.
 
-* [ ] App provides a widget to provide relevant information to the user on the home screen.
+* [x] App provides a widget to provide relevant information to the user on the home screen.
 
 ### Google Play Services
 
