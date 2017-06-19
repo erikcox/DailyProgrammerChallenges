@@ -59,16 +59,6 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:fitsSystemWindows="true"
-        app:itemIconTint="@android:color/black"
-        app:itemTextColor="@android:color/black"
-        app:menu="@menu/menu_navigation"/>
-
     <!--Nav header image-->
     <!--app:headerLayout="@layout/navheader"-->
 
@@ -95,4 +85,15 @@
             ads:adUnitId="@string/banner_ad_unit_id">
         </com.google.android.gms.ads.AdView>
     </RelativeLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:itemIconTint="@android:color/black"
+        app:itemTextColor="@android:color/black"
+        app:menu="@menu/menu_navigation"/>
+
 </android.support.v4.widget.DrawerLayout>
