@@ -110,8 +110,8 @@
                 android:layout_toLeftOf="@+id/challengeDifficulty"
                 android:layout_toStartOf="@+id/challengeDifficulty"
                 android:contentDescription="@string/description_share_button"
-                app:srcCompat="@drawable/share"
-                tools:src="@drawable/share"/>
+                app:srcCompat="@drawable/share_icon"
+                tools:src="@drawable/share_icon"/>
 
             <TextView
                 android:id="@+id/challengeDifficulty"
