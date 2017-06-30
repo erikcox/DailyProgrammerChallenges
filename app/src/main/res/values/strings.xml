@@ -22,4 +22,6 @@
     <string name="AdUnitId">ca-app-pub-3474287381828825~1688212398</string>
     <string name="appwidget_text">DP Challenges</string>
     <string name="add_widget">Add widget</string>
+    <string name="icon_description">Icon</string>
+    <string name="zero">0</string>
 </resources>
