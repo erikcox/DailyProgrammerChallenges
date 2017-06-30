@@ -127,9 +127,14 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
 
                 // Share the challenge url
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 shareIntent.setType("text/plain");
                 shareIntent.putExtra(Intent.EXTRA_TEXT, url);
-                mContext.startActivity(Intent.createChooser(shareIntent, "Share Challenge using"));
+
+                Intent chooserIntent = Intent.createChooser(shareIntent, "Share Challenge using");
+                chooserIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                mContext.startActivity(chooserIntent);
 
             }
         });
