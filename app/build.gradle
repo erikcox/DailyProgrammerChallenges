@@ -27,11 +27,11 @@ android {
         applicationId "rocks.ecox.dailyprogrammerchallenges"
         minSdkVersion 16
         targetSdkVersion 25
-        versionCode getVersionCode()
         versionName getVersionName()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -46,6 +46,8 @@ android {
     }
     lintOptions {
         abortOnError false
+    }
+    productFlavors {
     }
 }
 
