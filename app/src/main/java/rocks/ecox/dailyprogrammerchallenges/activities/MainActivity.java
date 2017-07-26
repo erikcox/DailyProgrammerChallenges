@@ -130,14 +130,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Create sorting shared pref
                 SharedPreferences sortSettings = getApplicationContext().getSharedPreferences("sortSettings", Context.MODE_PRIVATE);
-                String sortBy = sortSettings.getString("sortBy", "DESC");
+                String sortBy = sortSettings.getString("sortBy", getString(R.string.menu_descending));
                 SharedPreferences sortOrder = getApplicationContext().getSharedPreferences("sortSettings", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sortOrder.edit();
 
-                if (sortBy.equals("ASC")) {
-                    editor.putString("sortBy", "DESC");
+                if (sortBy.equals(getString(R.string.menu_ascending))) {
+                    editor.putString("sortBy", getString(R.string.menu_descending));
                 } else {
-                    editor.putString("sortBy", "ASC");
+                    editor.putString("sortBy", getString(R.string.menu_ascending));
                 }
 
                 editor.apply();
@@ -227,13 +227,13 @@ public class MainActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    return "ALL";
+                    return getString(R.string.heading_all);
                 case 1:
-                    return "EASY";
+                    return getString(R.string.heading_easy);
                 case 2:
-                    return "MEDIUM";
+                    return getString(R.string.heading_medium);
                 case 3:
-                    return "HARD";
+                    return getString(R.string.heading_hard);
             }
             return null;
         }

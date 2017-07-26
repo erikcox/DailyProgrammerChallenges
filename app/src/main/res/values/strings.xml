@@ -24,4 +24,10 @@
     <string name="add_widget">Add widget</string>
     <string name="icon_description">Icon</string>
     <string name="zero">0</string>
+    <string name="menu_descending">DESC</string>
+    <string name="menu_ascending">ASC</string>
+    <string name="heading_all">ALL</string>
+    <string name="heading_easy">EASY</string>
+    <string name="heading_medium">MEDIUM</string>
+    <string name="heading_hard">HARD</string>
 </resources>
