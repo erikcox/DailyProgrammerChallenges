@@ -103,9 +103,9 @@ public class DetailActivity extends AppCompatActivity {
 
             switch (position) {
                 case 0:
-                    return "DESCRIPTION";
+                    return getString(R.string.header_description);
                 case 1:
-                    return "SOLUTIONS";
+                    return getString(R.string.header_solutions);
             }
             return null;
         }

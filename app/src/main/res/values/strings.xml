@@ -30,4 +30,6 @@
     <string name="heading_easy">EASY</string>
     <string name="heading_medium">MEDIUM</string>
     <string name="heading_hard">HARD</string>
+    <string name="header_description">DESCRIPTION</string>
+    <string name="header_solutions">SOLUTIONS</string>
 </resources>
