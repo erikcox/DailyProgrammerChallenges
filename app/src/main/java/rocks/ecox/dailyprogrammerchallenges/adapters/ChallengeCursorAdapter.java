@@ -67,6 +67,10 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                 ContentValues values = new ContentValues();
                 int columnValue;
 
+                if (DPChallengesContract.ChallengeEntry.COLUMN_FAVORITE.equals(1)) {
+                    fav.setChecked(true);
+                }
+
                 if (fav.isChecked()) {
                     columnValue = 1;
                 } else {
