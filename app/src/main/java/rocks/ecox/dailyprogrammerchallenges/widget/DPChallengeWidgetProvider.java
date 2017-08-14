@@ -5,11 +5,18 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.RemoteViews;
 
 import rocks.ecox.dailyprogrammerchallenges.R;
 import rocks.ecox.dailyprogrammerchallenges.activities.SplashActivity;
+import rocks.ecox.dailyprogrammerchallenges.adapters.ChallengeCursorAdapter;
 import rocks.ecox.dailyprogrammerchallenges.utility.UpdateChallenges;
 
 import static rocks.ecox.dailyprogrammerchallenges.models.challenge.Challenge.getCount;
@@ -17,50 +24,37 @@ import static rocks.ecox.dailyprogrammerchallenges.models.challenge.Challenge.ge
 /**
  * Implementation of App Widget functionality.
  */
-public class DPChallengeWidgetProvider extends AppWidgetProvider {
-
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-
-        CharSequence widgetText = "0"; //context.getString(R.string.appwidget_text);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.dpchallenge_widget_provider);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
-
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-    }
+public class DPChallengeWidgetProvider extends AppWidgetProvider implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @Override
     public void onUpdate(final Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        final CharSequence[] widgetText = {"0"};
-        // Check # of entries in db
-        final int numChallenges = getCount();
 
-        // Run UpdateChallenges
-        UpdateChallenges.update();
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                final int currentCount = getCount();
-                Runnable r = new Runnable() { public void run() { widgetText[0] = String.valueOf(currentCount - numChallenges); } };
-                r.run();
-            }
-        }, 30000);
+        ChallengeCursorAdapter mAdapter;
+        RecyclerView mRecyclerView;
 
         for (int appWidgetId : appWidgetIds) {
             RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.dpchallenge_widget_provider);
             Intent configIntent = new Intent(context, SplashActivity.class);
 
+            mAdapter = new ChallengeCursorAdapter(context);
+            mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewChallenges);
+            mRecyclerView.setLayoutManager(
+                    new LinearLayoutManager(context));
+            mRecyclerView.setAdapter(mAdapter);
+
+            getLoaderManager().initLoader(0, null, this);
+
             PendingIntent configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, 0);
 
             remoteViews.setOnClickPendingIntent(R.id.widget, configPendingIntent);
-            remoteViews.setTextViewText(R.id.appwidget_text, widgetText[0]);
             appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
-
         }
+    }
+
+    private LoaderManager getLoaderManager()
+    {
+        return null;
     }
 
     @Override
@@ -73,5 +67,22 @@ public class DPChallengeWidgetProvider extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args)
+    {
+        return null;
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data)
+    {
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader)
+    {
+
+    }
 }
 
