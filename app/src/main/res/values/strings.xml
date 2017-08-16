@@ -32,4 +32,5 @@
     <string name="heading_hard">HARD</string>
     <string name="header_description">DESCRIPTION</string>
     <string name="header_solutions">SOLUTIONS</string>
+    <string name="title_programming_challenges">Challenges</string>
 </resources>

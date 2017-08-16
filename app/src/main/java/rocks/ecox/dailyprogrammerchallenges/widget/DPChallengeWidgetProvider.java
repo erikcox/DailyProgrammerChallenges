@@ -6,82 +6,77 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
+import android.os.Binder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.AdapterView;
 import android.widget.RemoteViews;
+import android.widget.RemoteViewsService;
 
 import rocks.ecox.dailyprogrammerchallenges.R;
 import rocks.ecox.dailyprogrammerchallenges.activities.SplashActivity;
 import rocks.ecox.dailyprogrammerchallenges.adapters.ChallengeCursorAdapter;
+import rocks.ecox.dailyprogrammerchallenges.data.DPChallengesContract;
 import rocks.ecox.dailyprogrammerchallenges.utility.UpdateChallenges;
+import timber.log.Timber;
 
 import static rocks.ecox.dailyprogrammerchallenges.models.challenge.Challenge.getCount;
 
 /**
  * Implementation of App Widget functionality.
  */
-public class DPChallengeWidgetProvider extends AppWidgetProvider implements LoaderManager.LoaderCallbacks<Cursor> {
+public class DPChallengeWidgetProvider extends AppWidgetProvider {
+
+    public static final String ACTION_DETAILS_ACTIVITY = "ACTION_DETAILS_ACTIVITY";
+    public static final String EXTRA_SYMBOL = "SYMBOL";
+    private static final String TAG = "SimpleAppWidgetProvider";
+    private static final String REFRESH_ACTION = "android.appwidget.action.APPWIDGET_UPDATE";
 
     @Override
-    public void onUpdate(final Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
+    public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
 
-        ChallengeCursorAdapter mAdapter;
-        RecyclerView mRecyclerView;
+        String sortQuery = "";
+        String sortBy = "DESC";
 
         for (int appWidgetId : appWidgetIds) {
-            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.dpchallenge_widget_provider);
-            Intent configIntent = new Intent(context, SplashActivity.class);
+            RemoteViews views = new RemoteViews(
 
-            mAdapter = new ChallengeCursorAdapter(context);
-            mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewChallenges);
-            mRecyclerView.setLayoutManager(
-                    new LinearLayoutManager(context));
-            mRecyclerView.setAdapter(mAdapter);
+                    context.getPackageName(),
+                    R.layout.dpchallenge_widget_provider
 
-            getLoaderManager().initLoader(0, null, this);
+            );
 
-            PendingIntent configPendingIntent = PendingIntent.getActivity(context, 0, configIntent, 0);
+//            Cursor cursor = context.getContentResolver().query(
+//                    DPChallengesContract.BASE_CONTENT_URI,
+//                    new String[]{"count(*)"},
+//                    null,
+//                    null,
+//                    null
+//            );
 
-            remoteViews.setOnClickPendingIntent(R.id.widget, configPendingIntent);
-            appWidgetManager.updateAppWidget(appWidgetIds, remoteViews);
+            final Cursor cursor = context.getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
+                    null,
+                    "show_challenge = 1 AND completed_challenge = 0" + sortQuery,
+                    null,
+                    DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " " + sortBy + ", "
+                            + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");
+
+
+            if(cursor != null) {
+                cursor.moveToFirst();
+
+                views.setTextViewText(R.id.tv_widgetChallenge, context.getString(R.string.title_programming_challenges));
+                
+                appWidgetManager.updateAppWidget(appWidgetId, views);
+            }
+
+            cursor.close();
         }
-    }
-
-    private LoaderManager getLoaderManager()
-    {
-        return null;
-    }
-
-    @Override
-    public void onEnabled(Context context) {
-        // Enter relevant functionality for when a widget is enabled
-    }
-
-    @Override
-    public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args)
-    {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data)
-    {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader)
-    {
 
     }
 }

@@ -4,7 +4,7 @@
                     android:initialLayout="@layout/dpchallenge_widget_provider"
                     android:minHeight="110dp"
                     android:minWidth="180dp"
-                    android:previewImage="@mipmap/ic_launcher"
+                    android:previewImage="@drawable/challenge_widget_preview"
                     android:resizeMode="none"
                     android:updatePeriodMillis="86400000"
                     android:widgetCategory="home_screen">
