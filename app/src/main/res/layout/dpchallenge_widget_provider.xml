@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="18dp"
             android:background="@color/colorPrimary"
+            android:text="@string/title_programming_challenges"
             android:gravity="center"
             android:textAllCaps="true"
             android:textColor="@color/cardview_light_background"
