@@ -51,30 +51,6 @@ public class DPChallengeWidgetProvider extends AppWidgetProvider {
 
             );
 
-            // Old cursor code
-//            Cursor cursor = context.getContentResolver().query(
-//                    DPChallengesContract.BASE_CONTENT_URI,
-//                    new String[]{"count(*)"},
-//                    null,
-//                    null,
-//                    null
-//            );
-
-            // Newer cursor code
-//            final Cursor cursor = context.getContentResolver().query(DPChallengesContract.ChallengeEntry.CONTENT_URI,
-//                    null,
-//                    "show_challenge = 1 AND completed_challenge = 0" + sortQuery,
-//                    null,
-//                    DPChallengesContract.ChallengeEntry.COLUMN_CHALLENGE_NUM + " " + sortBy + ", "
-//                            + DPChallengesContract.ChallengeEntry.COLUMN_DIFFICULTY_NUM + " ASC");
-//
-//
-//            if(cursor != null) {
-//                cursor.moveToFirst();
-//            }
-//
-//            cursor.close();
-
             // Click event handler for the title, launches the app when the user clicks on title
             Intent titleIntent = new Intent(context, MainActivity.class);
             PendingIntent titlePendingIntent = PendingIntent.getActivity(context, 0, titleIntent, 0);
@@ -84,7 +60,7 @@ public class DPChallengeWidgetProvider extends AppWidgetProvider {
             Intent intent = new Intent(context, MyWidgetRemoteViewsService.class);
             views.setRemoteAdapter(R.id.widgetListView, intent);
 
-            // template to handle the click listener for each item
+            // Template to handle the click listener for each item
             Intent clickIntentTemplate = new Intent(context, DetailActivity.class);
             PendingIntent clickPendingIntentTemplate = TaskStackBuilder.create(context)
                     .addNextIntentWithParentStack(clickIntentTemplate)
