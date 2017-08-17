@@ -35,7 +35,7 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
         }
 
         final long identityToken = Binder.clearCallingIdentity();
-        Uri uri = DPChallengesContract.BASE_CONTENT_URI;
+        Uri uri = DPChallengesContract.ChallengeEntry.CONTENT_URI;
         mCursor = mContext.getContentResolver().query(uri,
                 null,
                 null,

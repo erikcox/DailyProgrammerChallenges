@@ -119,4 +119,3 @@ public class DPChallengeWidgetProvider extends AppWidgetProvider {
         super.onReceive(context, intent);
     }
 }
-
