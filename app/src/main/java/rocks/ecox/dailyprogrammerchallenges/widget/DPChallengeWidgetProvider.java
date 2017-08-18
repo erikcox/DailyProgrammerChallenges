@@ -52,10 +52,9 @@ public class DPChallengeWidgetProvider extends AppWidgetProvider {
             );
 
             // Click event handler for the title, launches the app when the user clicks on title
-            Intent titleIntent = new Intent(context, MainActivity.class);
+            Intent titleIntent = new Intent(context, DetailActivity.class);
             PendingIntent titlePendingIntent = PendingIntent.getActivity(context, 0, titleIntent, 0);
             views.setOnClickPendingIntent(R.id.tv_widgetChallenge, titlePendingIntent);
-
 
             Intent intent = new Intent(context, MyWidgetRemoteViewsService.class);
             views.setRemoteAdapter(R.id.widgetListView, intent);
@@ -68,8 +67,6 @@ public class DPChallengeWidgetProvider extends AppWidgetProvider {
             views.setPendingIntentTemplate(R.id.widgetListView, clickPendingIntentTemplate);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
-
-//            Intent intent = new Intent(context, MyWidgetRemoteViewsService.class);
             views.setRemoteAdapter(R.id.widgetListView, intent);
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }

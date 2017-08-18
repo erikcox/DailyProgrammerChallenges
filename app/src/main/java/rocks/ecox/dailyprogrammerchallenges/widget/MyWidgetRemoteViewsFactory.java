@@ -70,6 +70,10 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.dpchallenge_widget_list_item);
         rv.setTextViewText(R.id.widgetItemChallengeNameLabel, challengeLabel);
 
+        int challengeIdIndex =  mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_POST_ID);
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtra(mContext.getString(R.string.label_challenge_id), mCursor.getString(challengeIdIndex));
+
         return rv;
     }
 
