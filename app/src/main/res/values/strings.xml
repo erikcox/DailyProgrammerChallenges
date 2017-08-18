@@ -34,4 +34,5 @@
     <string name="header_solutions">SOLUTIONS</string>
     <string name="title_programming_challenges">Challenges</string>
     <string name="label_challenge_id">EXTRA_CHALLENGE_ID</string>
+    <string name="label_db_id">EXTRA_DB_ID</string>
 </resources>

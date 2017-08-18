@@ -9,6 +9,7 @@ import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -174,6 +175,7 @@ public class ChallengeCursorAdapter extends RecyclerView.Adapter<ChallengeCursor
                 Intent intent = new Intent(mContext, DetailActivity.class);
                 intent.putExtra("EXTRA_DB_ID", dbId);
                 intent.putExtra("EXTRA_CHALLENGE_ID", challengeId);
+                Log.d("challenge_id_index_CA: ", challengeId);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(intent);
             }

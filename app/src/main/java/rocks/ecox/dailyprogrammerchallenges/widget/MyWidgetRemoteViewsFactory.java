@@ -71,8 +71,15 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
         rv.setTextViewText(R.id.widgetItemChallengeNameLabel, challengeLabel);
 
         int challengeIdIndex =  mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry.COLUMN_POST_ID);
+        int idIndex = mCursor.getColumnIndex(DPChallengesContract.ChallengeEntry._ID);
+        final String dbId = mCursor.getString(idIndex);
+
+        Log.d("challenge_id_index: ", mCursor.getString(challengeIdIndex));
+
         Intent fillInIntent = new Intent();
         fillInIntent.putExtra(mContext.getString(R.string.label_challenge_id), mCursor.getString(challengeIdIndex));
+        fillInIntent.putExtra(mContext.getString(R.string.label_db_id), dbId);
+
         rv.setOnClickFillInIntent(R.id.widgetItemContainer, fillInIntent);
 
         return rv;
