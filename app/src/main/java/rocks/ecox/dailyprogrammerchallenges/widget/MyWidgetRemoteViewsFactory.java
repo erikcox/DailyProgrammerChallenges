@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Binder;
+import android.util.Log;
 import android.widget.AdapterView;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -65,9 +66,10 @@ public class MyWidgetRemoteViewsFactory implements RemoteViewsService.RemoteView
             return null;
         }
 
-        RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.dpchallenge_widget_provider);
-        rv.setTextViewText(R.id.widgetItemChallengeNameLabel, mCursor.getString(1));
-        Timber.d(mCursor.getString(1), "RV_Text");
+        String challengeLabel = mCursor.getString(3) + ": [" + mCursor.getString(1) + "] " + mCursor.getString(4);
+        RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.dpchallenge_widget_list_item);
+        rv.setTextViewText(R.id.widgetItemChallengeNameLabel, challengeLabel);
+
         return rv;
     }
 
