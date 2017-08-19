@@ -1,5 +1,6 @@
 package rocks.ecox.dailyprogrammerchallenges.utility;
 
+import android.content.Context;
 import android.os.Build;
 import android.text.Html;
 
@@ -26,7 +27,7 @@ import timber.log.Timber;
 
 public class UpdateChallenges {
 
-    public static void update() {
+    public static void update(final Context context) {
         // Reddit API stuff
         String API = "https://www.reddit.com/";
         String subreddit = "dailyprogrammer";
@@ -110,7 +111,7 @@ public class UpdateChallenges {
                             e.printStackTrace();
                     }
                 }
-                SplashActivity.startApp();
+                SplashActivity.startApp(context);
             }
 
             @Override
