@@ -18,7 +18,10 @@ repositories {
 android {
     signingConfigs {
         config {
-            storeFile file('/Users/Erik/AndroidStudioProjects/DailyProgrammerChallenges/dpc.jks')
+            storeFile file('$rootDir/dpc.jks')
+            keyAlias 'dpc_key'
+            keyPassword 'adidas'
+            storePassword 'adidas'
         }
     }
     compileSdkVersion 25
